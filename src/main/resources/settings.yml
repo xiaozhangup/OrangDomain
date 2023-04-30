@@ -1,8 +1,7 @@
 ClaimTool: "APPLE"
 Info:
   Join:
-    action:
-      - tell *"测试"
+    action: []
   Leave:
-    action:
-      - tell *"测试"
+    action: []
+# Please use kether scripts

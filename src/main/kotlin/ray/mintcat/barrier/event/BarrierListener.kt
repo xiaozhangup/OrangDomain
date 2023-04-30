@@ -105,6 +105,7 @@ object BarrierListener {
             }
         }
     }
+    // TODO: 进入领地的处理，有待Hook其他组件
 
     @SubscribeEvent
     fun leave(event: PlayerMoveEvent) {
@@ -116,6 +117,7 @@ object BarrierListener {
             }
         }
     }
+    // TODO: 离开的处理，一样有待处理
 
     @SubscribeEvent
     fun e(event: BarrierPlayerJoinPolyEvent) {
