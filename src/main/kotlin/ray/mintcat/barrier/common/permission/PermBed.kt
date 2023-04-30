@@ -57,7 +57,7 @@ object PermBed : Permission, Listener {
             e.clickedBlock?.location?.getPoly()?.run {
                 if (!hasPermission("bed", e.player.name)) {
                     e.isCancelled = true
-                    e.player.error("缺少权限 &f$id")
+                    //e.player.error("缺少权限 &f$id")
                 }
             }
         }

@@ -41,7 +41,8 @@ object PermMove : Permission, Listener {
                 listOf(
                     "",
                     "&7允许行为:",
-                    "&8领域内移动"
+                    "&8领域内移动",
+                    "&c此功能不可用!"
                 )
             )
             flags.addAll(ItemFlag.values())
@@ -52,14 +53,14 @@ object PermMove : Permission, Listener {
         }
     }
 
-    @SubscribeEvent(ignoreCancelled = true)
-    fun e(e: PlayerMoveEvent) {
-        e.player.location.getPoly()?.run {
-            if (!hasPermission("move", e.player.name)) {
-                e.isCancelled = true
-                e.player.error("缺少权限 &f$id")
-                e.setTo(e.from.block.location)
-            }
-        }
-    }
+//    @SubscribeEvent(ignoreCancelled = true)
+//    fun e(e: PlayerMoveEvent) {
+//        e.player.location.getPoly()?.run {
+//            if (!hasPermission("move", e.player.name)) {
+//                e.isCancelled = true
+//                e.player.error("缺少权限 &f$id")
+//                e.setTo(e.from.block.location)
+//            }
+//        }
+//    }
 }

@@ -38,7 +38,8 @@ object PermTeleport : Permission, Listener {
                 listOf(
                     "",
                     "&7允许行为:",
-                    "&8通过传送进入或离开"
+                    "&8通过传送进入或离开",
+                    "&c此功能不可用!"
                 )
             )
             flags.addAll(ItemFlag.values())
@@ -49,19 +50,19 @@ object PermTeleport : Permission, Listener {
         }
     }
 
-    @SubscribeEvent(ignoreCancelled = true)
-    fun e(e: PlayerTeleportEvent) {
-        e.from.getPoly()?.run {
-            if (!hasPermission("teleport", e.player.name)) {
-                e.isCancelled = true
-                e.player.error("缺少权限 &f$id")
-            }
-        }
-        e.to?.getPoly()?.run {
-            if (!hasPermission("teleport", e.player.name)) {
-                e.isCancelled = true
-                e.player.error("缺少权限 &f$id")
-            }
-        }
-    }
+//    @SubscribeEvent(ignoreCancelled = true)
+//    fun e(e: PlayerTeleportEvent) {
+//        e.from.getPoly()?.run {
+//            if (!hasPermission("teleport", e.player.name)) {
+//                e.isCancelled = true
+//                e.player.error("缺少权限 &f$id")
+//            }
+//        }
+//        e.to?.getPoly()?.run {
+//            if (!hasPermission("teleport", e.player.name)) {
+//                e.isCancelled = true
+//                e.player.error("缺少权限 &f$id")
+//            }
+//        }
+//    }
 }

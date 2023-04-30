@@ -65,7 +65,7 @@ object PermBuild : Permission, Listener {
         e.block.location.getPoly()?.run {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
-                e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 &f$id")
             }
         }
     }
@@ -75,7 +75,7 @@ object PermBuild : Permission, Listener {
         e.block.location.getPoly()?.run {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
-                e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 &f$id")
             }
         }
     }
@@ -86,7 +86,7 @@ object PermBuild : Permission, Listener {
         e.block.location.getPoly()?.run {
             if (!hasPermission("build", player.name)) {
                 e.isCancelled = true
-                player.error("缺少权限 &f$id")
+                //player.error("缺少权限 &f$id")
             }
         }
     }
@@ -98,7 +98,7 @@ object PermBuild : Permission, Listener {
             e.entity.location.block.location.getPoly()?.run {
                 if (!hasPermission("build", player.name)) {
                     e.isCancelled = true
-                    player.error("缺少权限 &f$id")
+                    //player.error("缺少权限 &f$id")
                 }
             }
         }
@@ -110,7 +110,7 @@ object PermBuild : Permission, Listener {
             e.clickedBlock?.location?.getPoly()?.run {
                 if (!hasPermission("build", e.player.name)) {
                     e.isCancelled = true
-                    e.player.error("缺少权限 &f$id")
+                    //e.player.error("缺少权限 &f$id")
                 }
             }
         }
@@ -123,7 +123,7 @@ object PermBuild : Permission, Listener {
             e.entity.location.block.location.getPoly()?.run {
                 if (!hasPermission("build", player.name)) {
                     e.isCancelled = true
-                    player.error("缺少权限 &f$id")
+                    //player.error("缺少权限 &f$id")
                 }
             }
         }
@@ -134,7 +134,7 @@ object PermBuild : Permission, Listener {
         e.block.location.getPoly()?.run {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
-                e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 &f$id")
             }
         }
     }
@@ -144,7 +144,7 @@ object PermBuild : Permission, Listener {
         e.block.location.getPoly()?.run {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
-                e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 &f$id")
             }
         }
     }
