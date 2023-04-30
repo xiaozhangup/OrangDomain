@@ -8,7 +8,7 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.inventory.EquipmentSlot
-import ray.mintcat.barrier.Barrier
+import ray.mintcat.barrier.OrangDomain
 import ray.mintcat.barrier.utils.*
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
@@ -53,7 +53,7 @@ object BarrierListener {
             return
         }
         //物品判断
-        if (event.item == null || event.item!!.type != Barrier.getTool()) {
+        if (event.item == null || event.item!!.type != OrangDomain.getTool()) {
             return
         }
         when (event.action) {
@@ -119,21 +119,13 @@ object BarrierListener {
 
     @SubscribeEvent
     fun e(event: BarrierPlayerJoinPolyEvent) {
-        event.player.infoTitle(
-            Barrier.config.getString("Info.Join.main")!!.replace("[name]", event.poly.name),
-            Barrier.config.getString("Info.Join.sub")!!.replace("[name]", event.poly.name)
-        )
-        Barrier.config.getStringList("Info.Join.action").eval(event.player)
+        OrangDomain.config.getStringList("Info.Join.action").eval(event.player)
 
     }
 
     @SubscribeEvent
     fun e(event: BarrierPlayerLeavePolyEvent) {
-        event.player.infoTitle(
-            Barrier.config.getString("Info.Leave.main")!!.replace("[name]", event.poly.name),
-            Barrier.config.getString("Info.Leave.sub")!!.replace("[name]", event.poly.name)
-        )
-        Barrier.config.getStringList("Info.Leave.action").map { it.replace("[name]", event.poly.name) }.eval(event.player)
+        OrangDomain.config.getStringList("Info.Leave.action").map { it.replace("[name]", event.poly.name) }.eval(event.player)
     }
 
 }

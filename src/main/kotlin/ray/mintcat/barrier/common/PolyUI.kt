@@ -5,14 +5,13 @@ import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import ray.mintcat.barrier.Barrier
+import ray.mintcat.barrier.OrangDomain
 import ray.mintcat.barrier.common.permission.Permission
 import ray.mintcat.barrier.utils.error
 import ray.mintcat.barrier.utils.info
 import ray.mintcat.barrier.utils.set
 import taboolib.common.platform.function.submit
 import taboolib.library.xseries.XMaterial
-import taboolib.module.nms.inputSign
 import taboolib.module.ui.ClickEvent
 import taboolib.module.ui.openMenu
 import taboolib.module.ui.type.Basic
@@ -73,7 +72,7 @@ fun BarrierPoly.openSettingMenu(player: Player) {
             colored()
         }) {
             data.door = player.location
-            Barrier.save(data.name)
+            OrangDomain.save(data.name)
         }
     }
 }
@@ -160,7 +159,7 @@ fun BarrierPoly.openAddUserMenu(player: Player) {
         }
         onClick { _: ClickEvent, element: Player ->
             users[element.name] = HashMap()
-            Barrier.save(data.name)
+            OrangDomain.save(data.name)
             player.info("添加成功!")
             player.closeInventory()
             submit(delay = 1) {
@@ -200,7 +199,7 @@ fun BarrierPoly.openPermissionUser(player: Player, user: String) {
         rows(6)
         slots(inventoryCenterSlots)
         elements {
-            val list = Barrier.permissions.filter { it.worldSide }.sortedBy { it.priority }.toMutableList()
+            val list = OrangDomain.permissions.filter { it.worldSide }.sortedBy { it.priority }.toMutableList()
             list.toList().forEach {
                 if (it.adminSide && !player.isOp) {
                     list.remove(it)
@@ -218,7 +217,7 @@ fun BarrierPoly.openPermissionUser(player: Player, user: String) {
         }) {
             player.info("已删除 &f${user} 的所有权限!")
             users.remove(user)
-            Barrier.save(data.name)
+            OrangDomain.save(data.name)
             submit(delay = 1) {
                 openPermissionUserMenu(player)
             }
@@ -226,7 +225,7 @@ fun BarrierPoly.openPermissionUser(player: Player, user: String) {
         onClick { event, element ->
             users[user]!![element.id] = !hasPermission(element.id, player = user, def = element.default)
             player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 2f)
-            Barrier.save(data.name)
+            OrangDomain.save(data.name)
             player.info("已修改 &f${user} &7的 &f${element.id} &7权限!")
             submit(delay = 1) {
                 openPermissionUser(player, user)
@@ -242,7 +241,7 @@ fun BarrierPoly.openPermissionMenu(player: Player) {
         rows(6)
         slots(inventoryCenterSlots)
         elements {
-            val list = Barrier.permissions.filter { it.worldSide }.sortedBy { it.priority }.toMutableList()
+            val list = OrangDomain.permissions.filter { it.worldSide }.sortedBy { it.priority }.toMutableList()
             if (!player.isOp) {
                 list.removeAll(list.filter { it.adminSide == player.isOp })
             }
@@ -260,7 +259,7 @@ fun BarrierPoly.openPermissionMenu(player: Player) {
             }
             permissions[element.id] = !hasPermission(element.id, def = element.default)
             player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 2f)
-            Barrier.save(data.name)
+            OrangDomain.save(data.name)
             openPermissionMenu(player)
         }
         setNextPage(51) { page, hasNextPage ->

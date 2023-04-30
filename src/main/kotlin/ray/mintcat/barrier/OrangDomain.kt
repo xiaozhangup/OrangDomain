@@ -1,13 +1,8 @@
 package ray.mintcat.barrier
 
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.encodeToJsonElement
-import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import ray.mintcat.barrier.common.BarrierPoly
 import ray.mintcat.barrier.common.permission.Permission
 import taboolib.common.LifeCycle
@@ -18,10 +13,8 @@ import taboolib.common.platform.Awake
 import taboolib.common.platform.Plugin
 import taboolib.common.platform.Schedule
 import taboolib.common.platform.function.getDataFolder
-import taboolib.common.platform.function.info
 import taboolib.module.configuration.Config
 import taboolib.module.configuration.Configuration
-import taboolib.platform.util.buildItem
 import java.nio.charset.StandardCharsets
 import java.util.*
 import kotlin.collections.ArrayList
@@ -37,7 +30,7 @@ import kotlin.collections.HashMap
         relocate = ["!kotlin.", "!kotlin@kotlin_version_escape@."]
     )
 )
-object Barrier : Plugin() {
+object OrangDomain : Plugin() {
 
     @Config(migrate = true, value = "settings.yml", autoReload = true)
     lateinit var config: Configuration

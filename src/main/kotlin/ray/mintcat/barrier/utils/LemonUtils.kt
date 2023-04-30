@@ -1,6 +1,5 @@
 package ray.mintcat.barrier.utils
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import me.clip.placeholderapi.PlaceholderAPI
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -10,7 +9,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.NumberConversions
 import org.bukkit.util.Vector
-import ray.mintcat.barrier.Barrier
+import ray.mintcat.barrier.OrangDomain
 import ray.mintcat.barrier.common.BarrierPoly
 import ray.mintcat.barrier.common.permission.Permission
 import taboolib.common.platform.function.adaptPlayer
@@ -26,12 +25,12 @@ import java.util.*
 
 
 fun Location.getPoly(): BarrierPoly? {
-    return Barrier.polys.firstOrNull { it.inNode(this) }
+    return OrangDomain.polys.firstOrNull { it.inNode(this) }
 }
 
 fun Permission.register() {
-    if (!Barrier.permissions.map { it.id }.contains(this.id)) {
-        Barrier.permissions.add(this)
+    if (!OrangDomain.permissions.map { it.id }.contains(this.id)) {
+        OrangDomain.permissions.add(this)
     }
 }
 
@@ -208,7 +207,7 @@ fun debug(vararg block: Any) {
  * @since 1.0
  */
 fun toInfo(sender: CommandSender, message: String) {
-    sender.sendMessage("§8[§a Barrier §8] §7${message.replace("&", "§")}")
+    sender.sendMessage("§8[§a OrangDomain §8] §7${message.replace("&", "§")}")
     if (sender is Player && !cooldown.hasNext(sender.name)) {
         sender.playSound(sender.location, Sound.UI_BUTTON_CLICK, 1f, (1..2).random().toFloat())
     }
@@ -222,7 +221,7 @@ fun toInfo(sender: CommandSender, message: String) {
  * @since 1.0
  */
 fun toError(sender: CommandSender, message: String) {
-    sender.sendMessage("§8[§4 Barrier §8] §7${message.replace("&", "§")}")
+    sender.sendMessage("§8[§4 OrangDomain §8] §7${message.replace("&", "§")}")
     if (sender is Player && !cooldown.hasNext(sender.name)) {
         sender.playSound(sender.location, Sound.ENTITY_VILLAGER_NO, 1f, (1..2).random().toFloat())
     }
@@ -236,7 +235,7 @@ fun toError(sender: CommandSender, message: String) {
  * @since 1.0
  */
 fun toDone(sender: CommandSender, message: String) {
-    sender.sendMessage("§8[§6 Barrier §8] §7${message.replace("&", "§")}")
+    sender.sendMessage("§8[§6 OrangDomain §8] §7${message.replace("&", "§")}")
     if (sender is Player && !cooldown.hasNext(sender.name)) {
         sender.playSound(sender.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, (1..2).random().toFloat())
     }
@@ -249,7 +248,7 @@ fun toDone(sender: CommandSender, message: String) {
  * @since 1.0
  */
 fun toConsole(message: String) {
-    Bukkit.getConsoleSender().sendMessage("§8[§e Barrier §8] §7${message.replace("&", "§")}")
+    Bukkit.getConsoleSender().sendMessage("§8[§e OrangDomain §8] §7${message.replace("&", "§")}")
 }
 
 /**

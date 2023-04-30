@@ -4,10 +4,9 @@ import kotlinx.serialization.Serializable
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Player
-import ray.mintcat.barrier.Barrier
+import ray.mintcat.barrier.OrangDomain
 import ray.mintcat.barrier.utils.PolyUtils
 import ray.mintcat.barrier.utils.PolyUtils.getLineSegment
-import ray.mintcat.barrier.utils.debug
 import ray.mintcat.barrier.utils.serializable.LocationSerializer
 import ray.mintcat.barrier.utils.serializable.UUIDSerializable
 import ray.mintcat.barrier.utils.tpDelay
@@ -39,13 +38,13 @@ class BarrierPoly(
             return true
         } else if (player != null && users.containsKey(player)) {
             if (users[player]!![key] == null) {
-                permissions[key] ?: Barrier.permissions.firstOrNull { it.id == key }?.default ?: def!!
+                permissions[key] ?: OrangDomain.permissions.firstOrNull { it.id == key }?.default ?: def!!
             } else {
                 users[player]!![key]
             }
-            Barrier.permissions.firstOrNull { it.id == key }?.default ?: def!!
+            OrangDomain.permissions.firstOrNull { it.id == key }?.default ?: def!!
         } else {
-            permissions[key] ?: Barrier.permissions.firstOrNull { it.id == key }?.default ?: def!!
+            permissions[key] ?: OrangDomain.permissions.firstOrNull { it.id == key }?.default ?: def!!
         }
     }
 
