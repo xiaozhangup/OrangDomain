@@ -40,6 +40,8 @@ object OrangDomain : Plugin() {
 
     val permissions = ArrayList<Permission>()
 
+    val worlds = ArrayList<String>()
+
     //第一个是玩家ID 第二个是领地ID
     val looker = HashMap<UUID, UUID>()
 
@@ -70,6 +72,7 @@ object OrangDomain : Plugin() {
     @Suppress("UNCHECKED_CAST")
     @Awake(LifeCycle.ACTIVE)
     fun import() {
+        worlds.addAll(config.getStringList("ProtectWorlds"))
         polys.clear()
         newFile(getDataFolder(), "data", create = false, folder = true).listFiles()?.map { file ->
             if (file.name.endsWith(".json")) {

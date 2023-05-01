@@ -1,4 +1,6 @@
 ClaimTool: "APPLE"
+ProtectWorlds:
+  - Lobby
 Info:
   Join:
     action: []

@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerBucketFillEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
+import ray.mintcat.barrier.OrangDomain.worlds
 import ray.mintcat.barrier.utils.display
 import ray.mintcat.barrier.utils.error
 import ray.mintcat.barrier.utils.getPoly
@@ -66,8 +67,12 @@ object PermBuild : Permission, Listener {
         e.block.location.getPoly()?.run {
             if (!hasPermission("build", e.player.name) && !destructible.contains(e.block.type.name)) {
                 e.isCancelled = true
+                return
                 //e.player.error("缺少权限 &f$id")
             }
+        }
+        if (worlds.contains(e.block.world.name) && !e.player.isOp) {
+            e.isCancelled = true
         }
     }
 
@@ -76,8 +81,12 @@ object PermBuild : Permission, Listener {
         e.block.location.getPoly()?.run {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
+                return
                 //e.player.error("缺少权限 &f$id")
             }
+        }
+        if (worlds.contains(e.block.world.name) && !e.player.isOp) {
+            e.isCancelled = true
         }
     }
 
@@ -87,7 +96,11 @@ object PermBuild : Permission, Listener {
         e.block.location.getPoly()?.run {
             if (!hasPermission("build", player.name)) {
                 e.isCancelled = true
+                return
                 //player.error("缺少权限 &f$id")
+            }
+            if (worlds.contains(e.block.world.name) && !player.isOp) {
+                e.isCancelled = true
             }
         }
     }
@@ -99,8 +112,12 @@ object PermBuild : Permission, Listener {
             e.entity.location.block.location.getPoly()?.run {
                 if (!hasPermission("build", player.name)) {
                     e.isCancelled = true
+                    return
                     //player.error("缺少权限 &f$id")
                 }
+            }
+            if (worlds.contains(e.entity.world.name) && !player.isOp) {
+                e.isCancelled = true
             }
         }
     }
@@ -111,7 +128,11 @@ object PermBuild : Permission, Listener {
             e.clickedBlock?.location?.getPoly()?.run {
                 if (!hasPermission("build", e.player.name)) {
                     e.isCancelled = true
+                    return
                     //e.player.error("缺少权限 &f$id")
+                }
+                if (worlds.contains(e.clickedBlock?.world?.name) && !e.player.isOp) {
+                    e.isCancelled = true
                 }
             }
         }
@@ -124,7 +145,11 @@ object PermBuild : Permission, Listener {
             e.entity.location.block.location.getPoly()?.run {
                 if (!hasPermission("build", player.name)) {
                     e.isCancelled = true
+                    return
                     //player.error("缺少权限 &f$id")
+                }
+                if (worlds.contains(e.entity.world.name) && !player.isOp) {
+                    e.isCancelled = true
                 }
             }
         }
@@ -135,7 +160,11 @@ object PermBuild : Permission, Listener {
         e.block.location.getPoly()?.run {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
+                return
                 //e.player.error("缺少权限 &f$id")
+            }
+            if (worlds.contains(e.block.world.name) && !e.player.isOp) {
+                e.isCancelled = true
             }
         }
     }
@@ -145,7 +174,11 @@ object PermBuild : Permission, Listener {
         e.block.location.getPoly()?.run {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
+                return
                 //e.player.error("缺少权限 &f$id")
+            }
+            if (worlds.contains(e.block.world.name) && !e.player.isOp) {
+                e.isCancelled = true
             }
         }
     }
