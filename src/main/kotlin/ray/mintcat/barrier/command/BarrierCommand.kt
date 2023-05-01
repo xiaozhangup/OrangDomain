@@ -92,6 +92,60 @@ object BarrierCommand {
     }
 
     @CommandBody
+    val addDestructible = subCommand {
+        dynamic ( commit = "领地名" ) {
+            suggestion<CommandSender> { sender, context ->
+                OrangDomain.polys.map { it.name }
+            }
+            execute<Player> { sender, context, argument ->
+                val poly = OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
+                    sender.error("领地不存在")
+                }
+                val name = sender.inventory.itemInMainHand.type.name
+                poly.destructible.add(name)
+                OrangDomain.save(poly.name)
+                sender.info("已添加 $name 到可破坏列表!")
+            }
+        }
+    }
+
+    @CommandBody
+    val listDestructible = subCommand {
+        dynamic ( commit = "领地名" ) {
+            suggestion<CommandSender> { sender, context ->
+                OrangDomain.polys.map { it.name }
+            }
+            execute<Player> { sender, context, argument ->
+                val poly = OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
+                    sender.error("领地不存在")
+                }
+                sender.info("当前领地可破坏的物品有 ${poly.destructible.joinToString(", ")}")
+            }
+        }
+    }
+
+    @CommandBody
+    val removeDestructible = subCommand {
+        dynamic ( commit = "领地名" ) {
+            suggestion<CommandSender> { sender, context ->
+                OrangDomain.polys.map { it.name }
+            }
+            execute<Player> { sender, context, argument ->
+                val poly = OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
+                    sender.error("领地不存在")
+                }
+                val name = sender.inventory.itemInMainHand.type.name
+                if (poly.destructible.remove(name)) {
+                    OrangDomain.save(poly.name)
+                    sender.info("已从可破坏列表移除 $name !")
+                } else {
+                    sender.error("此领地本身就不可破坏 $name !")
+                }
+            }
+        }
+    }
+
+    @CommandBody
     val remove = subCommand {
         dynamic(commit = "领地名") {
             suggestion<CommandSender> { sender, context ->

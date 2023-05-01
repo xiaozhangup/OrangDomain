@@ -3,6 +3,7 @@ package ray.mintcat.barrier.common
 import kotlinx.serialization.Serializable
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import ray.mintcat.barrier.OrangDomain
 import ray.mintcat.barrier.utils.PolyUtils
@@ -21,6 +22,7 @@ class BarrierPoly(
     @Serializable(with = LocationSerializer::class)
     var door: Location,
     val nodes: MutableList<@Serializable(with = LocationSerializer::class) Location> = mutableListOf(),
+    val destructible: MutableSet<String> = mutableSetOf(),
     val permissions: MutableMap<String, Boolean> = mutableMapOf(),
     val users: MutableMap<String, MutableMap<String, Boolean>> = mutableMapOf()
 ) {

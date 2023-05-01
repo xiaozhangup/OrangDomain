@@ -60,10 +60,11 @@ object PermBuild : Permission, Listener {
         }
     }
 
+    //方块破坏判断，加白名单了
     @SubscribeEvent(ignoreCancelled = true)
     fun e(e: BlockBreakEvent) {
         e.block.location.getPoly()?.run {
-            if (!hasPermission("build", e.player.name)) {
+            if (!hasPermission("build", e.player.name) && !destructible.contains(e.block.type.name)) {
                 e.isCancelled = true
                 //e.player.error("缺少权限 &f$id")
             }
