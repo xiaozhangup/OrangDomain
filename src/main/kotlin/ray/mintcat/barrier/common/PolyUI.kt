@@ -9,15 +9,14 @@ import ray.mintcat.barrier.OrangDomain
 import ray.mintcat.barrier.common.permission.Permission
 import ray.mintcat.barrier.utils.error
 import ray.mintcat.barrier.utils.info
-import ray.mintcat.barrier.utils.set
 import taboolib.common.platform.function.submit
 import taboolib.library.xseries.XMaterial
 import taboolib.module.ui.ClickEvent
 import taboolib.module.ui.openMenu
 import taboolib.module.ui.type.Basic
 import taboolib.module.ui.type.Linked
+import taboolib.platform.util.Slots
 import taboolib.platform.util.buildItem
-import taboolib.platform.util.inventoryCenterSlots
 
 fun BarrierPoly.openMenu(player: Player) {
     val data = this
@@ -82,7 +81,7 @@ fun BarrierPoly.openPermissionUserMenu(player: Player) {
     player.playSound(player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f)
     player.openMenu<Linked<String>>("${data.name}私有权限管理") {
         rows(6)
-        slots(inventoryCenterSlots)
+        slots(Slots.CENTER)
         elements {
             users.keys.filter { it != player.name }.toList()
         }
@@ -145,7 +144,7 @@ fun BarrierPoly.openAddUserMenu(player: Player) {
     val data = this
     player.openMenu<Linked<Player>>("点击要添加的头像") {
         rows(6)
-        slots(inventoryCenterSlots)
+        slots(Slots.CENTER)
         elements {
             Bukkit.getOnlinePlayers().filter { it.name != player.name || !users.keys.contains(it.name) }.toList()
         }
@@ -197,7 +196,7 @@ fun BarrierPoly.openPermissionUser(player: Player, user: String) {
     player.playSound(player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f)
     player.openMenu<Linked<Permission>>("$user 的权限设置") {
         rows(6)
-        slots(inventoryCenterSlots)
+        slots(Slots.CENTER)
         elements {
             val list = OrangDomain.permissions.filter { it.worldSide }.sortedBy { it.priority }.toMutableList()
             list.toList().forEach {
@@ -207,7 +206,7 @@ fun BarrierPoly.openPermissionUser(player: Player, user: String) {
             }
             list
         }
-        onGenerate { player, element, index, slot ->
+        onGenerate { _, element, _, _ ->
             element.generateMenuItem(hasPermission(element.id, player = user, def = element.default))
         }
         set(49, buildItem(XMaterial.LAVA_BUCKET) {
@@ -222,7 +221,7 @@ fun BarrierPoly.openPermissionUser(player: Player, user: String) {
                 openPermissionUserMenu(player)
             }
         }
-        onClick { event, element ->
+        onClick { _, element ->
             users[user]!![element.id] = !hasPermission(element.id, player = user, def = element.default)
             player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 2f)
             OrangDomain.save(data.name)
@@ -239,7 +238,7 @@ fun BarrierPoly.openPermissionMenu(player: Player) {
     player.playSound(player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f)
     player.openMenu<Linked<Permission>>("${name}全局权限管理") {
         rows(6)
-        slots(inventoryCenterSlots)
+        slots(Slots.CENTER)
         elements {
             val list = OrangDomain.permissions.filter { it.worldSide }.sortedBy { it.priority }.toMutableList()
             if (!player.isOp) {
@@ -262,7 +261,7 @@ fun BarrierPoly.openPermissionMenu(player: Player) {
             OrangDomain.save(data.name)
             openPermissionMenu(player)
         }
-        setNextPage(51) { page, hasNextPage ->
+        setNextPage(51) { _, hasNextPage ->
             if (hasNextPage) {
                 buildItem(XMaterial.SPECTRAL_ARROW) {
                     name = "§f下一页"
@@ -273,7 +272,7 @@ fun BarrierPoly.openPermissionMenu(player: Player) {
                 }
             }
         }
-        setPreviousPage(47) { page, hasPreviousPage ->
+        setPreviousPage(47) { _, hasPreviousPage ->
             if (hasPreviousPage) {
                 buildItem(XMaterial.SPECTRAL_ARROW) {
                     name = "§f上一页"

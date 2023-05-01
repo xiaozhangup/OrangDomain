@@ -1,16 +1,16 @@
 plugins {
     `java-library`
     `maven-publish`
-    id("io.izzel.taboolib") version "1.34"
-    id("org.jetbrains.kotlin.jvm") version "1.5.10"
+    id("io.izzel.taboolib") version "1.56"
+    id("org.jetbrains.kotlin.jvm") version "1.7.21"
     kotlin("plugin.serialization") version "1.5.10"
 }
 
 taboolib {
     install("common")
     install("common-5")
-    install("module-chat-shaded")
-    install("module-configuration-shaded")
+    install("module-chat")
+    install("module-configuration")
     install("module-kether")
     install("module-nms")
     install("module-nms-util")
@@ -20,13 +20,19 @@ taboolib {
     install("module-effect")
     install("expansion-command-helper")
     classifier = null
-    version = "6.0.7-41"
+    version = "6.0.10-73"
 }
 
 repositories {
-    mavenCentral()
-    maven { url = uri("https://repo.tabooproject.org/repository/releases/") }
+    mavenLocal()
+    maven {
+        url = uri("https://papermc.io/repo/repository/maven-public/")
+    }
+    maven {
+        url = uri("https://jitpack.io")
+    }
     maven { url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/") }
+    mavenCentral()
 }
 
 dependencies {
@@ -47,25 +53,4 @@ tasks.withType<JavaCompile> {
 configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
-}
-
-publishing {
-    repositories {
-        maven {
-            url = uri("https://repo.tabooproject.org/repository/releases")
-            credentials {
-                username = project.findProperty("taboolibUsername").toString()
-                password = project.findProperty("taboolibPassword").toString()
-            }
-            authentication {
-                create<BasicAuthentication>("basic")
-            }
-        }
-    }
-    publications {
-        create<MavenPublication>("library") {
-            from(components["java"])
-            groupId = project.group.toString()
-        }
-    }
 }

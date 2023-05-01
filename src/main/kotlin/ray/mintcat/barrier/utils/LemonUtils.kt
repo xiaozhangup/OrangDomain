@@ -165,7 +165,7 @@ fun Player.error(vararg block: String) {
     }
 }
 
-fun Basic.set(c: Char, buildItem: ItemStack, function: (event: ClickEvent) -> Unit) {
+operator fun Basic.set(c: Char, buildItem: ItemStack, function: (event: ClickEvent) -> Unit) {
     set(c, buildItem(buildItem) {
         colored()
     })

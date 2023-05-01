@@ -30,10 +30,10 @@ object BarrierCommand {
     @CommandBody
     val create = subCommand {
         dynamic {
-            execute<Player> { sender, context, argument ->
+            execute<Player> { sender, context, _ ->
                 val name = context.argument(0)
                 val nods = BarrierListener.createMap[sender.uniqueId]
-                if (nods == null || nods.isEmpty()) {
+                if (nods.isNullOrEmpty()) {
                     sender.error("记录点为空 请手持 &f${OrangDomain.getTool().name} &7点击地面")
                     sender.error("左键记录点 右键删除上一个记录的点")
                     return@execute
@@ -63,7 +63,7 @@ object BarrierCommand {
 
     @CommandBody
     val list = subCommand {
-        execute<CommandSender> { sender, context, argument ->
+        execute<CommandSender> { sender, _, _ ->
             OrangDomain.polys.forEach {
                 sender.info(it.name)
             }
@@ -72,18 +72,18 @@ object BarrierCommand {
 
     @CommandBody
     val edit = subCommand {
-        dynamic(commit = "领地名") {
-            suggestion<CommandSender> { sender, context ->
+        dynamic(comment = "领地名") {
+            suggestion<CommandSender> { _, _ ->
                 OrangDomain.polys.map { it.name }
             }
-            execute<Player> { sender, context, argument ->
+            execute<Player> { sender, context, _ ->
                 val poly = OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
                     sender.error("领地不存在")
                 }
                 poly.openMenu(sender)
             }
         }
-        execute<Player> { sender, context, argument ->
+        execute<Player> { sender, _, _ ->
             val poly = sender.location.getPoly() ?: return@execute kotlin.run {
                 sender.error("您必须在一个领地内")
             }
@@ -93,11 +93,11 @@ object BarrierCommand {
 
     @CommandBody
     val addDestructible = subCommand {
-        dynamic ( commit = "领地名" ) {
-            suggestion<CommandSender> { sender, context ->
+        dynamic ( comment = "领地名" ) {
+            suggestion<CommandSender> { _, _ ->
                 OrangDomain.polys.map { it.name }
             }
-            execute<Player> { sender, context, argument ->
+            execute<Player> { sender, context, _ ->
                 val poly = OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
                     sender.error("领地不存在")
                 }
@@ -111,11 +111,11 @@ object BarrierCommand {
 
     @CommandBody
     val listDestructible = subCommand {
-        dynamic ( commit = "领地名" ) {
-            suggestion<CommandSender> { sender, context ->
+        dynamic ( comment = "领地名" ) {
+            suggestion<CommandSender> { _, _ ->
                 OrangDomain.polys.map { it.name }
             }
-            execute<Player> { sender, context, argument ->
+            execute<Player> { sender, context, _ ->
                 val poly = OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
                     sender.error("领地不存在")
                 }
@@ -126,11 +126,11 @@ object BarrierCommand {
 
     @CommandBody
     val removeDestructible = subCommand {
-        dynamic ( commit = "领地名" ) {
-            suggestion<CommandSender> { sender, context ->
+        dynamic ( comment = "领地名" ) {
+            suggestion<CommandSender> { _, _ ->
                 OrangDomain.polys.map { it.name }
             }
-            execute<Player> { sender, context, argument ->
+            execute<Player> { sender, context, _ ->
                 val poly = OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
                     sender.error("领地不存在")
                 }
@@ -147,11 +147,11 @@ object BarrierCommand {
 
     @CommandBody
     val remove = subCommand {
-        dynamic(commit = "领地名") {
-            suggestion<CommandSender> { sender, context ->
+        dynamic(comment = "领地名") {
+            suggestion<CommandSender> { _, _ ->
                 OrangDomain.polys.map { it.name }
             }
-            execute<Player> { sender, context, argument ->
+            execute<Player> { sender, context, _ ->
                 val poly = OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
                     sender.error("领地不存在")
                 }
@@ -160,7 +160,7 @@ object BarrierCommand {
                 sender.info("成功删除 &f${context.argument(0)} ")
             }
         }
-        execute<Player> { sender, context, argument ->
+        execute<Player> { sender, _, _ ->
             val poly = sender.location.getPoly() ?: return@execute kotlin.run {
                 sender.error("您必须在一个领地内")
             }
@@ -172,21 +172,21 @@ object BarrierCommand {
 
     @CommandBody
     val tp = subCommand {
-        dynamic(commit = "领地名") {
-            suggestion<CommandSender> { sender, context ->
+        dynamic(comment = "领地名") {
+            suggestion<CommandSender> { _, _ ->
                 OrangDomain.polys.map { it.name }
             }
-            dynamic(commit = "玩家名") {
-                suggestion<CommandSender> { sender, context ->
+            dynamic(comment = "玩家名") {
+                suggestion<CommandSender> { _, _ ->
                     Bukkit.getOnlinePlayers().map { it.name }
                 }
-                execute<CommandSender> { sender, context, argument ->
+                execute<CommandSender> { _, context, _ ->
                     val name = OrangDomain.polys.firstOrNull { it.name == context.argument(-1) } ?: return@execute
                     val player = Bukkit.getPlayerExact(context.argument(0)) ?: return@execute
                     name.teleport(player)
                 }
             }
-            execute<Player> { sender, context, argument ->
+            execute<Player> { sender, context, _ ->
                 val name = OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute
                 name.teleport(sender)
             }
