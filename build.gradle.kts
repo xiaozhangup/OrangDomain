@@ -20,7 +20,7 @@ taboolib {
     install("module-effect")
     install("expansion-command-helper")
     classifier = null
-    version = "6.0.10-73"
+    version = "6.0.10-121"
 }
 
 repositories {
