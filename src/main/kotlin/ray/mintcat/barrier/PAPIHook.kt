@@ -13,19 +13,16 @@ object PAPIHook : PlaceholderExpansion {
     val keySave = HashMap<UUID, String>()
 
     override fun onPlaceholderRequest(player: Player?, args: String): String {
-        val target = player ?: return "Null"
-        val info = args.apply {
-            replace("{{", "%")
-            replace("}}", "%")
-            papi(target)
-        }.split("::")
+        val target = player ?: return "未知"
+        val info = args.split("_")
+        if (info.size < 2) return "变量参数不全"
         //%lemon_chat%
         return when (info[0]) {
             "poly" -> {
                 target.location.getPoly()?.name ?: info[1]
             }
             else -> {
-                "Null"
+                "未知"
             }
         }
     }
