@@ -11,7 +11,10 @@ import ray.mintcat.barrier.utils.PolyUtils
 import ray.mintcat.barrier.utils.error
 import ray.mintcat.barrier.utils.getPoly
 import ray.mintcat.barrier.utils.info
-import taboolib.common.platform.command.*
+import taboolib.common.platform.command.CommandBody
+import taboolib.common.platform.command.CommandHeader
+import taboolib.common.platform.command.mainCommand
+import taboolib.common.platform.command.subCommand
 import taboolib.expansion.createHelper
 
 @CommandHeader(
@@ -77,9 +80,10 @@ object BarrierCommand {
                 OrangDomain.polys.map { it.name }
             }
             execute<Player> { sender, context, _ ->
-                val poly = OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
-                    sender.error("领地不存在")
-                }
+                val poly =
+                    OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
+                        sender.error("领地不存在")
+                    }
                 poly.openMenu(sender)
             }
         }
@@ -93,14 +97,15 @@ object BarrierCommand {
 
     @CommandBody
     val addDestructible = subCommand {
-        dynamic ( comment = "领地名" ) {
+        dynamic(comment = "领地名") {
             suggestion<CommandSender> { _, _ ->
                 OrangDomain.polys.map { it.name }
             }
             execute<Player> { sender, context, _ ->
-                val poly = OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
-                    sender.error("领地不存在")
-                }
+                val poly =
+                    OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
+                        sender.error("领地不存在")
+                    }
                 val name = sender.inventory.itemInMainHand.type.name
                 poly.destructible.add(name)
                 OrangDomain.save(poly.name)
@@ -111,14 +116,15 @@ object BarrierCommand {
 
     @CommandBody
     val listDestructible = subCommand {
-        dynamic ( comment = "领地名" ) {
+        dynamic(comment = "领地名") {
             suggestion<CommandSender> { _, _ ->
                 OrangDomain.polys.map { it.name }
             }
             execute<Player> { sender, context, _ ->
-                val poly = OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
-                    sender.error("领地不存在")
-                }
+                val poly =
+                    OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
+                        sender.error("领地不存在")
+                    }
                 sender.info("当前领地可破坏的物品有 ${poly.destructible.joinToString(", ")}")
             }
         }
@@ -126,14 +132,15 @@ object BarrierCommand {
 
     @CommandBody
     val removeDestructible = subCommand {
-        dynamic ( comment = "领地名" ) {
+        dynamic(comment = "领地名") {
             suggestion<CommandSender> { _, _ ->
                 OrangDomain.polys.map { it.name }
             }
             execute<Player> { sender, context, _ ->
-                val poly = OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
-                    sender.error("领地不存在")
-                }
+                val poly =
+                    OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
+                        sender.error("领地不存在")
+                    }
                 val name = sender.inventory.itemInMainHand.type.name
                 if (poly.destructible.remove(name)) {
                     OrangDomain.save(poly.name)
@@ -152,9 +159,10 @@ object BarrierCommand {
                 OrangDomain.polys.map { it.name }
             }
             execute<Player> { sender, context, _ ->
-                val poly = OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
-                    sender.error("领地不存在")
-                }
+                val poly =
+                    OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
+                        sender.error("领地不存在")
+                    }
                 OrangDomain.polys.remove(poly)
                 OrangDomain.export()
                 sender.info("成功删除 &f${context.argument(0)} ")

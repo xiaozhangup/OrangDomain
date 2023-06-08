@@ -7,8 +7,8 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
+import ray.mintcat.barrier.OrangDomain.worlds
 import ray.mintcat.barrier.utils.display
-import ray.mintcat.barrier.utils.error
 import ray.mintcat.barrier.utils.getPoly
 import ray.mintcat.barrier.utils.register
 import taboolib.common.LifeCycle
@@ -59,6 +59,9 @@ object PermBed : Permission, Listener {
                     e.isCancelled = true
                     //e.player.error("缺少权限 &f$id")
                 }
+            }
+            if (worlds.contains(e.player.world.name) && !e.player.isOp) {
+                e.isCancelled = true
             }
         }
     }

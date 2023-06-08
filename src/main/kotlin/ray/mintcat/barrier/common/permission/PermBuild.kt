@@ -1,13 +1,12 @@
 package ray.mintcat.barrier.common.permission
 
-import org.bukkit.entity.ArmorStand
+import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.hanging.HangingBreakByEntityEvent
 import org.bukkit.event.hanging.HangingPlaceEvent
 import org.bukkit.event.player.*
@@ -123,20 +122,24 @@ object PermBuild : Permission, Listener {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun e(e: PlayerInteractEvent) {
-        e.clickedBlock?.location?.getPoly()?.run {
-            if (!hasPermission("build", e.player.name)) {
-                e.isCancelled = true
-                return
-                //e.player.error("缺少权限 &f$id")
+        if (e.action == Action.RIGHT_CLICK_BLOCK && e.item?.type == org.bukkit.Material.ARMOR_STAND) {
+            e.clickedBlock?.location?.getPoly()?.run {
+                if (!hasPermission("build", e.player.name)) {
+                    e.isCancelled = true
+                    return
+                    //e.player.error("缺少权限 &f$id")
+                }
             }
-        }
-        if (worlds.contains(e.clickedBlock?.world?.name) && !e.player.isOp) {
-            e.isCancelled = true
+            if (worlds.contains(e.clickedBlock?.world?.name) && !e.player.isOp) {
+                e.isCancelled = true
+            }
         }
     }
 
+    //盔甲架特别判断
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun e(e: PlayerInteractEntityEvent) {
+        if (e.rightClicked.type == EntityType.ARMOR_STAND) return
         e.rightClicked.location.getPoly()?.run {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
@@ -149,8 +152,10 @@ object PermBuild : Permission, Listener {
         }
     }
 
+    //盔甲架特别判断
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun e(e: PlayerInteractAtEntityEvent) {
+        if (e.rightClicked.type == EntityType.ARMOR_STAND) return
         e.rightClicked.location.getPoly()?.run {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
@@ -173,10 +178,24 @@ object PermBuild : Permission, Listener {
             if (!hasPermission("build", player.name)) {
                 e.isCancelled = true
                 return
-            //player.error("缺少权限 &f$id")
+                //player.error("缺少权限 &f$id")
             }
         }
         if (worlds.contains(e.entity.world.name) && !player.isOp) {
+            e.isCancelled = true
+        }
+    }
+
+    @SubscribeEvent
+    fun e(e: PlayerArmorStandManipulateEvent) {
+        e.rightClicked.location.block.location.getPoly()?.run {
+            if (!hasPermission("build", e.player.name)) {
+                e.isCancelled = true
+                return
+                //player.error("缺少权限 &f$id")
+            }
+        }
+        if (worlds.contains(e.rightClicked.world.name) && !e.player.isOp) {
             e.isCancelled = true
         }
     }

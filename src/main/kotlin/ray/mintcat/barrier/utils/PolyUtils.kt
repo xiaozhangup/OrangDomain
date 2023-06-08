@@ -269,7 +269,7 @@ object PolyUtils {
             val minY: Double = seg.prePoint.z.coerceAtMost(seg.lastPoint.z)
             if (y >= minY && y < maxY) {
                 // 计算交点X坐标
-                    val intersectionPointX =
+                val intersectionPointX =
                     (y - seg.prePoint.z) * (seg.lastPoint.x - seg.prePoint.x) / seg.lastPoint.z - seg.prePoint.z + seg.prePoint.x
                 if (x > intersectionPointX) {
                     intersectionNum++

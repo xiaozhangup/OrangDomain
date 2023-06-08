@@ -9,15 +9,27 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.inventory.EquipmentSlot
 import ray.mintcat.barrier.OrangDomain
-import ray.mintcat.barrier.utils.*
+import ray.mintcat.barrier.utils.error
+import ray.mintcat.barrier.utils.eval
+import ray.mintcat.barrier.utils.getPoly
+import ray.mintcat.barrier.utils.info
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.ProxyParticle
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.adaptPlayer
 import taboolib.common.platform.function.submit
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.collections.MutableList
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.forEach
+import kotlin.collections.last
+import kotlin.collections.map
+import kotlin.collections.mutableListOf
+import kotlin.collections.removeLast
+import kotlin.collections.set
 
 object BarrierListener {
 
@@ -68,6 +80,7 @@ object BarrierListener {
                 event.player.info("删除成功!")
                 event.isCancelled = true
             }
+
             Action.LEFT_CLICK_BLOCK -> {
                 //添加
                 if (createMap[event.player.uniqueId] == null || createMap[event.player.uniqueId]?.isEmpty() == true) {
@@ -90,6 +103,7 @@ object BarrierListener {
                 }
                 event.isCancelled = true
             }
+
             else -> {}
         }
     }
@@ -127,7 +141,8 @@ object BarrierListener {
 
     @SubscribeEvent
     fun e(event: BarrierPlayerLeavePolyEvent) {
-        OrangDomain.config.getStringList("Info.Leave.action").map { it.replace("[name]", event.poly.name) }.eval(event.player)
+        OrangDomain.config.getStringList("Info.Leave.action").map { it.replace("[name]", event.poly.name) }
+            .eval(event.player)
     }
 
 }

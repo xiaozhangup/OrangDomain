@@ -2,7 +2,6 @@ package ray.mintcat.barrier
 
 import org.bukkit.entity.Player
 import ray.mintcat.barrier.utils.getPoly
-import ray.mintcat.barrier.utils.papi
 import taboolib.platform.compat.PlaceholderExpansion
 import java.util.*
 
@@ -21,6 +20,7 @@ object PAPIHook : PlaceholderExpansion {
             "poly" -> {
                 target.location.getPoly()?.name ?: info[1]
             }
+
             else -> {
                 "未知"
             }

@@ -3,7 +3,7 @@ ProtectWorlds:
   - Lobby
 Info:
   Join:
-    action: []
+    action: [ ]
   Leave:
-    action: []
+    action: [ ]
 # Please use kether scripts

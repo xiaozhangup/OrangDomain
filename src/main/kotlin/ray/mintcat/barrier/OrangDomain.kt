@@ -17,8 +17,6 @@ import taboolib.module.configuration.Config
 import taboolib.module.configuration.Configuration
 import java.nio.charset.StandardCharsets
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 @RuntimeDependencies(
     RuntimeDependency(

@@ -1,16 +1,11 @@
 package ray.mintcat.barrier.common.permission
 
-import org.bukkit.block.data.type.Bed
 import org.bukkit.entity.Player
-import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.block.Action
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import ray.mintcat.barrier.utils.display
-import ray.mintcat.barrier.utils.error
 import ray.mintcat.barrier.utils.getPoly
 import ray.mintcat.barrier.utils.register
 import taboolib.common.LifeCycle

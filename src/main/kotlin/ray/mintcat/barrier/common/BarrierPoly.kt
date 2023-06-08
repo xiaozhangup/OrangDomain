@@ -3,7 +3,6 @@ package ray.mintcat.barrier.common
 import kotlinx.serialization.Serializable
 import org.bukkit.Bukkit
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.entity.Player
 import ray.mintcat.barrier.OrangDomain
 import ray.mintcat.barrier.utils.PolyUtils
