@@ -59,6 +59,13 @@ object OrangDomain : Plugin() {
         }
     }
 
+    fun delete(id: BarrierPoly) {
+        newFile(
+            getDataFolder(),
+            "data/${id.name}.json"
+        ).delete()
+    }
+
     fun save(id: String) {
         val poly = polys.firstOrNull { it.name == id } ?: return
         newFile(

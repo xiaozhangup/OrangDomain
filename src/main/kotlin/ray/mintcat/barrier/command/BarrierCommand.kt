@@ -7,7 +7,6 @@ import ray.mintcat.barrier.OrangDomain
 import ray.mintcat.barrier.common.BarrierPoly
 import ray.mintcat.barrier.common.openMenu
 import ray.mintcat.barrier.event.BarrierListener
-import ray.mintcat.barrier.utils.PolyUtils
 import ray.mintcat.barrier.utils.error
 import ray.mintcat.barrier.utils.getPoly
 import ray.mintcat.barrier.utils.info
@@ -52,7 +51,7 @@ object BarrierCommand {
                     nods
                 )
                 //money
-                if (OrangDomain.polys.firstOrNull { PolyUtils.isCoincidence(build, it) } != null) {
+                if (OrangDomain.polys.firstOrNull { it.anyInside(build) } != null) {
                     sender.error("您的领地和其他领地冲突了 请重新设定领地范围")
                     return@execute
                 }
@@ -164,6 +163,7 @@ object BarrierCommand {
                         sender.error("领地不存在")
                     }
                 OrangDomain.polys.remove(poly)
+                OrangDomain.delete(poly)
                 OrangDomain.export()
                 sender.info("成功删除 &f${context.argument(0)} ")
             }
@@ -174,6 +174,7 @@ object BarrierCommand {
             }
             sender.info("成功删除 &f${poly.name} ")
             OrangDomain.polys.remove(poly)
+            OrangDomain.delete(poly)
             OrangDomain.export()
         }
     }
