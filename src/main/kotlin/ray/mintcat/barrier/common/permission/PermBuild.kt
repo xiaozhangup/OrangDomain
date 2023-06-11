@@ -1,5 +1,6 @@
 package ray.mintcat.barrier.common.permission
 
+import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
@@ -10,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.hanging.HangingBreakByEntityEvent
 import org.bukkit.event.hanging.HangingPlaceEvent
 import org.bukkit.event.player.*
+import org.bukkit.event.vehicle.VehicleDestroyEvent
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import ray.mintcat.barrier.OrangDomain.worlds
@@ -122,15 +124,16 @@ object PermBuild : Permission, Listener {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun e(e: PlayerInteractEvent) {
-        if (e.action == Action.RIGHT_CLICK_BLOCK && e.item?.type == org.bukkit.Material.ARMOR_STAND) {
-            e.clickedBlock?.location?.getPoly()?.run {
+        val clickedBlock = e.clickedBlock
+        if ((e.action == Action.RIGHT_CLICK_BLOCK && e.item?.type == org.bukkit.Material.ARMOR_STAND) || clickedBlock?.type == Material.FARMLAND) {
+            clickedBlock?.location?.getPoly()?.run {
                 if (!hasPermission("build", e.player.name)) {
                     e.isCancelled = true
                     return
                     //e.player.error("缺少权限 &f$id")
                 }
             }
-            if (worlds.contains(e.clickedBlock?.world?.name) && !e.player.isOp) {
+            if (worlds.contains(clickedBlock?.world?.name) && !e.player.isOp) {
                 e.isCancelled = true
             }
         }
@@ -224,6 +227,22 @@ object PermBuild : Permission, Listener {
             }
         }
         if (worlds.contains(e.block.world.name) && !e.player.isOp) {
+            e.isCancelled = true
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    fun onVehicleDestroy(e: VehicleDestroyEvent) {
+        if (e.attacker !is Player) return
+        val player = e.attacker as Player
+        e.vehicle.location.getPoly()?.run {
+            if (!hasPermission("build", player.name)) {
+                e.isCancelled = true
+                return
+                //e.player.error("缺少权限 &f$id")
+            }
+        }
+        if (worlds.contains(e.vehicle.world.name) && !player.isOp) {
             e.isCancelled = true
         }
     }
