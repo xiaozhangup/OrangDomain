@@ -22,6 +22,7 @@ import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.event.EventPriority
 import taboolib.common.platform.event.SubscribeEvent
+import taboolib.common.platform.function.info
 import taboolib.library.xseries.XMaterial
 import taboolib.platform.util.buildItem
 
@@ -70,9 +71,10 @@ object PermBuild : Permission, Listener {
                 return
                 //e.player.error("缺少权限 &f$id")
             }
-        }
-        if (worlds.contains(e.block.world.name) && !e.player.isOp) {
-            e.isCancelled = true
+        } ?: run {
+            if (worlds.contains(e.block.world.name) && !e.player.isOp) {
+                e.isCancelled = true
+            }
         }
     }
 
@@ -84,9 +86,10 @@ object PermBuild : Permission, Listener {
                 return
                 //e.player.error("缺少权限 &f$id")
             }
-        }
-        if (worlds.contains(e.block.world.name) && !e.player.isOp) {
-            e.isCancelled = true
+        } ?: run {
+            if (worlds.contains(e.block.world.name) && !e.player.isOp) {
+                e.isCancelled = true
+            }
         }
     }
 
@@ -99,9 +102,10 @@ object PermBuild : Permission, Listener {
                 return
                 //player.error("缺少权限 &f$id")
             }
-        }
-        if (worlds.contains(e.block.world.name) && !player.isOp) {
-            e.isCancelled = true
+        } ?: run {
+            if (worlds.contains(e.block.world.name) && !player.isOp) {
+                e.isCancelled = true
+            }
         }
     }
 
@@ -115,9 +119,10 @@ object PermBuild : Permission, Listener {
                     return
                     //player.error("缺少权限 &f$id")
                 }
-            }
-            if (worlds.contains(e.entity.world.name) && !player.isOp) {
-                e.isCancelled = true
+            } ?: run {
+                if (worlds.contains(e.entity.world.name) && !player.isOp) {
+                    e.isCancelled = true
+                }
             }
         }
     }
@@ -132,9 +137,10 @@ object PermBuild : Permission, Listener {
                     return
                     //e.player.error("缺少权限 &f$id")
                 }
-            }
-            if (worlds.contains(clickedBlock?.world?.name) && !e.player.isOp) {
-                e.isCancelled = true
+            } ?: run {
+                if (worlds.contains(clickedBlock?.world?.name) && !e.player.isOp) {
+                    e.isCancelled = true
+                }
             }
         }
     }
@@ -149,9 +155,10 @@ object PermBuild : Permission, Listener {
                 return
                 //e.player.error("缺少权限 &f$id")
             }
-        }
-        if (worlds.contains(e.rightClicked.world.name) && !e.player.isOp) {
-            e.isCancelled = true
+        } ?: run {
+            if (worlds.contains(e.rightClicked.world.name) && !e.player.isOp) {
+                e.isCancelled = true
+            }
         }
     }
 
@@ -165,9 +172,10 @@ object PermBuild : Permission, Listener {
                 return
                 //e.player.error("缺少权限 &f$id")
             }
-        }
-        if (worlds.contains(e.rightClicked.world.name) && !e.player.isOp) {
-            e.isCancelled = true
+        } ?: run {
+            if (worlds.contains(e.rightClicked.world.name) && !e.player.isOp) {
+                e.isCancelled = true
+            }
         }
     }
 
@@ -183,9 +191,10 @@ object PermBuild : Permission, Listener {
                 return
                 //player.error("缺少权限 &f$id")
             }
-        }
-        if (worlds.contains(e.entity.world.name) && !player.isOp) {
-            e.isCancelled = true
+        } ?: run {
+            if (worlds.contains(e.entity.world.name) && !player.isOp) {
+                e.isCancelled = true
+            }
         }
     }
 
@@ -197,9 +206,10 @@ object PermBuild : Permission, Listener {
                 return
                 //player.error("缺少权限 &f$id")
             }
-        }
-        if (worlds.contains(e.rightClicked.world.name) && !e.player.isOp) {
-            e.isCancelled = true
+        } ?: run {
+            if (worlds.contains(e.rightClicked.world.name) && !e.player.isOp) {
+                e.isCancelled = true
+            }
         }
     }
 
@@ -211,9 +221,10 @@ object PermBuild : Permission, Listener {
                 return
                 //e.player.error("缺少权限 &f$id")
             }
-        }
-        if (worlds.contains(e.block.world.name) && !e.player.isOp) {
-            e.isCancelled = true
+        } ?: run {
+            if (worlds.contains(e.block.world.name) && !e.player.isOp) {
+                e.isCancelled = true
+            }
         }
     }
 
@@ -225,9 +236,10 @@ object PermBuild : Permission, Listener {
                 return
                 //e.player.error("缺少权限 &f$id")
             }
-        }
-        if (worlds.contains(e.block.world.name) && !e.player.isOp) {
-            e.isCancelled = true
+        } ?: run {
+            if (worlds.contains(e.block.world.name) && !e.player.isOp) {
+                e.isCancelled = true
+            }
         }
     }
 
@@ -241,9 +253,10 @@ object PermBuild : Permission, Listener {
                 return
                 //e.player.error("缺少权限 &f$id")
             }
-        }
-        if (worlds.contains(e.vehicle.world.name) && !player.isOp) {
-            e.isCancelled = true
+        } ?: run {
+            if (worlds.contains(e.vehicle.world.name) && !player.isOp) {
+                e.isCancelled = true
+            }
         }
     }
 }

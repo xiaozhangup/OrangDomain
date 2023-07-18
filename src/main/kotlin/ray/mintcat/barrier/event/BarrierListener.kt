@@ -60,6 +60,7 @@ object BarrierListener {
 
     @SubscribeEvent
     fun createInteract(event: PlayerInteractEvent) {
+        if (!event.player.isOp) return
         val block = event.clickedBlock ?: return
         if (block.type == Material.AIR || event.hand == EquipmentSlot.OFF_HAND) {
             return

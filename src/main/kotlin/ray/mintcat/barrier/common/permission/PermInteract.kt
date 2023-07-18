@@ -58,9 +58,10 @@ object PermInteract : Permission, Listener {
                     e.isCancelled = true
                     //e.player.error("缺少权限 &f$id")
                 }
-            }
-            if (worlds.contains(e.player.world.name) && !e.player.isOp) {
-                e.isCancelled = true
+            } ?: run {
+                if (worlds.contains(e.player.world.name) && !e.player.isOp) {
+                    e.isCancelled = true
+                }
             }
         }
     }

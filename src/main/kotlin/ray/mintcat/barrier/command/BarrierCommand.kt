@@ -105,7 +105,11 @@ object BarrierCommand {
                     OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
                         sender.error("领地不存在")
                     }
-                val name = sender.inventory.itemInMainHand.type.name
+                val name = sender.getTargetBlockExact(3)?.type?.name
+                if (name == null) {
+                    sender.info("请指向你要添加的方块!")
+                    return@execute
+                }
                 poly.destructible.add(name)
                 OrangDomain.save(poly.name)
                 sender.info("已添加 $name 到可破坏列表!")
@@ -140,7 +144,11 @@ object BarrierCommand {
                     OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
                         sender.error("领地不存在")
                     }
-                val name = sender.inventory.itemInMainHand.type.name
+                val name = sender.getTargetBlockExact(3)?.type?.name
+                if (name == null) {
+                    sender.info("请指向你要添加的方块!")
+                    return@execute
+                }
                 if (poly.destructible.remove(name)) {
                     OrangDomain.save(poly.name)
                     sender.info("已从可破坏列表移除 $name !")
