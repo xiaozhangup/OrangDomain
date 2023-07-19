@@ -146,7 +146,7 @@ object BarrierCommand {
                     }
                 val name = sender.getTargetBlockExact(3)?.type?.name
                 if (name == null) {
-                    sender.info("请指向你要添加的方块!")
+                    sender.info("请指向你要移除的方块!")
                     return@execute
                 }
                 if (poly.destructible.remove(name)) {
@@ -154,6 +154,71 @@ object BarrierCommand {
                     sender.info("已从可破坏列表移除 $name !")
                 } else {
                     sender.error("此领地本身就不可破坏 $name !")
+                }
+            }
+        }
+    }
+
+    @CommandBody
+    val addInteractive = subCommand {
+        dynamic(comment = "领地名") {
+            suggestion<CommandSender> { _, _ ->
+                OrangDomain.polys.map { it.name }
+            }
+            execute<Player> { sender, context, _ ->
+                val poly =
+                    OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
+                        sender.error("领地不存在")
+                    }
+                val name = sender.getTargetBlockExact(3)?.type?.name
+                if (name == null) {
+                    sender.info("请指向你要添加的方块!")
+                    return@execute
+                }
+                poly.interactive.add(name)
+                OrangDomain.save(poly.name)
+                sender.info("已添加 $name 到可交互列表!")
+            }
+        }
+    }
+
+    @CommandBody
+    val listInteractive = subCommand {
+        dynamic(comment = "领地名") {
+            suggestion<CommandSender> { _, _ ->
+                OrangDomain.polys.map { it.name }
+            }
+            execute<Player> { sender, context, _ ->
+                val poly =
+                    OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
+                        sender.error("领地不存在")
+                    }
+                sender.info("当前领地可交互的物品有 ${poly.interactive.joinToString(", ")}")
+            }
+        }
+    }
+
+    @CommandBody
+    val removeInteractive = subCommand {
+        dynamic(comment = "领地名") {
+            suggestion<CommandSender> { _, _ ->
+                OrangDomain.polys.map { it.name }
+            }
+            execute<Player> { sender, context, _ ->
+                val poly =
+                    OrangDomain.polys.firstOrNull { it.name == context.argument(0) } ?: return@execute kotlin.run {
+                        sender.error("领地不存在")
+                    }
+                val name = sender.getTargetBlockExact(3)?.type?.name
+                if (name == null) {
+                    sender.info("请指向你要移除的方块!")
+                    return@execute
+                }
+                if (poly.interactive.remove(name)) {
+                    OrangDomain.save(poly.name)
+                    sender.info("已从可交互列表移除 $name !")
+                } else {
+                    sender.error("此领地本身就不可交互 $name !")
                 }
             }
         }

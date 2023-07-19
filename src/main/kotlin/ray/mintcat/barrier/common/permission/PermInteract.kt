@@ -55,8 +55,10 @@ object PermInteract : Permission, Listener {
         if (e.action == Action.RIGHT_CLICK_BLOCK) {
             e.clickedBlock?.location?.getPoly()?.run {
                 if (!hasPermission("interact", e.player.name)) {
-                    e.isCancelled = true
-                    //e.player.error("缺少权限 &f$id")
+                    if (!interactive.contains(e.clickedBlock?.type?.name)) {
+                        e.isCancelled = true
+                        //e.player.error("缺少权限 &f$id")
+                    }
                 }
             } ?: run {
                 if (worlds.contains(e.player.world.name) && !e.player.isOp) {

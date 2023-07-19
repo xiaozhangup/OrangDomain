@@ -25,6 +25,7 @@ class BarrierPoly(
     var door: Location,
     val nodes: MutableList<@Serializable(with = LocationSerializer::class) Location> = mutableListOf(),
     val destructible: MutableSet<String> = mutableSetOf(),
+    val interactive: MutableSet<String> = mutableSetOf(),
     val permissions: MutableMap<String, Boolean> = mutableMapOf(),
     val users: MutableMap<String, MutableMap<String, Boolean>> = mutableMapOf()
 ) {

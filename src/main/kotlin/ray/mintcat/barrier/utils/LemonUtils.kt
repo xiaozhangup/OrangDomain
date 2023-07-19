@@ -15,6 +15,7 @@ import ray.mintcat.barrier.common.permission.Permission
 import taboolib.common.platform.function.adaptPlayer
 import taboolib.common.platform.function.submit
 import taboolib.common5.Baffle
+import taboolib.module.chat.colored
 import taboolib.module.kether.KetherShell
 import taboolib.module.kether.printKetherErrorMessage
 import taboolib.module.ui.ClickEvent
@@ -207,7 +208,7 @@ fun debug(vararg block: Any) {
  * @since 1.0
  */
 fun toInfo(sender: CommandSender, message: String) {
-    sender.sendMessage("§8[§a OrangDomain §8] §7${message.replace("&", "§")}")
+    sender.sendMessage("&8[&a区域&8] &7${message}".colored())
     if (sender is Player && !cooldown.hasNext(sender.name)) {
         sender.playSound(sender.location, Sound.UI_BUTTON_CLICK, 1f, (1..2).random().toFloat())
     }
