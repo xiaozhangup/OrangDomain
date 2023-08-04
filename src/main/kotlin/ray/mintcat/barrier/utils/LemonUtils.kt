@@ -26,7 +26,7 @@ import java.util.*
 
 
 fun Location.getPoly(): BarrierPoly? {
-    return OrangDomain.polys.firstOrNull { it.inNode(this) }
+    return OrangDomain.polys.filter { it.inNode(this) }.maxByOrNull { it.priority }
 }
 
 fun Permission.register() {

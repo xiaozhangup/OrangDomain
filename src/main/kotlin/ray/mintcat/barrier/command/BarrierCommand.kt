@@ -253,6 +253,31 @@ object BarrierCommand {
     }
 
     @CommandBody
+    val priority = subCommand {
+        dynamic(comment = "领地名") {
+            suggestion<CommandSender> { _, _ ->
+                OrangDomain.polys.map { it.name }
+            }
+            dynamic(comment = "优先级 (越大越高)") {
+                execute<Player> { sender, context, _ ->
+                    try {
+                        val poly =
+                            OrangDomain.polys.firstOrNull { it.name == context.argument(-1) }
+                                ?: return@execute kotlin.run {
+                                    sender.error("领地不存在")
+                                }
+                        poly.priority = context.argument(0).toInt()
+                        OrangDomain.save(poly.name)
+                        sender.info("${poly.name} 的优先级已经设置为 ${poly.priority} !")
+                    } catch (e: Exception) {
+                        sender.info("设置时遇到错误: ${e.message}")
+                    }
+                }
+            }
+        }
+    }
+
+    @CommandBody
     val tp = subCommand {
         dynamic(comment = "领地名") {
             suggestion<CommandSender> { _, _ ->
