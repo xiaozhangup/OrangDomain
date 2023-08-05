@@ -50,11 +50,10 @@ object BarrierCommand {
                     nods.random(),
                     nods
                 )
-                //money
-                if (OrangDomain.polys.firstOrNull { it.anyInside(build) } != null) {
-                    sender.error("您的领地和其他领地冲突了 请重新设定领地范围")
-                    return@execute
-                }
+//                if (OrangDomain.polys.firstOrNull { it.anyInside(build) } != null) {
+//                    sender.error("您的领地和其他领地冲突了 请重新设定领地范围")
+//                    return@execute
+//                } 你冲突你妈呢
                 BarrierListener.createMap[sender.uniqueId] = mutableListOf()
                 OrangDomain.polys.add(build)
                 OrangDomain.save(build.name)
