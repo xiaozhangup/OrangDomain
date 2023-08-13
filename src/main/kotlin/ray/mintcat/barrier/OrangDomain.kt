@@ -55,19 +55,19 @@ object OrangDomain : Plugin() {
     @Schedule(period = 20 * 60)
     fun export() {
         polys.forEach { poly ->
-            save(poly.name)
+            save(poly.id)
         }
     }
 
     fun delete(id: BarrierPoly) {
         newFile(
             getDataFolder(),
-            "data/${id.name}.json"
+            "data/${id.id}.json"
         ).delete()
     }
 
     fun save(id: String) {
-        val poly = polys.firstOrNull { it.name == id } ?: return
+        val poly = polys.firstOrNull { it.id == id } ?: return
         newFile(
             getDataFolder(),
             "data/${id}.json"

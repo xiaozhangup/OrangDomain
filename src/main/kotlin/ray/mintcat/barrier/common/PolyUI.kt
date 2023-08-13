@@ -71,7 +71,7 @@ fun BarrierPoly.openSettingMenu(player: Player) {
             colored()
         }) {
             data.door = player.location
-            OrangDomain.save(data.name)
+            OrangDomain.save(data.id)
         }
     }
 }
@@ -158,7 +158,7 @@ fun BarrierPoly.openAddUserMenu(player: Player) {
         }
         onClick { _: ClickEvent, element: Player ->
             users[element.name] = HashMap()
-            OrangDomain.save(data.name)
+            OrangDomain.save(data.id)
             player.info("添加成功!")
             player.closeInventory()
             submit(delay = 1) {
@@ -216,7 +216,7 @@ fun BarrierPoly.openPermissionUser(player: Player, user: String) {
         }) {
             player.info("已删除 &f${user} 的所有权限!")
             users.remove(user)
-            OrangDomain.save(data.name)
+            OrangDomain.save(data.id)
             submit(delay = 1) {
                 openPermissionUserMenu(player)
             }
@@ -224,7 +224,7 @@ fun BarrierPoly.openPermissionUser(player: Player, user: String) {
         onClick { _, element ->
             users[user]!![element.id] = !hasPermission(element.id, player = user, def = element.default)
             player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 2f)
-            OrangDomain.save(data.name)
+            OrangDomain.save(data.id)
             player.info("已修改 &f${user} &7的 &f${element.id} &7权限!")
             submit(delay = 1) {
                 openPermissionUser(player, user)
@@ -258,7 +258,7 @@ fun BarrierPoly.openPermissionMenu(player: Player) {
             }
             permissions[element.id] = !hasPermission(element.id, def = element.default)
             player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 2f)
-            OrangDomain.save(data.name)
+            OrangDomain.save(data.id)
             openPermissionMenu(player)
         }
         setNextPage(51) { _, hasNextPage ->

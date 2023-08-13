@@ -19,6 +19,7 @@ import kotlin.math.sqrt
 @Serializable
 class BarrierPoly(
     var name: String,
+    var id: String = name,
     @Serializable(with = UUIDSerializable::class)
     var admin: UUID,
     @Serializable(with = LocationSerializer::class)
