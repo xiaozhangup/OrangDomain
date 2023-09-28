@@ -12,8 +12,6 @@ taboolib {
     install("module-chat")
     install("module-configuration")
     install("module-kether")
-    install("module-nms")
-    install("module-nms-util")
     install("module-ui")
     install("platform-bukkit")
     install("module-navigation")
@@ -36,9 +34,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("ink.ptms:nms-all:1.0.0")
-    compileOnly("ink.ptms.core:v11800:11800-minimize:api")
-    compileOnly("ink.ptms.core:v11800:11800-minimize:mapped")
+    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.1")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.2")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")

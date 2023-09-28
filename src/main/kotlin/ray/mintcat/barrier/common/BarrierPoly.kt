@@ -67,6 +67,9 @@ class BarrierPoly(
     }
 
     fun inNode(location: Location): Boolean {
+        if (nodes.first().world != location.world) {
+            return false
+        }
         if (nodes.size < 3) {
             return false
         }

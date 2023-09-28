@@ -3,6 +3,7 @@ package ray.mintcat.barrier.common.permission
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import ray.mintcat.barrier.utils.display
@@ -55,6 +56,19 @@ object PermPvp : Permission, Listener {
         if (e.entity is Player && e.damager is Player) {
             e.entity.location.getPoly()?.run {
                 if (!hasPermission("pvp", e.damager.name)) {
+                    e.isCancelled = true
+                    //e.player.error("缺少权限 &f$id")
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST) // 丢出判断
+    fun e(e: ProjectileLaunchEvent) {
+        val shooter = e.entity.shooter
+        if (shooter is Player) {
+            shooter.location.getPoly()?.run {
+                if (!hasPermission("pvp", shooter.name)) {
                     e.isCancelled = true
                     //e.player.error("缺少权限 &f$id")
                 }
