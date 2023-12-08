@@ -43,6 +43,12 @@ object PermBuild : Permission, Listener {
     override val playerSide: Boolean
         get() = true
 
+    private val interactableEntity = listOf(
+        EntityType.VILLAGER,
+        EntityType.ARMOR_STAND,
+        EntityType.PLAYER
+    )
+
     override fun generateMenuItem(value: Boolean): ItemStack {
         return buildItem(XMaterial.BRICKS) {
             name = "&f建筑 ${value.display} &7($id)"
@@ -148,7 +154,7 @@ object PermBuild : Permission, Listener {
     //盔甲架特别判断
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun e(e: PlayerInteractEntityEvent) {
-        if (e.rightClicked.type == EntityType.ARMOR_STAND) return
+        if (interactableEntity.contains(e.rightClicked.type)) return
         e.rightClicked.location.getPoly()?.run {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
@@ -165,7 +171,7 @@ object PermBuild : Permission, Listener {
     //盔甲架特别判断
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun e(e: PlayerInteractAtEntityEvent) {
-        if (e.rightClicked.type == EntityType.ARMOR_STAND) return
+        if (interactableEntity.contains(e.rightClicked.type)) return
         e.rightClicked.location.getPoly()?.run {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
