@@ -53,7 +53,9 @@ object PermInteract : Permission, Listener {
     @SubscribeEvent(ignoreCancelled = true)
     fun e(e: PlayerInteractEvent) {
         if (e.action == Action.RIGHT_CLICK_BLOCK) {
-            e.clickedBlock?.location?.getPoly()?.run {
+            val poly = e.clickedBlock?.location ?: return
+
+            poly.getPoly()?.run {
                 if (!hasPermission("interact", e.player.name)) {
                     if (!interactive.contains(e.clickedBlock?.type?.name)) {
                         e.isCancelled = true

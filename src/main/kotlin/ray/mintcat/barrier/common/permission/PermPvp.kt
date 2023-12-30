@@ -1,5 +1,6 @@
 package ray.mintcat.barrier.common.permission
 
+import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
@@ -32,6 +33,10 @@ object PermPvp : Permission, Listener {
 
     override val playerSide: Boolean
         get() = true
+
+    private val bootableEntity = listOf(
+        EntityType.FISHING_HOOK
+    )
 
     override fun generateMenuItem(value: Boolean): ItemStack {
         return buildItem(XMaterial.DIAMOND_SWORD) {
@@ -66,7 +71,7 @@ object PermPvp : Permission, Listener {
     @SubscribeEvent(priority = EventPriority.LOWEST) // 丢出判断
     fun e(e: ProjectileLaunchEvent) {
         val shooter = e.entity.shooter
-        if (shooter is Player) {
+        if (shooter is Player && !bootableEntity.contains(e.entity.type)) {
             shooter.location.getPoly()?.run {
                 if (!hasPermission("pvp", shooter.name)) {
                     e.isCancelled = true

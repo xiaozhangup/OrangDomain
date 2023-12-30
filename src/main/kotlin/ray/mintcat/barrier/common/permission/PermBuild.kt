@@ -135,23 +135,23 @@ object PermBuild : Permission, Listener {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun e(e: PlayerInteractEvent) {
-        val clickedBlock = e.clickedBlock
-        if ((e.action == Action.RIGHT_CLICK_BLOCK && e.item?.type == org.bukkit.Material.ARMOR_STAND) || clickedBlock?.type == Material.FARMLAND) {
-            clickedBlock?.location?.getPoly()?.run {
+        val clickedBlock = e.clickedBlock ?: return
+        if (clickedBlock.type == Material.FARMLAND) {
+            clickedBlock.location.getPoly()?.run {
                 if (!hasPermission("build", e.player.name)) {
                     e.isCancelled = true
                     return
                     //e.player.error("缺少权限 &f$id")
                 }
             } ?: run {
-                if (worlds.contains(clickedBlock?.world?.name) && !e.player.isOp) {
+                if (worlds.contains(clickedBlock.world.name) && !e.player.isOp) {
                     e.isCancelled = true
                 }
             }
         }
     }
 
-    //盔甲架特别判断
+    // 实体保护特别判断
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun e(e: PlayerInteractEntityEvent) {
         if (interactableEntity.contains(e.rightClicked.type)) return
