@@ -18,7 +18,7 @@ taboolib {
     install("module-effect")
     install("expansion-command-helper")
     classifier = null
-    version = "6.0.12-35"
+    version = "6.0.12-69"
 }
 
 repositories {
@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.1")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.2")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")

@@ -46,7 +46,9 @@ object PermBuild : Permission, Listener {
     private val interactableEntity = listOf(
         EntityType.VILLAGER,
         EntityType.ARMOR_STAND,
-        EntityType.PLAYER
+        EntityType.PLAYER,
+        EntityType.BOAT, // 节日特别添加
+        EntityType.CHEST_BOAT // 节日特别添加
     )
 
     override fun generateMenuItem(value: Boolean): ItemStack {
@@ -180,25 +182,6 @@ object PermBuild : Permission, Listener {
             }
         } ?: run {
             if (worlds.contains(e.rightClicked.world.name) && !e.player.isOp) {
-                e.isCancelled = true
-            }
-        }
-    }
-
-    //特殊类型
-    //如果打的是玩家，被打的也是玩家，就不处理
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    fun e(e: EntityDamageByEntityEvent) {
-        val player = e.damager as? Player ?: return
-        if (e.entity is Player) return
-        e.entity.location.block.location.getPoly()?.run {
-            if (!hasPermission("build", player.name)) {
-                e.isCancelled = true
-                return
-                //player.error("缺少权限 &f$id")
-            }
-        } ?: run {
-            if (worlds.contains(e.entity.world.name) && !player.isOp) {
                 e.isCancelled = true
             }
         }

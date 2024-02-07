@@ -52,13 +52,12 @@ object BarrierCommand {
                         nods.random(),
                         nods
                     )
-//                if (OrangDomain.polys.firstOrNull { it.anyInside(build) } != null) {
-//                    sender.error("您的领地和其他领地冲突了 请重新设定领地范围")
-//                    return@execute
-//                } 你冲突你妈呢
                     BarrierListener.createMap[sender.uniqueId] = mutableListOf()
                     OrangDomain.polys.add(build)
                     OrangDomain.save(build.id)
+
+                    initConfigSection(build)
+
                     sender.info("领地创建成功!")
                 }
             }
@@ -300,5 +299,39 @@ object BarrierCommand {
                 name.teleport(sender)
             }
         }
+    }
+
+    @CommandBody
+    val addpoint = subCommand {
+        execute<Player> { sender, _, _ ->
+            BarrierListener.addPoint(sender, sender.location)
+        }
+    }
+
+    @CommandBody
+    val clearpoint = subCommand {
+        execute<Player> { sender, _, _ ->
+            BarrierListener.createMap.remove(sender.uniqueId)
+            sender.info("已清除所有选点")
+        }
+    }
+
+    @CommandBody
+    val reload = subCommand {
+        execute<Player> { sender, _, _ ->
+            OrangDomain.regions.reload()
+            OrangDomain.config.reload()
+
+            OrangDomain.worlds.clear()
+            OrangDomain.worlds.addAll(OrangDomain.config.getStringList("ProtectWorlds"))
+            sender.info("已成功重载所有配置文件")
+        }
+    }
+
+    private fun initConfigSection(build: BarrierPoly) {
+        OrangDomain.regions["${build.id}.spawnAnimal"] = false
+        OrangDomain.regions["${build.id}.spawnMonster"] = false
+        OrangDomain.regions["${build.id}.entityTeleport"] = false
+        OrangDomain.regions.saveToFile()
     }
 }

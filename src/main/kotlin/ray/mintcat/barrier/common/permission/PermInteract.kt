@@ -1,5 +1,6 @@
 package ray.mintcat.barrier.common.permission
 
+import org.bukkit.event.Event
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
@@ -58,13 +59,13 @@ object PermInteract : Permission, Listener {
             poly.getPoly()?.run {
                 if (!hasPermission("interact", e.player.name)) {
                     if (!interactive.contains(e.clickedBlock?.type?.name)) {
-                        e.isCancelled = true
+                        e.setUseInteractedBlock(Event.Result.DENY)
                         //e.player.error("缺少权限 &f$id")
                     }
                 }
             } ?: run {
                 if (worlds.contains(e.player.world.name) && !e.player.isOp) {
-                    e.isCancelled = true
+                    e.setUseInteractedBlock(Event.Result.DENY)
                 }
             }
         }

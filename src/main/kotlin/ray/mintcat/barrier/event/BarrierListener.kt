@@ -3,6 +3,7 @@ package ray.mintcat.barrier.event
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
@@ -60,8 +61,10 @@ object BarrierListener {
 
     @SubscribeEvent
     fun createInteract(event: PlayerInteractEvent) {
-        if (!event.player.isOp) return
+        val player = event.player
         val block = event.clickedBlock ?: return
+
+        if (!player.isOp) return
         if (block.type == Material.AIR || event.hand == EquipmentSlot.OFF_HAND) {
             return
         }
@@ -72,36 +75,19 @@ object BarrierListener {
         when (event.action) {
             Action.RIGHT_CLICK_BLOCK -> {
                 //删除
-                if (createMap[event.player.uniqueId] == null || createMap[event.player.uniqueId]!!.size == 0) {
-                    event.player.error("你没有设置点")
+                if (createMap[player.uniqueId] == null || createMap[player.uniqueId]!!.size == 0) {
+                    player.error("你没有设置点")
                     event.isCancelled = true
                     return
                 }
-                createMap[event.player.uniqueId]!!.removeLast()
-                event.player.info("删除成功!")
+                createMap[player.uniqueId]!!.removeLast()
+                player.info("删除成功!")
                 event.isCancelled = true
             }
 
             Action.LEFT_CLICK_BLOCK -> {
                 //添加
-                if (createMap[event.player.uniqueId] == null || createMap[event.player.uniqueId]?.isEmpty() == true) {
-                    createMap[event.player.uniqueId] = mutableListOf()
-                    createMap[event.player.uniqueId]!!.add(block.location)
-                    event.player.info("成功添加第 &f${createMap[event.player.uniqueId]!!.size} &7个点")
-                } else {
-                    if (createMap[event.player.uniqueId]!!.contains(block.location)) {
-                        event.player.error("此点已包含!")
-                        return
-                    }
-                    if (createMap[event.player.uniqueId]!!.last().world == block.world) {
-                        createMap[event.player.uniqueId]!!.add(block.location)
-                        event.player.info("成功添加第 &f${createMap[event.player.uniqueId]!!.size} &7个点")
-                    } else {
-                        event.player.error("请回到 &f${createMap[event.player.uniqueId]!!.last().world?.name}&7 世界")
-                        event.isCancelled = true
-                        return
-                    }
-                }
+                addPoint(player, block.location)
                 event.isCancelled = true
             }
 
@@ -111,7 +97,7 @@ object BarrierListener {
 
     @SubscribeEvent
     fun join(event: PlayerMoveEvent) {
-        val poly = event.to?.getPoly() ?: return
+        val poly = event.to.getPoly() ?: return
         if (event.from.getPoly() == null) {
             //视为进入一个新的领地
             BarrierPlayerJoinPolyEvent(event.player, poly).apply {
@@ -120,11 +106,10 @@ object BarrierListener {
             }
         }
     }
-    // TODO: 进入领地的处理，有待Hook其他组件
 
     @SubscribeEvent
     fun leave(event: PlayerMoveEvent) {
-        if (event.from.getPoly() != null && event.to?.getPoly() == null) {
+        if (event.from.getPoly() != null && event.to.getPoly() == null) {
             //视为离开一个新的领地
             BarrierPlayerLeavePolyEvent(event.player, event.from.getPoly()!!).apply {
                 call()
@@ -132,7 +117,6 @@ object BarrierListener {
             }
         }
     }
-    // TODO: 离开的处理，一样有待处理
 
     @SubscribeEvent
     fun e(event: BarrierPlayerJoinPolyEvent) {
@@ -146,4 +130,24 @@ object BarrierListener {
             .eval(event.player)
     }
 
+    fun addPoint(
+        player: Player,
+        location: Location
+    ) {
+        if (createMap[player.uniqueId] == null || createMap[player.uniqueId]?.isEmpty() == true) {
+            createMap[player.uniqueId] = mutableListOf()
+            createMap[player.uniqueId]!!.add(location)
+            player.info("成功添加第 &f${createMap[player.uniqueId]!!.size} &7个点")
+        } else {
+            if (createMap[player.uniqueId]!!.contains(location)) {
+                player.error("此点已包含!")
+            }
+            if (createMap[player.uniqueId]!!.last().world == location.world) {
+                createMap[player.uniqueId]!!.add(location)
+                player.info("成功添加第 &f${createMap[player.uniqueId]!!.size} &7个点")
+            } else {
+                player.error("请回到 &f${createMap[player.uniqueId]!!.last().world?.name}&7 世界")
+            }
+        }
+    }
 }

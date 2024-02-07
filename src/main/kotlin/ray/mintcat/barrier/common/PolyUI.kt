@@ -54,6 +54,8 @@ fun BarrierPoly.openMenu(player: Player) {
         onClick('D') {
             openSettingMenu(player)
         }
+
+        onClick(lock = true)
     }
 }
 
@@ -73,6 +75,8 @@ fun BarrierPoly.openSettingMenu(player: Player) {
             data.door = player.location
             OrangDomain.save(data.id)
         }
+
+        onClick(lock = true)
     }
 }
 
@@ -137,6 +141,8 @@ fun BarrierPoly.openPermissionUserMenu(player: Player) {
                 }
             }
         }
+
+        onClick(lock = true)
     }
 }
 
@@ -188,6 +194,7 @@ fun BarrierPoly.openAddUserMenu(player: Player) {
             }
         }
 
+        onClick(lock = true)
     }
 }
 
@@ -230,6 +237,8 @@ fun BarrierPoly.openPermissionUser(player: Player, user: String) {
                 openPermissionUser(player, user)
             }
         }
+
+        onClick(lock = true)
     }
 }
 
@@ -283,5 +292,7 @@ fun BarrierPoly.openPermissionMenu(player: Player) {
                 }
             }
         }
+
+        onClick(lock = true)
     }
 }

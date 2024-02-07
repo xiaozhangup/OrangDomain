@@ -2,6 +2,7 @@ package ray.mintcat.barrier
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Material
 import ray.mintcat.barrier.common.BarrierPoly
 import ray.mintcat.barrier.common.permission.Permission
@@ -34,14 +35,17 @@ object OrangDomain : Plugin() {
     lateinit var config: Configuration
         private set
 
+    @Config(value = "regions.yml")
+    lateinit var regions: Configuration
+        private set
+
+    val mm = MiniMessage.miniMessage()
+
     val polys = ArrayList<BarrierPoly>()
 
     val permissions = ArrayList<Permission>()
 
     val worlds = ArrayList<String>()
-
-    //第一个是玩家ID 第二个是领地ID
-    val looker = HashMap<UUID, UUID>()
 
     fun getTool(): Material {
         return Material.valueOf(config.getString("ClaimTool", "APPLE")!!)
