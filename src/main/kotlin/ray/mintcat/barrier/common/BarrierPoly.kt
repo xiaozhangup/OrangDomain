@@ -3,8 +3,10 @@ package ray.mintcat.barrier.common
 import kotlinx.serialization.Serializable
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import ray.mintcat.barrier.OrangDomain
+import ray.mintcat.barrier.regen.RegenLoader
 import ray.mintcat.barrier.utils.serializable.LocationSerializer
 import ray.mintcat.barrier.utils.serializable.UUIDSerializable
 import ray.mintcat.barrier.utils.tpDelay
@@ -31,6 +33,9 @@ class BarrierPoly(
     val permissions: MutableMap<String, Boolean> = mutableMapOf(),
     val users: MutableMap<String, MutableMap<String, Boolean>> = mutableMapOf()
 ) {
+    fun isDestructible(material: Material): Boolean {
+        return destructible.contains(material.name) || RegenLoader.regens[id]?.map { it.materials }?.flatten()?.contains(material) ?: false
+    }
 
     fun teleport(player: Player) {
         if (player.isOp) {

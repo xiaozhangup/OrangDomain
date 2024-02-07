@@ -74,7 +74,7 @@ object PermBuild : Permission, Listener {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun e(e: BlockBreakEvent) {
         e.block.location.getPoly()?.run {
-            if (!hasPermission("build", e.player.name) && !destructible.contains(e.block.type.name)) {
+            if (!hasPermission("build", e.player.name) && !isDestructible(e.block.type)) {
                 e.isCancelled = true
                 return
                 //e.player.error("缺少权限 &f$id")
