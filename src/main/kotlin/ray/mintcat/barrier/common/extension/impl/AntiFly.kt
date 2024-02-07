@@ -1,5 +1,7 @@
 package ray.mintcat.barrier.common.extension.impl
 
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.TextColor
 import org.bukkit.GameMode
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -12,6 +14,9 @@ import ray.mintcat.barrier.OrangDomain.worlds
 import taboolib.common.platform.event.SubscribeEvent
 
 object AntiFly {
+    private val component = Component.text("× 飞行或折跃被阻止")
+        .color(TextColor.fromHexString("#ed2e38"))
+
     @SubscribeEvent
     fun onPlayerToggleGlide(event: EntityToggleGlideEvent) {
         val entity = event.entity
@@ -44,7 +49,7 @@ object AntiFly {
         if (!worlds.contains(e.player.world.name)) return
         if (e.cause == PlayerTeleportEvent.TeleportCause.ENDER_PEARL || e.cause == PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT) {
             e.isCancelled = true
-            e.player.sendActionBar(mm.deserialize("<red>折跃能力在此岛屿被限制"))
+            e.player.sendActionBar(component)
         }
     }
 
@@ -63,6 +68,6 @@ object AntiFly {
         player.isFlying = false
         player.isGliding = false
 
-        player.sendActionBar(mm.deserialize("<red>飞行能力在此岛屿被限制"))
+        player.sendActionBar(component)
     }
 }

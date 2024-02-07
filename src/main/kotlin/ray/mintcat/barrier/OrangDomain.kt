@@ -6,6 +6,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Material
 import ray.mintcat.barrier.common.BarrierPoly
 import ray.mintcat.barrier.common.permission.Permission
+import ray.mintcat.barrier.regen.RegenLoader
 import taboolib.common.LifeCycle
 import taboolib.common.env.RuntimeDependencies
 import taboolib.common.env.RuntimeDependency
@@ -37,6 +38,10 @@ object OrangDomain : Plugin() {
 
     @Config(value = "regions.yml")
     lateinit var regions: Configuration
+        private set
+
+    @Config(value = "regen.yml")
+    lateinit var regen: Configuration
         private set
 
     val mm = MiniMessage.miniMessage()
@@ -88,6 +93,7 @@ object OrangDomain : Plugin() {
                 polys.add(json.decodeFromString(BarrierPoly.serializer(), file.readText(StandardCharsets.UTF_8)))
             }
         }
+        RegenLoader.init()
     }
 
 }

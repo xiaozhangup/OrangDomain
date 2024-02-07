@@ -302,14 +302,14 @@ object BarrierCommand {
     }
 
     @CommandBody
-    val addpoint = subCommand {
+    val addPoint = subCommand {
         execute<Player> { sender, _, _ ->
             BarrierListener.addPoint(sender, sender.location)
         }
     }
 
     @CommandBody
-    val clearpoint = subCommand {
+    val clearPoint = subCommand {
         execute<Player> { sender, _, _ ->
             BarrierListener.createMap.remove(sender.uniqueId)
             sender.info("已清除所有选点")
