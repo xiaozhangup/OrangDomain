@@ -9,7 +9,6 @@ import org.bukkit.event.entity.EntityToggleGlideEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.event.player.PlayerToggleFlightEvent
-import ray.mintcat.barrier.OrangDomain.mm
 import ray.mintcat.barrier.OrangDomain.worlds
 import taboolib.common.platform.event.SubscribeEvent
 

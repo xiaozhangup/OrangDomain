@@ -36,13 +36,13 @@ object PolyEntityControl {
             if (e.entity is Animals) {
                 if (!spawnAnimal) {
                     e.isCancelled = true
-                    return
                 }
+                return
             } else if (e.entity is Monster) {
                 if (!spawnMonster) {
                     e.isCancelled = true
-                    return
                 }
+                return
             }
         }
 

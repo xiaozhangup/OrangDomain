@@ -3,9 +3,12 @@ package ray.mintcat.barrier.regen
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
+import org.bukkit.block.data.BlockData
 import org.bukkit.command.CommandSender
 import ray.mintcat.barrier.OrangDomain.regen
 import ray.mintcat.barrier.regen.config.BasicRegenGroup
+import ray.mintcat.barrier.regen.tweak.ExtendBreak
+import ray.mintcat.barrier.regen.tweak.impl.TreeLinkedBreak
 import ray.mintcat.barrier.utils.info
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
@@ -18,6 +21,8 @@ import java.util.concurrent.ConcurrentHashMap
 object RegenLoader {
     val regens = HashMap<String, MutableList<BasicRegenGroup>>() // 所有的配置文件 (区域ID 配置)
     val fallback = ConcurrentHashMap<UUID, FallbackBlock>() // 缓存器
+    val breakables = mutableSetOf<Material>()
+    val extendbreak = mutableListOf<ExtendBreak>()
 
     fun init() { // 加载的入口函数
         regens.clear()
@@ -31,10 +36,16 @@ object RegenLoader {
             val blocks = section.getStringList("blocks").map { Material.valueOf(it) }
 
             val config = BasicRegenGroup(blocks, replace, delay, regions)
+            breakables.addAll(blocks)
+
             regions.forEach { region ->
                 regens.computeIfAbsent(region) { mutableListOf() }.add(config)
             }
         }
+    }
+
+    fun isBreakable(material: Material): Boolean {
+        return breakables.contains(material)
     }
 
     @Awake(LifeCycle.ENABLE)
@@ -61,6 +72,8 @@ object RegenLoader {
                 }
             }
         }
+
+        TreeLinkedBreak().registers()
     }
 
     @Awake(LifeCycle.DISABLE)
@@ -75,17 +88,13 @@ object RegenLoader {
 data class FallbackBlock(
     val loc: Location,
     val from: Material,
-    val to: Material
+    val to: Material,
+    val data: BlockData
 ) {
-    constructor(from: Material, block: Block, config: BasicRegenGroup) : this(
-        block.location,
-        from,
-        config.replace
-    )
-
     fun fallback(check: Boolean = true) {
         if (loc.block.type === to || !check) {
             loc.block.type = from
+            loc.block.blockData = data
         }
     }
 }

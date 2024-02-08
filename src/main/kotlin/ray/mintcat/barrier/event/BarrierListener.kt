@@ -96,24 +96,21 @@ object BarrierListener {
     }
 
     @SubscribeEvent
-    fun join(event: PlayerMoveEvent) {
-        val poly = event.to.getPoly() ?: return
-        if (event.from.getPoly() == null) {
-            //视为进入一个新的领地
-            BarrierPlayerJoinPolyEvent(event.player, poly).apply {
-                call()
-                event.isCancelled = this.isCancelled
+    fun on(event: PlayerMoveEvent) {
+        val fromPoly = event.from.getPoly()
+        val toPoly = event.to.getPoly()
+        if (fromPoly != toPoly) {
+            if (fromPoly != null){
+                BarrierPlayerLeavePolyEvent(event.player, fromPoly).apply {
+                    call()
+                    event.isCancelled = this.isCancelled
+                }
             }
-        }
-    }
-
-    @SubscribeEvent
-    fun leave(event: PlayerMoveEvent) {
-        if (event.from.getPoly() != null && event.to.getPoly() == null) {
-            //视为离开一个新的领地
-            BarrierPlayerLeavePolyEvent(event.player, event.from.getPoly()!!).apply {
-                call()
-                event.isCancelled = this.isCancelled
+            if (toPoly != null){
+                BarrierPlayerJoinPolyEvent(event.player, toPoly).apply {
+                    call()
+                    event.isCancelled = this.isCancelled
+                }
             }
         }
     }
