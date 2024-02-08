@@ -238,7 +238,6 @@ object BarrierCommand {
                     }
                 OrangDomain.polys.remove(poly)
                 OrangDomain.delete(poly)
-                OrangDomain.export()
                 sender.info("成功删除 &f${context.argument(0)} ")
             }
         }
@@ -249,7 +248,6 @@ object BarrierCommand {
             sender.info("成功删除 &f${poly.name} ")
             OrangDomain.polys.remove(poly)
             OrangDomain.delete(poly)
-            OrangDomain.export()
         }
     }
 
@@ -324,6 +322,8 @@ object BarrierCommand {
 
             OrangDomain.worlds.clear()
             OrangDomain.worlds.addAll(OrangDomain.config.getStringList("ProtectWorlds"))
+            OrangDomain.initPolys()
+
             sender.info("已成功重载所有配置文件")
         }
     }

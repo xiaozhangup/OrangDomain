@@ -60,17 +60,6 @@ class BarrierPoly(
         }
     }
 
-    fun caculate(): Double {
-        var i = 0
-        var temp = 0.0
-        while (i < nodes.size - 1) {
-            temp += (nodes[i].x - nodes[i + 1].x) * (nodes[i].y + nodes[i + 1].y)
-            i++
-        }
-        temp += (nodes[i].x - nodes[0].x) * (nodes[i].y + nodes[0].y)
-        return temp / 2
-    }
-
     fun inNode(location: Location): Boolean {
         if (nodes.first().world != location.world) {
             return false
@@ -98,15 +87,6 @@ class BarrierPoly(
         }
         // 奇数次相交，则点在多边形内部；偶数次相交，则点在多边形外部。
         return numIntersections % 2 == 1
-    }
-
-    fun anyInside(poly: BarrierPoly): Boolean {
-        for (location in poly.nodes) {
-            if (inNode(location)) {
-                return true
-            }
-        }
-        return false
     }
 
     private fun onSegment(location: Location, p1: Location, p2: Location): Boolean {

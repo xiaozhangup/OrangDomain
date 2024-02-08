@@ -44,8 +44,6 @@ object OrangDomain : Plugin() {
     lateinit var regen: Configuration
         private set
 
-    val mm = MiniMessage.miniMessage()
-
     val polys = ArrayList<BarrierPoly>()
 
     val permissions = ArrayList<Permission>()
@@ -58,14 +56,6 @@ object OrangDomain : Plugin() {
 
     private val json = Json {
         coerceInputValues = true
-    }
-
-    @Awake(LifeCycle.DISABLE)
-    @Schedule(period = 20 * 60)
-    fun export() {
-        polys.forEach { poly ->
-            save(poly.id)
-        }
     }
 
     fun delete(id: BarrierPoly) {
@@ -87,13 +77,16 @@ object OrangDomain : Plugin() {
     @Awake(LifeCycle.ACTIVE)
     fun import() {
         worlds.addAll(config.getStringList("ProtectWorlds"))
+        initPolys()
+        RegenLoader.init()
+    }
+
+    fun initPolys() {
         polys.clear()
         newFile(getDataFolder(), "data", create = false, folder = true).listFiles()?.map { file ->
             if (file.name.endsWith(".json")) {
                 polys.add(json.decodeFromString(BarrierPoly.serializer(), file.readText(StandardCharsets.UTF_8)))
             }
         }
-        RegenLoader.init()
     }
-
 }
