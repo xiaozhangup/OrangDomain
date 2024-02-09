@@ -12,7 +12,7 @@ open class ExtendBreak {
 
     }
 
-    fun registers() {
+    fun register() {
         RegenLoader.extendbreak.add(this)
     }
 }

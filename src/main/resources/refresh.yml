@@ -1,0 +1,7 @@
+stone_ore:
+  period: 3600
+  source: STONE
+  regions:
+    - new_debug
+  blocks:
+    COAL_ORE: 30..60

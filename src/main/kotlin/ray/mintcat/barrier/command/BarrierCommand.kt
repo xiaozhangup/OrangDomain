@@ -4,7 +4,7 @@ import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import ray.mintcat.barrier.OrangDomain
-import ray.mintcat.barrier.common.BarrierPoly
+import ray.mintcat.barrier.common.poly.BarrierPoly
 import ray.mintcat.barrier.common.openMenu
 import ray.mintcat.barrier.event.BarrierListener
 import ray.mintcat.barrier.utils.error
@@ -68,7 +68,7 @@ object BarrierCommand {
     val list = subCommand {
         execute<CommandSender> { sender, _, _ ->
             OrangDomain.polys.forEach {
-                sender.info(it.name)
+                sender.info("${it.name} (${it.id})")
             }
         }
     }

@@ -1,4 +1,4 @@
-package ray.mintcat.barrier.common
+package ray.mintcat.barrier.common.poly
 
 import kotlinx.serialization.Serializable
 import org.bukkit.Bukkit

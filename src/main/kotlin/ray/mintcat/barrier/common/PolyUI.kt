@@ -7,6 +7,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import ray.mintcat.barrier.OrangDomain
 import ray.mintcat.barrier.common.permission.Permission
+import ray.mintcat.barrier.common.poly.BarrierPoly
 import ray.mintcat.barrier.utils.error
 import ray.mintcat.barrier.utils.info
 import taboolib.common.platform.function.submit

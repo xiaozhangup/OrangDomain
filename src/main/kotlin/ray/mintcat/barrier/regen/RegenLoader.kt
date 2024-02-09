@@ -2,7 +2,6 @@ package ray.mintcat.barrier.regen
 
 import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.block.Block
 import org.bukkit.block.data.BlockData
 import org.bukkit.command.CommandSender
 import ray.mintcat.barrier.OrangDomain.regen
@@ -50,30 +49,8 @@ object RegenLoader {
 
     @Awake(LifeCycle.ENABLE)
     fun reg() {
-        // 命令注册相关内容
-        command("blockregen", permissionDefault = PermissionDefault.OP) {
-            literal("fallback") {
-                execute<CommandSender> { sender, _, _ ->
-                    quit()
-                    sender.info("已经恢复所有未恢复的方块!")
-                }
-            }
-
-            literal("reload") {
-                execute<CommandSender> { sender, _, _ ->
-                    init()
-                    sender.info("所有配置已重载!")
-                }
-            }
-
-            literal("size") {
-                execute<CommandSender> { sender, _, _ ->
-                    sender.info("当前在缓冲的方块共有 ${fallback.size} 个")
-                }
-            }
-        }
-
-        TreeLinkedBreak().registers()
+        // 注册采集优化
+        TreeLinkedBreak().register()
     }
 
     @Awake(LifeCycle.DISABLE)
