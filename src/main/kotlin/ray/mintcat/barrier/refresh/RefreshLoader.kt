@@ -21,6 +21,8 @@ object RefreshLoader {
             val source = Material.valueOf(section.getString("source")!!)
             val period = section.getLong("period")
             val regions = section.getStringList("regions")
+            val intensity = section.getInt("intensity",2)
+            val skipFailed = section.getInt("skip_failed", Int.MAX_VALUE)
             val blocksConfig = section.getConfigurationSection("blocks")!!
 
             val blocks = blocksConfig.getKeys(false).associate { material ->
@@ -31,6 +33,8 @@ object RefreshLoader {
             refreshes += RefreshesGroup(
                 period,
                 source,
+                intensity,
+                skipFailed,
                 regions,
                 blocks
             )

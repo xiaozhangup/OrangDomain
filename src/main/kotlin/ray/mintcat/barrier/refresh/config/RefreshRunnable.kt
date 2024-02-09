@@ -12,7 +12,14 @@ import taboolib.common.util.random
 class RefreshRunnable(
     val group: RefreshesGroup
 ) : BukkitRunnable() {
+    private var failed = 0
+
     override fun run() {
+        if (failed >= group.failedSkip) {
+            failed--
+            return
+        }
+
         val polys = group.regions.mapNotNull { id ->
             OrangDomain.refreshs.firstOrNull { it.id == id }
         }
@@ -21,11 +28,20 @@ class RefreshRunnable(
             val blocks = tryFind(poly)
             if (blocks.isEmpty()) return
 
-            val block = blocks.random()
-            val material = group.blocks.filter { block.location.y.toInt() in it.value.first..it.value.second }.map { it.key }
-            if (material.isEmpty()) return
+            for (block in blocks.shuffled()) {
+                val material = group.blocks.filter { block.location.y.toInt() in it.value.first..it.value.second }.map { it.key }
+                if (material.isEmpty()) continue
 
-            block.type = material.random()
+                val type = material.random()
+                if (getLinkedBlocks(block).filter { it.type == type }.size <= group.intensity) {
+                    block.type = type
+                    if (failed > 0) failed--
+                    break
+                } else {
+                    failed++
+                    continue
+                }
+            }
         }
     }
 
@@ -62,6 +78,20 @@ class RefreshRunnable(
             block.getRelative(BlockFace.NORTH),
             block.getRelative(BlockFace.WEST)
         )
+    }
+
+    private fun getLinkedBlocks(block: Block): List<Block> {
+        return (-1..1).flatMap { x ->
+            (-1..1).flatMap { y ->
+                (-1..1).mapNotNull { z ->
+                    if (x != 0 && y != 0 && z != 0) {
+                        block.getRelative(x, y, z)
+                    } else {
+                        null
+                    }
+                }
+            }
+        }
     }
 
     private fun getXRange(location1: Location, location2: Location): Pair<Int, Int> {
