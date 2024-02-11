@@ -54,7 +54,8 @@ object BalloonCommand {
 
     @CommandBody
     val reload = subCommand {
-        execute<Player> { sender, _, _ ->
+        execute<CommandSender> { sender, _, _ ->
+            OrangDomain.balloon.reload()
             OrangDomain.initBalloons()
             sender.info("成功重载所有气球落脚点!")
         }
@@ -67,11 +68,11 @@ object BalloonCommand {
         }
 
         dynamic{
-            suggestion<Player> { _, _ ->
+            suggestion<CommandSender> { _, _ ->
                 Bukkit.getOnlinePlayers().map { it.name }
             }
 
-            execute<Player> { _, _, argument ->
+            execute<CommandSender> { _, _, argument ->
                 Bukkit.getPlayer(argument)?.let {
                     BalloonUI.openBalloon(it)
                 }

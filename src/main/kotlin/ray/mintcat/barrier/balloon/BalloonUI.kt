@@ -1,13 +1,18 @@
 package ray.mintcat.barrier.balloon
 
+import me.xiaozhangup.capybara.exec
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import taboolib.common.platform.function.console
+import taboolib.common.platform.function.submit
 import taboolib.library.xseries.XMaterial
+import taboolib.module.chat.colored
 import taboolib.module.ui.openMenu
 import taboolib.module.ui.type.Linked
 import taboolib.platform.util.ItemBuilder
 import taboolib.platform.util.buildItem
+import taboolib.platform.util.title
 import java.util.UUID
 
 object BalloonUI {
@@ -60,18 +65,18 @@ object BalloonUI {
     val balloons = mutableListOf<BalloonWarp>()
 
     fun openBalloon(player: Player) {
-        player.openMenu<Linked<BalloonWarp>>(title = "热气球") {
+        player.openMenu<Linked<BalloonWarp>>(title = "待发的热气球") {
             map(
-                "i========",
-                "=b=     =",
                 "=========",
-                "=======pn",
+                "=i=     =",
+                "=b=   pn=",
+                "=========",
             )
 
             set('=', background)
             set('i', icon)
             set('b', back) {
-                player.performCommand("isgo")
+                player.exec("isgo")
             }
             slotsBy(' ')
 
@@ -98,18 +103,22 @@ object BalloonUI {
             onClick { _, element ->
                 if (player.checkLevel(element.level)) {
                     player.closeInventory()
-                    player.teleport(element.location)
+
+                    console().performCommand("screeneffect fullscreen BLACK 5 10 10 nofreeze ${player.name}")
+                    submit(delay = 6L) {
+                        player.teleport(element.location)
+                    }
                 }
             }
 
-            setNextPage(25) { _, hasNextPage ->
+            setNextPage(getFirstSlot('n')) { _, hasNextPage ->
                 if (hasNextPage) {
                     next
                 } else {
                     nonext
                 }
             }
-            setPreviousPage(24) { _, hasNextPage ->
+            setPreviousPage(getFirstSlot('p')) { _, hasNextPage ->
                 if (hasNextPage) {
                     pre
                 } else {
