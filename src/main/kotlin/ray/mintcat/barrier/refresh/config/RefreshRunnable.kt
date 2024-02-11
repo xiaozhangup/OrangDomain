@@ -13,6 +13,7 @@ class RefreshRunnable(
     val group: RefreshesGroup
 ) : BukkitRunnable() {
     private var failed = 0
+    private val offset = listOf(-1, 1)
 
     override fun run() {
         if (failed >= group.failedSkip) {
@@ -81,14 +82,10 @@ class RefreshRunnable(
     }
 
     private fun getLinkedBlocks(block: Block): List<Block> {
-        return (-1..1).flatMap { x ->
-            (-1..1).flatMap { y ->
-                (-1..1).mapNotNull { z ->
-                    if (x != 0 && y != 0 && z != 0) {
-                        block.getRelative(x, y, z)
-                    } else {
-                        null
-                    }
+        return offset.flatMap { x ->
+            offset.flatMap { y ->
+                offset.map { z ->
+                    block.getRelative(x, y, z)
                 }
             }
         }

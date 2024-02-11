@@ -1,5 +1,6 @@
 package ray.mintcat.barrier.utils
 
+import me.xiaozhangup.capybara.exec
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.command.CommandSender
@@ -10,12 +11,14 @@ import ray.mintcat.barrier.OrangDomain
 import ray.mintcat.barrier.common.poly.BarrierPoly
 import ray.mintcat.barrier.common.permission.Permission
 import taboolib.common.platform.function.adaptPlayer
+import taboolib.common.platform.function.console
 import taboolib.common.platform.function.submit
 import taboolib.module.chat.colored
 import taboolib.module.kether.KetherShell
 import taboolib.module.kether.printKetherErrorMessage
 import taboolib.module.ui.ClickEvent
 import taboolib.module.ui.type.Basic
+import taboolib.platform.compat.replacePlaceholder
 import taboolib.platform.util.buildItem
 import java.util.*
 
@@ -143,5 +146,18 @@ fun List<String>.eval(player: Player) {
         KetherShell.eval(this, sender = adaptPlayer(player))
     } catch (e: Throwable) {
         e.printKetherErrorMessage()
+    }
+}
+
+/**
+ * 仅支持作为控制台执行或玩家本身执行
+ */
+fun Player.execute(command: String) {
+    if (command.startsWith("console:")) {
+        console().performCommand(
+            command.substringAfter("console:").replacePlaceholder(this)
+        )
+    } else {
+        exec(command.replacePlaceholder(this))
     }
 }

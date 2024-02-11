@@ -1,9 +1,8 @@
 ClaimTool: "APPLE"
 ProtectWorlds:
   - Lobby
-Info:
-  Join:
-    action: [ ]
-  Leave:
-    action: [ ]
-# Please use kether scripts
+
+Join:
+  new_main:
+    - "WTF"
+Leave:

@@ -3,6 +3,8 @@ package ray.mintcat.barrier
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.bukkit.Material
+import ray.mintcat.barrier.balloon.BalloonUI
+import ray.mintcat.barrier.balloon.BalloonWarp
 import ray.mintcat.barrier.common.poly.BarrierPoly
 import ray.mintcat.barrier.common.permission.Permission
 import ray.mintcat.barrier.common.poly.RefreshPoly
@@ -47,6 +49,10 @@ object OrangDomain : Plugin() {
 
     @Config(value = "refresh.yml")
     lateinit var refresh: Configuration
+        private set
+
+    @Config(value = "balloon.yml")
+    lateinit var balloon: Configuration
         private set
 
     val polys = ArrayList<BarrierPoly>()
@@ -100,6 +106,7 @@ object OrangDomain : Plugin() {
         worlds.addAll(config.getStringList("ProtectWorlds"))
         initPolys()
         initRefreshes()
+        initBalloons()
 
         RegenLoader.init()
         RefreshLoader.init()
@@ -120,6 +127,13 @@ object OrangDomain : Plugin() {
             if (file.name.endsWith(".json")) {
                 refreshs.add(json.decodeFromString(RefreshPoly.serializer(), file.readText(StandardCharsets.UTF_8)))
             }
+        }
+    }
+
+    fun initBalloons() {
+        BalloonUI.balloons.clear()
+        balloon.getKeys(false).forEach {
+            BalloonUI.balloons += BalloonWarp(balloon.getConfigurationSection(it)!!, it)
         }
     }
 }

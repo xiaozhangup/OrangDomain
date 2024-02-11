@@ -10,10 +10,7 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.inventory.EquipmentSlot
 import ray.mintcat.barrier.OrangDomain
-import ray.mintcat.barrier.utils.error
-import ray.mintcat.barrier.utils.eval
-import ray.mintcat.barrier.utils.getPoly
-import ray.mintcat.barrier.utils.info
+import ray.mintcat.barrier.utils.*
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.ProxyParticle
@@ -117,14 +114,16 @@ object BarrierListener {
 
     @SubscribeEvent
     fun e(event: BarrierPlayerJoinPolyEvent) {
-        OrangDomain.config.getStringList("Info.Join.action").eval(event.player)
-
+        OrangDomain.config.getStringList("Join.${event.poly.id}").forEach {
+            event.player.execute(it)
+        }
     }
 
     @SubscribeEvent
     fun e(event: BarrierPlayerLeavePolyEvent) {
-        OrangDomain.config.getStringList("Info.Leave.action").map { it.replace("[name]", event.poly.name) }
-            .eval(event.player)
+        OrangDomain.config.getStringList("Leave.${event.poly.id}").forEach {
+            event.player.execute(it)
+        }
     }
 
     fun addPoint(

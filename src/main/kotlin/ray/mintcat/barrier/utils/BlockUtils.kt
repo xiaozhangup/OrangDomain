@@ -4,11 +4,20 @@ import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.event.block.BlockPhysicsEvent
 
+private val skipCheck = listOf(
+    Material.TALL_GRASS,
+    Material.SHORT_GRASS
+)
+
 fun Block.isLinkedSolidBlock(block: Block): Boolean {
-    return this.getRelative(0, 0, 1).blockData.isSupported(block) &&
-            this.getRelative(0, 0, -1).blockData.isSupported(block) &&
-            this.getRelative(1, 0, 0).blockData.isSupported(block) &&
-            this.getRelative(-1, 0, 0).blockData.isSupported(block)
+    return listOf(
+        getRelative(0, 0, 1),
+        getRelative(0, 0, -1),
+        getRelative(1, 0, 0),
+        getRelative(-1, 0, 0)
+    ).map {
+        if (skipCheck.contains(it.type)) true else blockData.isSupported(block)
+    }.all { it }
 }
 
 // 此方法着重检查上下
