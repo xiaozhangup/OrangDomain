@@ -54,7 +54,7 @@ object BarrierCommand {
                     )
                     BarrierListener.createMap[sender.uniqueId] = mutableListOf()
                     OrangDomain.polys.add(build)
-                    OrangDomain.save(build.id)
+                    OrangDomain.savePoly(build.id)
 
                     initConfigSection(build)
 
@@ -112,7 +112,7 @@ object BarrierCommand {
                     return@execute
                 }
                 poly.destructible.add(name)
-                OrangDomain.save(poly.id)
+                OrangDomain.savePoly(poly.id)
                 sender.info("已添加 $name 到可破坏列表!")
             }
         }
@@ -151,7 +151,7 @@ object BarrierCommand {
                     return@execute
                 }
                 if (poly.destructible.remove(name)) {
-                    OrangDomain.save(poly.id)
+                    OrangDomain.savePoly(poly.id)
                     sender.info("已从可破坏列表移除 $name !")
                 } else {
                     sender.error("此领地本身就不可破坏 $name !")
@@ -177,7 +177,7 @@ object BarrierCommand {
                     return@execute
                 }
                 poly.interactive.add(name)
-                OrangDomain.save(poly.id)
+                OrangDomain.savePoly(poly.id)
                 sender.info("已添加 $name 到可交互列表!")
             }
         }
@@ -216,7 +216,7 @@ object BarrierCommand {
                     return@execute
                 }
                 if (poly.interactive.remove(name)) {
-                    OrangDomain.save(poly.id)
+                    OrangDomain.savePoly(poly.id)
                     sender.info("已从可交互列表移除 $name !")
                 } else {
                     sender.error("此领地本身就不可交互 $name !")
@@ -237,7 +237,7 @@ object BarrierCommand {
                         sender.error("领地不存在")
                     }
                 OrangDomain.polys.remove(poly)
-                OrangDomain.delete(poly)
+                OrangDomain.deletePoly(poly)
                 sender.info("成功删除 &f${context.argument(0)} ")
             }
         }
@@ -247,7 +247,7 @@ object BarrierCommand {
             }
             sender.info("成功删除 &f${poly.name} ")
             OrangDomain.polys.remove(poly)
-            OrangDomain.delete(poly)
+            OrangDomain.deletePoly(poly)
         }
     }
 
@@ -266,7 +266,7 @@ object BarrierCommand {
                                     sender.error("领地不存在")
                                 }
                         poly.priority = context.argument(0).toInt()
-                        OrangDomain.save(poly.id)
+                        OrangDomain.savePoly(poly.id)
                         sender.info("${poly.name} 的优先级已经设置为 ${poly.priority} !")
                     } catch (e: Exception) {
                         sender.info("设置时遇到错误: ${e.message}")

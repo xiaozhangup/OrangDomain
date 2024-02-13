@@ -9,8 +9,6 @@ object PolyPlaceholder : PlaceholderExpansion {
     override val identifier: String
         get() = "barrier"
 
-    val keySave = HashMap<UUID, String>()
-
     override fun onPlaceholderRequest(player: Player?, args: String): String {
         val target = player ?: return "未知"
         val info = args.split("_")

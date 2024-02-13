@@ -12,19 +12,22 @@ object RegenController {
     fun submitBlock(block: Block, to: Material, config: BasicRegenGroup) {
         val uid = UUID.randomUUID()
         val location = block.location
-        fallback[uid] = FallbackBlock(
-            location,
-            to,
-            config.replace,
-            block.blockData
-        )
 
         submit(delay = 1L) {
             // 放置替代方块
             location.block.setType(config.replace, false)
         }
-        submit(delay = config.delay) {
-            fallback.remove(uid)?.fallback() // 定时恢复
+
+        if (config.fallback) {
+            fallback[uid] = FallbackBlock(
+                location,
+                to,
+                config.replace,
+                block.blockData
+            )
+            submit(delay = config.delay) {
+                fallback.remove(uid)?.fallback() // 定时恢复
+            }
         }
     }
 

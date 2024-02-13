@@ -53,7 +53,7 @@ fun Player.tpDelay(mint: Int, locationTo: Location) {
 }
 
 fun fromLocation(location: Location): String {
-    return "${location.world?.name},${location.x},${location.y},${location.z}".replace(".", "__")
+    return "${location.world?.name},${location.x},${location.y},${location.z},${location.yaw},${location.pitch}".replace(".", "__")
 }
 
 fun toLocation(source: String): Location {
@@ -62,7 +62,9 @@ fun toLocation(source: String): Location {
             Bukkit.getWorld(get(0)),
             getOrElse(1) { "0" }.asDouble(),
             getOrElse(2) { "0" }.asDouble(),
-            getOrElse(3) { "0" }.asDouble()
+            getOrElse(3) { "0" }.asDouble(),
+            getOrElse(4) { "0" }.toFloat(),
+            getOrElse(5) { "0" }.toFloat()
         )
     }
 }
@@ -139,14 +141,6 @@ fun toInfo(sender: CommandSender, message: String) {
  */
 fun toError(sender: CommandSender, message: String) {
     sender.sendMessage("§8[§4 OrangDomain §8] §7${message.replace("&", "§")}")
-}
-
-fun List<String>.eval(player: Player) {
-    try {
-        KetherShell.eval(this, sender = adaptPlayer(player))
-    } catch (e: Throwable) {
-        e.printKetherErrorMessage()
-    }
 }
 
 /**

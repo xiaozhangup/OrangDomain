@@ -8,6 +8,8 @@ import ray.mintcat.barrier.balloon.BalloonWarp
 import ray.mintcat.barrier.common.poly.BarrierPoly
 import ray.mintcat.barrier.common.permission.Permission
 import ray.mintcat.barrier.common.poly.RefreshPoly
+import ray.mintcat.barrier.portal.Portal
+import ray.mintcat.barrier.portal.PortalPacket.portals
 import ray.mintcat.barrier.refresh.RefreshLoader
 import ray.mintcat.barrier.regen.RegenLoader
 import taboolib.common.LifeCycle
@@ -69,7 +71,7 @@ object OrangDomain : Plugin() {
         coerceInputValues = true
     }
 
-    fun delete(id: BarrierPoly) {
+    fun deletePoly(id: BarrierPoly) {
         newFile(
             getDataFolder(),
             "data/${id.id}.json"
@@ -84,7 +86,15 @@ object OrangDomain : Plugin() {
         ).delete()
     }
 
-    fun save(id: String) {
+    fun deletePortal(id: Portal) {
+        portals.remove(id)
+        newFile(
+            getDataFolder(),
+            "portal/${id.id}.json"
+        ).delete()
+    }
+
+    fun savePoly(id: String) {
         val poly = polys.firstOrNull { it.id == id } ?: return
         newFile(
             getDataFolder(),
@@ -100,6 +110,14 @@ object OrangDomain : Plugin() {
         ).writeText(json.encodeToString(poly), StandardCharsets.UTF_8)
     }
 
+    fun savePortal(id: String) {
+        val poly = portals.firstOrNull { it.id == id } ?: return
+        newFile(
+            getDataFolder(),
+            "portal/${id}.json"
+        ).writeText(json.encodeToString(poly), StandardCharsets.UTF_8)
+    }
+
     @Suppress("UNCHECKED_CAST")
     @Awake(LifeCycle.ACTIVE)
     fun import() {
@@ -107,6 +125,7 @@ object OrangDomain : Plugin() {
         initPolys()
         initRefreshes()
         initBalloons()
+        initPortals()
 
         RegenLoader.init()
         RefreshLoader.init()
@@ -117,6 +136,15 @@ object OrangDomain : Plugin() {
         newFile(getDataFolder(), "data", folder = true).listFiles()?.map { file ->
             if (file.name.endsWith(".json")) {
                 polys.add(json.decodeFromString(BarrierPoly.serializer(), file.readText(StandardCharsets.UTF_8)))
+            }
+        }
+    }
+
+    fun initPortals() {
+        portals.clear()
+        newFile(getDataFolder(), "portal", folder = true).listFiles()?.map { file ->
+            if (file.name.endsWith(".json")) {
+                portals.add(json.decodeFromString(Portal.serializer(), file.readText(StandardCharsets.UTF_8)))
             }
         }
     }

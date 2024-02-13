@@ -32,9 +32,10 @@ object RegenLoader {
             val delay = section.getLong("delay", 20)
             val replace = Material.valueOf(section.getString("replace")!!)
             val regions = section.getStringList("regions")
+            val fallback = section.getBoolean("fallback",true)
             val blocks = section.getStringList("blocks").map { Material.valueOf(it) }
 
-            val config = BasicRegenGroup(blocks, replace, delay, regions)
+            val config = BasicRegenGroup(blocks, replace, delay, regions, fallback)
             breakables.addAll(blocks)
 
             regions.forEach { region ->

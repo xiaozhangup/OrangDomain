@@ -1,12 +1,18 @@
 package ray.mintcat.barrier.utils
 
+import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
+import org.bukkit.entity.Player
 import org.bukkit.event.block.BlockPhysicsEvent
+import kotlin.math.max
+import kotlin.math.min
 
 private val skipCheck = listOf(
     Material.TALL_GRASS,
-    Material.SHORT_GRASS
+    Material.SHORT_GRASS,
+    Material.PINK_PETALS
 )
 
 fun Block.isLinkedSolidBlock(block: Block): Boolean {
@@ -34,4 +40,21 @@ fun Block.noLinked(): Boolean {
     }.block
 
     return isLinkedSolidBlock(block) && !isHangingBlock(block)
+}
+
+fun isPlayerInRectangle(player: Player, loc1: Location, loc2: Location): Boolean {
+    val world = player.world
+    val minX = Math.min(loc1.x, loc2.x)
+    val minY = Math.min(loc1.y, loc2.y)
+    val minZ = Math.min(loc1.z, loc2.z)
+    val maxX = Math.max(loc1.x, loc2.x)
+    val maxY = Math.max(loc1.y, loc2.y)
+    val maxZ = Math.max(loc1.z, loc2.z)
+
+    val playerLocation = player.location
+
+    return playerLocation.world == world &&
+            playerLocation.x >= minX && playerLocation.x <= maxX &&
+            playerLocation.y >= minY && playerLocation.y <= maxY &&
+            playerLocation.z >= minZ && playerLocation.z <= maxZ
 }
