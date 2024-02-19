@@ -7,5 +7,6 @@ data class BasicRegenGroup(
     val replace: Material,
     val delay: Long,
     val regions: List<String>,
-    val fallback: Boolean
+    val fallback: Boolean,
+    val check: Boolean
 )

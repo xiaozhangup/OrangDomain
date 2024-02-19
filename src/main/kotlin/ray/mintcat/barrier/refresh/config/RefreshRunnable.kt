@@ -35,8 +35,11 @@ class RefreshRunnable(
 
                 val type = material.random()
                 if (getLinkedBlocks(block).filter { it.type == type }.size <= group.intensity) {
+                    if (failed > 0) {
+                        failed--
+                    }
+
                     block.type = type
-                    if (failed > 0) failed--
                     break
                 } else {
                     failed++
@@ -82,13 +85,15 @@ class RefreshRunnable(
     }
 
     private fun getLinkedBlocks(block: Block): List<Block> {
-        return offset.flatMap { x ->
-            offset.flatMap { y ->
-                offset.map { z ->
-                    block.getRelative(x, y, z)
+        val blocks = mutableListOf<Block>()
+        for (x in offset) {
+            for (y in offset) {
+                for (z in offset) {
+                    blocks += block.getRelative(x, y, z)
                 }
             }
         }
+        return blocks
     }
 
     private fun getXRange(location1: Location, location2: Location): Pair<Int, Int> {

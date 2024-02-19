@@ -19,10 +19,15 @@ object RegenListener {
     private val unregion = Component.text("× 此区域不能采集此方块")
         .color(TextColor.fromHexString("#ed2e38"))
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @SubscribeEvent(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     fun onBlockBreak(event: BlockBreakEvent) {
         val block = event.block
         val player = event.player
+
+        if (player.isOp && player.inventory.itemInMainHand.type === rootMaterial) {
+            return
+        }
+        if (player.gameMode == GameMode.CREATIVE) return
 
         val poly = block.location.getPoly()
         if (poly != null) {
@@ -40,18 +45,12 @@ object RegenListener {
 
             if (config == null) {
                 if (breakable) {
-                    player.sendMessage(unregion)
+                    player.sendActionBar(unregion)
                 }
                 return
             }
 
-            if (event.isCancelled) return
-            if (player.isOp && player.inventory.itemInMainHand.type === rootMaterial) {
-                return
-            }
-            if (player.gameMode == GameMode.CREATIVE) return
-
-            if (!block.noLinked()) {
+            if (!block.noLinked(config.materials) && config.check) {
                 event.isCancelled = true
                 player.sendActionBar(component)
                 return
