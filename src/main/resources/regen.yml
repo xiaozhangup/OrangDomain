@@ -12,3 +12,5 @@ tree:
     - SPRUCE_LOG
     - OAK_LOG
     - DARK_OAK_LOG
+  random:
+    - STONE:1

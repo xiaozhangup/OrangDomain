@@ -19,12 +19,14 @@ object RegenController {
         }
 
         if (config.fallback) {
+            val type = config.random?.random()
             fallback[uid] = FallbackBlock(
                 location,
-                to,
+                type ?: to,
                 config.replace,
-                block.blockData
+                if (config.random != null) null else block.blockData
             )
+
             submit(delay = config.delay) {
                 fallback.remove(uid)?.fallback() // 定时恢复
             }

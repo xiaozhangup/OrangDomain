@@ -13,6 +13,7 @@ import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.command.PermissionDefault
 import taboolib.common.platform.command.command
+import taboolib.common5.RandomList
 import java.util.HashMap
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -36,7 +37,25 @@ object RegenLoader {
             val check = section.getBoolean("check",true)
             val blocks = section.getStringList("blocks").map { Material.valueOf(it) }
 
-            val config = BasicRegenGroup(blocks, replace, delay, regions, fallback, check)
+            val random = RandomList<Material>()
+            section.getStringList("random").forEach {
+                try {
+                    random.add(
+                        Material.valueOf(it.substringBefore(':')),
+                        it.substringAfter(':').toInt()
+                    )
+                } catch (e: Exception) { e.printStackTrace() }
+            }
+
+            val config = BasicRegenGroup(
+                blocks,
+                replace,
+                delay,
+                regions,
+                fallback,
+                check,
+                if (random.size() > 0) random else null
+            )
             breakables.addAll(blocks)
 
             regions.forEach { region ->
@@ -68,12 +87,14 @@ data class FallbackBlock(
     val loc: Location,
     val from: Material,
     val to: Material,
-    val data: BlockData
+    val data: BlockData?
 ) {
     fun fallback(check: Boolean = true) {
         if (loc.block.type === to || !check) {
             loc.block.type = from
-            loc.block.blockData = data
+            if (data != null) {
+                loc.block.blockData = data
+            }
         }
     }
 }
