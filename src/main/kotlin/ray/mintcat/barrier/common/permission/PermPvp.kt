@@ -2,10 +2,8 @@ package ray.mintcat.barrier.common.permission
 
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
-import org.bukkit.entity.Projectile
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import ray.mintcat.barrier.utils.display

@@ -1,24 +1,18 @@
 package ray.mintcat.barrier.command
 
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import ray.mintcat.barrier.OrangDomain
-import ray.mintcat.barrier.common.poly.BarrierPoly
-import ray.mintcat.barrier.common.openMenu
 import ray.mintcat.barrier.common.poly.RefreshPoly
-import ray.mintcat.barrier.event.BarrierListener
 import ray.mintcat.barrier.refresh.RefreshLoader
-import ray.mintcat.barrier.utils.error
-import ray.mintcat.barrier.utils.getPoly
 import ray.mintcat.barrier.utils.info
 import taboolib.common.platform.command.CommandBody
 import taboolib.common.platform.command.CommandHeader
 import taboolib.common.platform.command.mainCommand
 import taboolib.common.platform.command.subCommand
 import taboolib.expansion.createHelper
-import java.util.UUID
+import java.util.*
 
 @CommandHeader(
     name = "refresh",

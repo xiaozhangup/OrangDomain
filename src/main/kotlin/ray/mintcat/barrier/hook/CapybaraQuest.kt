@@ -1,7 +1,6 @@
 package ray.mintcat.barrier.hook
 
 import me.xiaozhangup.capybara.serves.quest.impl.once.OnceListeners
-import org.bukkit.event.block.BlockBreakEvent
 import ray.mintcat.barrier.event.BarrierPlayerLeavePolyEvent
 import taboolib.common.platform.event.SubscribeEvent
 

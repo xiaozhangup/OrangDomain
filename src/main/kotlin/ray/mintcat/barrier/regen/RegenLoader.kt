@@ -3,19 +3,14 @@ package ray.mintcat.barrier.regen
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.data.BlockData
-import org.bukkit.command.CommandSender
 import ray.mintcat.barrier.OrangDomain.regen
 import ray.mintcat.barrier.regen.config.BasicRegenGroup
 import ray.mintcat.barrier.regen.tweak.ExtendBreak
 import ray.mintcat.barrier.regen.tweak.impl.TreeLinkedBreak
-import ray.mintcat.barrier.utils.info
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
-import taboolib.common.platform.command.PermissionDefault
-import taboolib.common.platform.command.command
 import taboolib.common5.RandomList
-import java.util.HashMap
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 object RegenLoader {

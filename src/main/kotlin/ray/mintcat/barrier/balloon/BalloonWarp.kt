@@ -3,7 +3,6 @@ package ray.mintcat.barrier.balloon
 import org.bukkit.Location
 import ray.mintcat.barrier.utils.toLocation
 import taboolib.library.configuration.ConfigurationSection
-import taboolib.module.configuration.ConfigSection
 
 data class BalloonWarp(
     val id: String,

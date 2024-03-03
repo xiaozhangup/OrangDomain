@@ -15,7 +15,8 @@ data class Portal(
     val pos2: Location,
     @Serializable(with = LocationSerializer::class)
     var target: Location,
-    val level: Int
+    val level: Int,
+    val delay: Long = 0
 ) {
     fun isIn(player: Player, skipCheck: Boolean = false): Boolean {
         val sameWorld = player.world == pos1.world

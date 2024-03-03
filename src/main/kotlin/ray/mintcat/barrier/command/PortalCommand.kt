@@ -12,7 +12,7 @@ import taboolib.common.platform.command.CommandHeader
 import taboolib.common.platform.command.mainCommand
 import taboolib.common.platform.command.subCommand
 import taboolib.expansion.createHelper
-import java.util.UUID
+import java.util.*
 
 @CommandHeader(
     name = "portal",

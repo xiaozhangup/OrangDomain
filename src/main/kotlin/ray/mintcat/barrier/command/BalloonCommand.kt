@@ -6,12 +6,7 @@ import org.bukkit.entity.Player
 import ray.mintcat.barrier.OrangDomain
 import ray.mintcat.barrier.balloon.BalloonUI
 import ray.mintcat.barrier.balloon.BalloonWarp
-import ray.mintcat.barrier.common.poly.BarrierPoly
-import ray.mintcat.barrier.common.openMenu
-import ray.mintcat.barrier.event.BarrierListener
-import ray.mintcat.barrier.utils.error
 import ray.mintcat.barrier.utils.fromLocation
-import ray.mintcat.barrier.utils.getPoly
 import ray.mintcat.barrier.utils.info
 import taboolib.common.platform.command.CommandBody
 import taboolib.common.platform.command.CommandHeader

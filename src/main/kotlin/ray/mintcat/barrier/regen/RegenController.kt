@@ -1,12 +1,11 @@
 package ray.mintcat.barrier.regen
 
-import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
 import ray.mintcat.barrier.regen.RegenLoader.fallback
 import ray.mintcat.barrier.regen.config.BasicRegenGroup
 import taboolib.common.platform.function.submit
-import java.util.UUID
+import java.util.*
 
 object RegenController {
     fun submitBlock(block: Block, to: Material, config: BasicRegenGroup) {

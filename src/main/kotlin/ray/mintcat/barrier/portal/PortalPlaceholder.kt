@@ -1,9 +1,7 @@
 package ray.mintcat.barrier.portal
 
 import org.bukkit.entity.Player
-import ray.mintcat.barrier.utils.getPoly
 import taboolib.platform.compat.PlaceholderExpansion
-import java.util.*
 
 object PortalPlaceholder : PlaceholderExpansion {
     override val identifier: String

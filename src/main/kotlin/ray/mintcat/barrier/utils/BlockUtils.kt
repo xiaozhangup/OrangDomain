@@ -1,12 +1,9 @@
 package ray.mintcat.barrier.utils
 
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
-import org.bukkit.event.block.BlockPhysicsEvent
-import ray.mintcat.barrier.regen.RegenLoader
 import kotlin.math.max
 import kotlin.math.min
 
@@ -16,7 +13,12 @@ private val skipCheck = listOf(
     Material.PINK_PETALS
 )
 
-fun Block.isLinkedSolidBlock(block: Block, skip: List<Material> = listOf()): Boolean {
+fun Block.isLinkedSolidBlock(
+    block: Block = location.clone().apply {
+        y = world.maxHeight - 2.0
+    }.block,
+    skip: List<Material> = listOf()
+): Boolean {
     return listOf(
         getRelative(0, 0, 1),
         getRelative(0, 0, -1),
@@ -31,7 +33,11 @@ fun Block.isLinkedSolidBlock(block: Block, skip: List<Material> = listOf()): Boo
 }
 
 // 此方法着重检查上下
-fun Block.isHangingBlock(block: Block): Boolean {
+fun Block.isHangingBlock(
+    block: Block = location.clone().apply {
+        y = world.maxHeight - 2.0
+    }.block
+): Boolean {
     val blockAbove: Block = this.getRelative(0, 1, 0) // 获取方块上方的方块
     val blockBelow: Block = this.getRelative(0, -1, 0) // 获取方块下方的方块
 

@@ -5,8 +5,8 @@ import kotlinx.serialization.json.Json
 import org.bukkit.Material
 import ray.mintcat.barrier.balloon.BalloonUI
 import ray.mintcat.barrier.balloon.BalloonWarp
-import ray.mintcat.barrier.common.poly.BarrierPoly
 import ray.mintcat.barrier.common.permission.Permission
+import ray.mintcat.barrier.common.poly.BarrierPoly
 import ray.mintcat.barrier.common.poly.RefreshPoly
 import ray.mintcat.barrier.portal.Portal
 import ray.mintcat.barrier.portal.PortalPacket.portals
@@ -23,7 +23,6 @@ import taboolib.module.configuration.Config
 import taboolib.module.configuration.Configuration
 import taboolib.platform.BukkitPlugin
 import java.nio.charset.StandardCharsets
-import java.util.*
 
 @RuntimeDependencies(
     RuntimeDependency(

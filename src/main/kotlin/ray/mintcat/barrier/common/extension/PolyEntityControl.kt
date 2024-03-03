@@ -1,10 +1,6 @@
 package ray.mintcat.barrier.common.extension
 
-import org.bukkit.entity.Animals
-import org.bukkit.entity.EntityType
-import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Monster
-import org.bukkit.entity.Player
+import org.bukkit.entity.*
 import org.bukkit.event.entity.EntityChangeBlockEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import ray.mintcat.barrier.OrangDomain

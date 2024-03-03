@@ -15,6 +15,10 @@ object PolySpawn {
         val entity = e.entity
         if (entity.entitySpawnReason != CreatureSpawnEvent.SpawnReason.NATURAL) return
         entity.location.getPoly()?.let {
+            if (regions.getStringList("${it.id}.despawns").contains(entity.type.name)) {
+                e.isCancelled = true
+            }
+
             if (entity is Monster) {
                 if (!regions.getBoolean("${it.id}.spawnMonster")) {
                     e.isCancelled = true

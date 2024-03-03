@@ -3,14 +3,16 @@ package ray.mintcat.barrier.event
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.inventory.EquipmentSlot
 import ray.mintcat.barrier.OrangDomain
-import ray.mintcat.barrier.utils.*
+import ray.mintcat.barrier.utils.error
+import ray.mintcat.barrier.utils.execute
+import ray.mintcat.barrier.utils.getPoly
+import ray.mintcat.barrier.utils.info
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.ProxyParticle
@@ -19,14 +21,8 @@ import taboolib.common.platform.function.adaptPlayer
 import taboolib.common.platform.function.submit
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.collections.MutableList
 import kotlin.collections.component1
 import kotlin.collections.component2
-import kotlin.collections.forEach
-import kotlin.collections.last
-import kotlin.collections.map
-import kotlin.collections.mutableListOf
-import kotlin.collections.removeLast
 import kotlin.collections.set
 
 object BarrierListener {

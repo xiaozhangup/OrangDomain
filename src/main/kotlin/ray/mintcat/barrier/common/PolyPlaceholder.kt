@@ -3,7 +3,6 @@ package ray.mintcat.barrier.common
 import org.bukkit.entity.Player
 import ray.mintcat.barrier.utils.getPoly
 import taboolib.platform.compat.PlaceholderExpansion
-import java.util.*
 
 object PolyPlaceholder : PlaceholderExpansion {
     override val identifier: String

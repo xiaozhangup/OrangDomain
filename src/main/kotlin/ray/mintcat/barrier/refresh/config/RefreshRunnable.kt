@@ -7,7 +7,9 @@ import org.bukkit.block.BlockFace
 import org.bukkit.scheduler.BukkitRunnable
 import ray.mintcat.barrier.OrangDomain
 import ray.mintcat.barrier.common.poly.RefreshPoly
+import ray.mintcat.barrier.utils.isHangingBlock
 import taboolib.common.util.random
+import taboolib.module.configuration.util.config
 
 class RefreshRunnable(
     val group: RefreshesGroup
@@ -33,7 +35,10 @@ class RefreshRunnable(
                 if (material.isEmpty()) continue
 
                 val type = material.random()
-                if (getLinkedBlocks(block).filter { it.type == type }.size <= group.intensity) {
+                if (
+                    getLinkedBlocks(block).filter { group.blocks.containsKey(it.type) }.size < group.intensity &&
+                    !block.isHangingBlock()
+                ) {
                     if (failed > 0) {
                         failed--
                     }

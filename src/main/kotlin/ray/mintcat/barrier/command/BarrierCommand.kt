@@ -4,8 +4,8 @@ import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import ray.mintcat.barrier.OrangDomain
-import ray.mintcat.barrier.common.poly.BarrierPoly
 import ray.mintcat.barrier.common.openMenu
+import ray.mintcat.barrier.common.poly.BarrierPoly
 import ray.mintcat.barrier.event.BarrierListener
 import ray.mintcat.barrier.utils.error
 import ray.mintcat.barrier.utils.getPoly
@@ -332,6 +332,7 @@ object BarrierCommand {
         OrangDomain.regions["${build.id}.spawnAnimal"] = false
         OrangDomain.regions["${build.id}.spawnMonster"] = false
         OrangDomain.regions["${build.id}.entityTeleport"] = false
+        OrangDomain.regions["${build.id}.despawns"] = listOf("VILLAGER")
         OrangDomain.regions.saveToFile()
     }
 }

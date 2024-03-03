@@ -7,13 +7,11 @@ import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.function.console
 import taboolib.common.platform.function.submit
 import taboolib.library.xseries.XMaterial
-import taboolib.module.chat.colored
 import taboolib.module.ui.openMenu
 import taboolib.module.ui.type.Linked
 import taboolib.platform.util.ItemBuilder
 import taboolib.platform.util.buildItem
-import taboolib.platform.util.title
-import java.util.UUID
+import java.util.*
 
 object BalloonUI {
     private val background = buildItem(XMaterial.GRAY_STAINED_GLASS_PANE) {
@@ -80,7 +78,7 @@ object BalloonUI {
             }
             slotsBy(' ')
 
-            elements { balloons }
+            elements { balloons.sortedBy { it.level } }
             onGenerate { _, element, _, _ ->
                 buildItem(Material.PLAYER_HEAD) {
                     skullTexture = ItemBuilder.SkullTexture(
