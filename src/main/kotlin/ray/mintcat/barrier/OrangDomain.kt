@@ -12,6 +12,8 @@ import ray.mintcat.barrier.portal.Portal
 import ray.mintcat.barrier.portal.PortalPacket.portals
 import ray.mintcat.barrier.refresh.RefreshLoader
 import ray.mintcat.barrier.regen.RegenLoader
+import ray.mintcat.barrier.utils.serializable.LocationSerializer
+import ray.mintcat.barrier.utils.toLocation
 import taboolib.common.LifeCycle
 import taboolib.common.env.RuntimeDependencies
 import taboolib.common.env.RuntimeDependency
@@ -26,12 +28,16 @@ import java.nio.charset.StandardCharsets
 
 @RuntimeDependencies(
     RuntimeDependency(
-        value = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.2",
-        relocate = ["!kotlin.", "!kotlin@kotlin_version_escape@."]
+        "!org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.3.3",
+        test = "!kotlinx.serialization.Serializer",
+        relocate = ["!kotlin.", "!kotlin1822.", "!kotlinx.", "!kotlinx.serialization133."],
+        transitive = false
     ),
     RuntimeDependency(
-        value = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2",
-        relocate = ["!kotlin.", "!kotlin@kotlin_version_escape@."]
+        "!org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.3.3",
+        test = "!kotlinx.serialization.json.Json",
+        relocate = ["!kotlin.", "!kotlin1822.", "!kotlinx.", "!kotlinx.serialization133."],
+        transitive = false
     )
 )
 object OrangDomain : Plugin() {
@@ -57,10 +63,13 @@ object OrangDomain : Plugin() {
         private set
 
     val polys = ArrayList<BarrierPoly>()
-    val refreshs = ArrayList<RefreshPoly>()
+    val refreshes = ArrayList<RefreshPoly>()
     val permissions = ArrayList<Permission>()
     val worlds = ArrayList<String>()
+    val spawn = WorldSpawnCover
     val plugin by lazy { BukkitPlugin.getInstance() }
+
+    lateinit var realisticTime: WorldRealisticTime
 
     fun getTool(): Material {
         return Material.valueOf(config.getString("ClaimTool", "APPLE")!!)
@@ -78,7 +87,7 @@ object OrangDomain : Plugin() {
     }
 
     fun deleteRefresh(id: RefreshPoly) {
-        refreshs.remove(id)
+        refreshes.remove(id)
         newFile(
             getDataFolder(),
             "refresh/${id.id}.json"
@@ -102,7 +111,7 @@ object OrangDomain : Plugin() {
     }
 
     fun saveRefresh(id: String) {
-        val poly = refreshs.firstOrNull { it.id == id } ?: return
+        val poly = refreshes.firstOrNull { it.id == id } ?: return
         newFile(
             getDataFolder(),
             "refresh/${id}.json"
@@ -125,6 +134,8 @@ object OrangDomain : Plugin() {
         initRefreshes()
         initBalloons()
         initPortals()
+        initTimeSync()
+        initWorldSpawn()
 
         RegenLoader.init()
         RefreshLoader.init()
@@ -149,10 +160,10 @@ object OrangDomain : Plugin() {
     }
 
     fun initRefreshes() {
-        refreshs.clear()
+        refreshes.clear()
         newFile(getDataFolder(), "refresh", folder = true).listFiles()?.map { file ->
             if (file.name.endsWith(".json")) {
-                refreshs.add(json.decodeFromString(RefreshPoly.serializer(), file.readText(StandardCharsets.UTF_8)))
+                refreshes.add(json.decodeFromString(RefreshPoly.serializer(), file.readText(StandardCharsets.UTF_8)))
             }
         }
     }
@@ -162,5 +173,17 @@ object OrangDomain : Plugin() {
         balloon.getKeys(false).forEach {
             BalloonUI.balloons += BalloonWarp(balloon.getConfigurationSection(it)!!, it)
         }
+    }
+
+    fun initTimeSync() {
+        realisticTime = WorldRealisticTime(
+            config.getStringList("TimeSyncWorlds")
+        )
+    }
+
+    fun initWorldSpawn() {
+        val location = config.getString("SpawnLocation")
+
+        spawn.location = if (location != null) toLocation(location) else null
     }
 }

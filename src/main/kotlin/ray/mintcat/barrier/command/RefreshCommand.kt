@@ -66,7 +66,7 @@ object RefreshCommand {
                     selected.first!!,
                     selected.second!!
                 )
-                OrangDomain.refreshs += poly
+                OrangDomain.refreshes += poly
                 OrangDomain.saveRefresh(poly.id)
                 sender.info("成功创建新的刷新领地 ${poly.id} !")
             }
@@ -81,12 +81,12 @@ object RefreshCommand {
     val remove = subCommand {
         dynamic {
             suggestion<CommandSender> { _, _ ->
-                OrangDomain.refreshs.map { it.id }
+                OrangDomain.refreshes.map { it.id }
             }
 
             execute<CommandSender> { sender, _, argument ->
                 OrangDomain.deleteRefresh(
-                    OrangDomain.refreshs.first {
+                    OrangDomain.refreshes.first {
                         it.id == argument
                     }
                 )

@@ -1,24 +1,29 @@
+import io.izzel.taboolib.gradle.*
+
 plugins {
     `java-library`
     `maven-publish`
-    id("io.izzel.taboolib") version "1.56"
-    id("org.jetbrains.kotlin.jvm") version "1.7.21"
-    kotlin("plugin.serialization") version "1.5.10"
+    id("io.izzel.taboolib") version "2.0.11"
+    id("org.jetbrains.kotlin.jvm") version "1.8.22"
+    kotlin("plugin.serialization") version "1.8.22"
 }
 
 taboolib {
-    install("common")
-    install("common-5")
-    install("module-chat")
-    install("module-configuration")
-    install("module-kether")
-    install("module-ui")
-    install("platform-bukkit")
-    install("module-navigation")
-    install("module-effect")
-    install("expansion-command-helper")
-    classifier = null
-    version = "6.0.12-69"
+    env {
+        install(UNIVERSAL, BUKKIT, BUKKIT_ALL)
+        install(
+            CHAT,
+            UI,
+            CONFIGURATION,
+            EXPANSION_COMMAND_HELPER
+        )
+
+        version {
+            taboolib = "6.1.1-beta17"
+        }
+
+        relocate("kotlinx.serialization", "kotlinx.serialization133")
+    }
 }
 
 repositories {
@@ -36,8 +41,8 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.1")
-    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.2")
-    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
 }

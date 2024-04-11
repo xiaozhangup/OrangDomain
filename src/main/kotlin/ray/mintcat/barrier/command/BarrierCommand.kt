@@ -8,6 +8,7 @@ import ray.mintcat.barrier.common.openMenu
 import ray.mintcat.barrier.common.poly.BarrierPoly
 import ray.mintcat.barrier.event.BarrierListener
 import ray.mintcat.barrier.utils.error
+import ray.mintcat.barrier.utils.fromLocation
 import ray.mintcat.barrier.utils.getPoly
 import ray.mintcat.barrier.utils.info
 import taboolib.common.platform.command.CommandBody
@@ -315,6 +316,16 @@ object BarrierCommand {
     }
 
     @CommandBody
+    val setSpawn = subCommand {
+        execute<Player> { sender, _, _ ->
+            OrangDomain.config["SpawnLocation"] = fromLocation(sender.location)
+            OrangDomain.config.saveToFile()
+
+            OrangDomain.initWorldSpawn()
+        }
+    }
+
+    @CommandBody
     val reload = subCommand {
         execute<Player> { sender, _, _ ->
             OrangDomain.regions.reload()
@@ -323,6 +334,10 @@ object BarrierCommand {
             OrangDomain.worlds.clear()
             OrangDomain.worlds.addAll(OrangDomain.config.getStringList("ProtectWorlds"))
             OrangDomain.initPolys()
+
+            OrangDomain.realisticTime.shutdown()
+            OrangDomain.initTimeSync()
+            OrangDomain.initWorldSpawn()
 
             sender.info("已成功重载所有配置文件")
         }

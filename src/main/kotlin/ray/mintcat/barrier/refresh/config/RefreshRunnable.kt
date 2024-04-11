@@ -9,7 +9,6 @@ import ray.mintcat.barrier.OrangDomain
 import ray.mintcat.barrier.common.poly.RefreshPoly
 import ray.mintcat.barrier.utils.isHangingBlock
 import taboolib.common.util.random
-import taboolib.module.configuration.util.config
 
 class RefreshRunnable(
     val group: RefreshesGroup
@@ -23,7 +22,7 @@ class RefreshRunnable(
         }
 
         val polys = group.regions.mapNotNull { id ->
-            OrangDomain.refreshs.firstOrNull { it.id == id }
+            OrangDomain.refreshes.firstOrNull { it.id == id }
         }
 
         polys.forEach { poly ->
