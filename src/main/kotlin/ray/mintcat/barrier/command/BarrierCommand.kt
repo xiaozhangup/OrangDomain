@@ -321,6 +321,8 @@ object BarrierCommand {
             OrangDomain.config["SpawnLocation"] = fromLocation(sender.location)
             OrangDomain.config.saveToFile()
 
+            sender.world.spawnLocation = sender.location
+
             OrangDomain.initWorldSpawn()
         }
     }
