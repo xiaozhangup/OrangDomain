@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack
 import taboolib.common.platform.function.console
 import taboolib.common.platform.function.submit
 import taboolib.library.xseries.XMaterial
+import taboolib.library.xseries.XSkull
 import taboolib.module.ui.openMenu
 import taboolib.module.ui.type.Linked
 import taboolib.platform.util.ItemBuilder
@@ -18,7 +19,7 @@ object BalloonUI {
         name = " "
     }
     private val icon = buildItem(Material.PLAYER_HEAD) {
-        skullTexture = ItemBuilder.SkullTexture(
+        skullTexture = XSkull.SkullTexture(
             "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTA2ZTZkODNjZjdlZDVjZjdiZjBlMDE4ZWNiNjAzOWIwNDZkOGRjNmRiNTU2OTAxNGZjYWIzN2I2MTdmMTM5OSJ9fX0=",
             UUID(0, 0)
         )
@@ -29,7 +30,7 @@ object BalloonUI {
         colored()
     }
     private val back = buildItem(Material.PLAYER_HEAD) {
-        skullTexture = ItemBuilder.SkullTexture(
+        skullTexture = XSkull.SkullTexture(
             "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTk3ZTRlMjdhMDRhZmE1ZjA2MTA4MjY1YTliZmI3OTc2MzAzOTFjN2YzZDg4MGQyNDRmNjEwYmIxZmYzOTNkOCJ9fX0=",
             UUID(0, 0)
         )
@@ -81,7 +82,7 @@ object BalloonUI {
             elements { balloons.sortedBy { it.level } }
             onGenerate { _, element, _, _ ->
                 buildItem(Material.PLAYER_HEAD) {
-                    skullTexture = ItemBuilder.SkullTexture(
+                    skullTexture = XSkull.SkullTexture(
                         element.skull,
                         UUID(0, 0)
                     )

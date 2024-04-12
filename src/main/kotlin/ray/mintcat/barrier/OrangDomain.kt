@@ -75,8 +75,10 @@ object OrangDomain : Plugin() {
         return Material.valueOf(config.getString("ClaimTool", "APPLE")!!)
     }
 
-    private val json = Json {
-        coerceInputValues = true
+    private val json by lazy {
+        Json {
+            coerceInputValues = true
+        }
     }
 
     fun deletePoly(id: BarrierPoly) {
@@ -126,7 +128,6 @@ object OrangDomain : Plugin() {
         ).writeText(json.encodeToString(poly), StandardCharsets.UTF_8)
     }
 
-    @Suppress("UNCHECKED_CAST")
     @Awake(LifeCycle.ACTIVE)
     fun import() {
         worlds.addAll(config.getStringList("ProtectWorlds"))
