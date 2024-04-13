@@ -52,8 +52,8 @@ fun Block.noLinked(skip: List<Material> = listOf()): Boolean {
     return isLinkedSolidBlock(block, skip) && !isHangingBlock(block)
 }
 
-fun isPlayerInRectangle(player: Player, loc1: Location, loc2: Location): Boolean {
-    val world = player.world
+fun isPlayerInRectangle(location: Location, loc1: Location, loc2: Location): Boolean {
+    val world = location.world
     val minX = min(loc1.x, loc2.x)
     val minY = min(loc1.y, loc2.y)
     val minZ = min(loc1.z, loc2.z)
@@ -61,10 +61,8 @@ fun isPlayerInRectangle(player: Player, loc1: Location, loc2: Location): Boolean
     val maxY = max(loc1.y, loc2.y)
     val maxZ = max(loc1.z, loc2.z)
 
-    val playerLocation = player.location
-
-    return playerLocation.world == world &&
-            playerLocation.x >= minX && playerLocation.x <= maxX &&
-            playerLocation.y >= minY && playerLocation.y <= maxY &&
-            playerLocation.z >= minZ && playerLocation.z <= maxZ
+    return location.world == world &&
+            location.x >= minX && location.x <= maxX &&
+            location.y >= minY && location.y <= maxY &&
+            location.z >= minZ && location.z <= maxZ
 }

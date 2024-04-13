@@ -19,10 +19,16 @@ data class Portal(
     val delay: Long = 0
 ) {
     fun isIn(player: Player, skipCheck: Boolean = false): Boolean {
-        val sameWorld = player.world == pos1.world
-        val isInAABB = isPlayerInRectangle(player, pos1, pos2)
-        val hasRequiredLevel = player.level >= level
+        if (player.world != pos1.world) return false
 
-        return sameWorld && (skipCheck || (isInAABB && hasRequiredLevel))
+        val isInAABB = isPlayerInRectangle(player.location, pos1, pos2)
+        val hasRequiredLevel = player.level >= level
+        return (skipCheck || (isInAABB && hasRequiredLevel))
+    }
+
+    fun isIn(location: Location): Boolean {
+        if (location.world != pos1.world) return false
+
+        return isPlayerInRectangle(location, pos1, pos2)
     }
 }
