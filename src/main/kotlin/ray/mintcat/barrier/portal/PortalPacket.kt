@@ -17,18 +17,20 @@ object PortalPacket {
 
     @SubscribeEvent(ignoreCancelled = true)
     fun e(e: PlayerMoveEvent) {
-        val to = e.player.getPortal() ?: return
+        val to = e.to.getPortal() ?: return
         val from = e.from.getPortal()
+        val player = e.player
 
         if (from === to) return
-        if (!baffle.hasNext(e.player.name)) return
+        if (player.level < to.level) return
+        if (!baffle.hasNext(player.name)) return
 
         OrangDomain.config.getStringList("Join.${to.id}").forEach {
-            e.player.execute(it)
+            player.execute(it)
         }
 
         submit(delay = to.delay) {
-            e.player.teleport(
+            player.teleport(
                 to.target,
                 TeleportFlag.Relative.YAW,
                 TeleportFlag.Relative.PITCH,
