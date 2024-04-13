@@ -12,7 +12,6 @@ import ray.mintcat.barrier.portal.Portal
 import ray.mintcat.barrier.portal.PortalPacket.portals
 import ray.mintcat.barrier.refresh.RefreshLoader
 import ray.mintcat.barrier.regen.RegenLoader
-import ray.mintcat.barrier.utils.serializable.LocationSerializer
 import ray.mintcat.barrier.utils.toLocation
 import taboolib.common.LifeCycle
 import taboolib.common.env.RuntimeDependencies
@@ -28,16 +27,14 @@ import java.nio.charset.StandardCharsets
 
 @RuntimeDependencies(
     RuntimeDependency(
-        "!org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.3.3",
+        "org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3",
         test = "!kotlinx.serialization.Serializer",
-        relocate = ["!kotlin.", "!kotlin1822.", "!kotlinx.", "!kotlinx.serialization133."],
-        transitive = false
+        relocate = ["!kotlin.", "!kotlin1822."]
     ),
     RuntimeDependency(
-        "!org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.3.3",
+        "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3",
         test = "!kotlinx.serialization.json.Json",
-        relocate = ["!kotlin.", "!kotlin1822.", "!kotlinx.", "!kotlinx.serialization133."],
-        transitive = false
+        relocate = ["!kotlin.", "!kotlin1822."]
     )
 )
 object OrangDomain : Plugin() {
@@ -68,6 +65,11 @@ object OrangDomain : Plugin() {
     val worlds = ArrayList<String>()
     val spawn = WorldSpawnCover
     val plugin by lazy { BukkitPlugin.getInstance() }
+    private val json by lazy {
+        Json {
+            coerceInputValues = true
+        }
+    }
 
     lateinit var realisticTime: WorldRealisticTime
 
@@ -75,11 +77,6 @@ object OrangDomain : Plugin() {
         return Material.valueOf(config.getString("ClaimTool", "APPLE")!!)
     }
 
-    private val json by lazy {
-        Json {
-            coerceInputValues = true
-        }
-    }
 
     fun deletePoly(id: BarrierPoly) {
         newFile(

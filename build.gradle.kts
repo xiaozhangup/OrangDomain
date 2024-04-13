@@ -15,15 +15,22 @@ taboolib {
             CHAT,
             UI,
             CONFIGURATION,
-            EXPANSION_COMMAND_HELPER
+            EXPANSION_COMMAND_HELPER,
+            EXPANSION_PLAYER_FAKE_OP
         )
 
         version {
             taboolib = "6.1.1-beta17"
         }
-
-        relocate("kotlinx.serialization", "kotlinx.serialization133")
     }
+
+    description {
+        dependencies {
+            name("CapybaraMachinery")
+        }
+    }
+
+//    relocate("kotlinx.serialization", "kotlinx.serialization133")
 }
 
 repositories {
