@@ -27,6 +27,7 @@ taboolib {
     description {
         dependencies {
             name("CapybaraMachinery")
+            name("Adyeshach")
         }
     }
 
@@ -42,8 +43,10 @@ repositories {
 }
 
 dependencies {
+    compileOnly("me.xiaozhangup:CapybaraMachinery:1.0.0")
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.1")
+    compileOnly("ink.ptms.adyeshach:all:2.0.0-snapshot-25")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
     compileOnly(kotlin("stdlib"))
