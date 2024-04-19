@@ -14,15 +14,15 @@ import taboolib.common.platform.function.submit
 import taboolib.library.xseries.XMaterial
 import taboolib.module.ui.ClickEvent
 import taboolib.module.ui.openMenu
-import taboolib.module.ui.type.Basic
-import taboolib.module.ui.type.Linked
+import taboolib.module.ui.type.Chest
+import taboolib.module.ui.type.PageableChest
 import taboolib.platform.util.Slots
 import taboolib.platform.util.buildItem
 
 fun BarrierPoly.openMenu(player: Player) {
     val data = this
     player.playSound(player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f)
-    player.openMenu<Basic>("管理页面") {
+    player.openMenu<Chest>("管理页面") {
         map(
             "#########",
             "#A#B#C#D#",
@@ -62,7 +62,7 @@ fun BarrierPoly.openMenu(player: Player) {
 
 fun BarrierPoly.openSettingMenu(player: Player) {
     val data = this
-    player.openMenu<Basic>("${data.name}设置") {
+    player.openMenu<Chest>("${data.name}设置") {
         player.playSound(player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f)
         map(
             "#########",
@@ -84,7 +84,7 @@ fun BarrierPoly.openSettingMenu(player: Player) {
 fun BarrierPoly.openPermissionUserMenu(player: Player) {
     val data = this
     player.playSound(player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f)
-    player.openMenu<Linked<String>>("${data.name}私有权限管理") {
+    player.openMenu<PageableChest<String>>("${data.name}私有权限管理") {
         rows(6)
         slots(Slots.CENTER)
         elements {
@@ -149,7 +149,7 @@ fun BarrierPoly.openPermissionUserMenu(player: Player) {
 
 fun BarrierPoly.openAddUserMenu(player: Player) {
     val data = this
-    player.openMenu<Linked<Player>>("点击要添加的头像") {
+    player.openMenu<PageableChest<Player>>("点击要添加的头像") {
         rows(6)
         slots(Slots.CENTER)
         elements {
@@ -202,7 +202,7 @@ fun BarrierPoly.openAddUserMenu(player: Player) {
 fun BarrierPoly.openPermissionUser(player: Player, user: String) {
     val data = this
     player.playSound(player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f)
-    player.openMenu<Linked<Permission>>("$user 的权限设置") {
+    player.openMenu<PageableChest<Permission>>("$user 的权限设置") {
         rows(6)
         slots(Slots.CENTER)
         elements {
@@ -246,7 +246,7 @@ fun BarrierPoly.openPermissionUser(player: Player, user: String) {
 fun BarrierPoly.openPermissionMenu(player: Player) {
     val data = this
     player.playSound(player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f)
-    player.openMenu<Linked<Permission>>("${name}全局权限管理") {
+    player.openMenu<PageableChest<Permission>>("${name}全局权限管理") {
         rows(6)
         slots(Slots.CENTER)
         elements {

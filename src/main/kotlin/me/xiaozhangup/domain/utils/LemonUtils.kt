@@ -14,7 +14,7 @@ import taboolib.common.platform.function.console
 import taboolib.common.platform.function.submit
 import taboolib.module.chat.colored
 import taboolib.module.ui.ClickEvent
-import taboolib.module.ui.type.Basic
+import taboolib.module.ui.type.Chest
 import taboolib.platform.compat.replacePlaceholder
 import taboolib.platform.util.buildItem
 import java.util.*
@@ -102,7 +102,7 @@ fun Player.error(vararg block: String) {
     }
 }
 
-operator fun Basic.set(c: Char, buildItem: ItemStack, function: (event: ClickEvent) -> Unit) {
+operator fun Chest.set(c: Char, buildItem: ItemStack, function: (event: ClickEvent) -> Unit) {
     set(c, buildItem(buildItem) {
         colored()
     })

@@ -9,7 +9,7 @@ import taboolib.common.platform.function.submit
 import taboolib.library.xseries.XMaterial
 import taboolib.library.xseries.XSkull
 import taboolib.module.ui.openMenu
-import taboolib.module.ui.type.Linked
+import taboolib.module.ui.type.PageableChest
 import taboolib.platform.util.buildItem
 import java.util.*
 
@@ -63,7 +63,7 @@ object BalloonUI {
     val balloons = mutableListOf<BalloonWarp>()
 
     fun openBalloon(player: Player) {
-        player.openMenu<Linked<BalloonWarp>>(title = "待发的热气球") {
+        player.openMenu<PageableChest<BalloonWarp>>(title = "待发的热气球") {
             map(
                 "=========",
                 "=i=     =",

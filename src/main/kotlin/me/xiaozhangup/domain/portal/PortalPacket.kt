@@ -1,7 +1,6 @@
 package me.xiaozhangup.domain.portal
 
 import io.papermc.paper.entity.TeleportFlag
-import me.xiaozhangup.capybara.taboolib.common5.Baffle
 import me.xiaozhangup.domain.OrangDomain
 import me.xiaozhangup.domain.utils.execute
 import org.bukkit.Location
@@ -9,6 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerMoveEvent
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.submit
+import taboolib.common5.Baffle
 import java.util.concurrent.TimeUnit
 
 object PortalPacket {
