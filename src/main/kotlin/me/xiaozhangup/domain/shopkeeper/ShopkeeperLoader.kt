@@ -1,8 +1,10 @@
 package me.xiaozhangup.domain.shopkeeper
 
-import me.xiaozhangup.capybara.CapybaraMachinery.gson
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import me.xiaozhangup.capybara.utils.buildMessage
 import me.xiaozhangup.capybara.utils.whiteColorCode
+import me.xiaozhangup.domain.OrangDomain.json
 import me.xiaozhangup.domain.shopkeeper.`object`.Shopkeeper
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration
@@ -26,7 +28,7 @@ object ShopkeeperLoader {
     @Awake(LifeCycle.ACTIVE)
     fun init() {
         shopkeepers.listFiles()?.forEach {
-            shops += gson.fromJson(it.readText(), Shopkeeper::class.java)
+            shops += json.decodeFromString(Shopkeeper.serializer(), it.readText())
         }
     }
 
@@ -38,7 +40,7 @@ object ShopkeeperLoader {
 
         shops.forEach {
             newFile(shopkeepers, "${it.id}.json").writeText(
-                gson.toJson(it)
+                json.encodeToString(this)
             )
         } // 保存或覆盖的所有的文件
     }

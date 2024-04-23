@@ -7,6 +7,7 @@ import ink.ptms.adyeshach.core.entity.type.AdyHuman
 import ink.ptms.adyeshach.impl.entity.controller.ControllerLookAtPlayer
 import ink.ptms.adyeshach.impl.entity.trait.impl.setTraitTitle
 import ink.ptms.adyeshach.impl.entity.trait.impl.setTraitTitleHeight
+import kotlinx.serialization.Serializable
 import me.xiaozhangup.capybara.mini
 import me.xiaozhangup.capybara.utils.modifiedColorCode
 import me.xiaozhangup.capybara.utils.serializer.BukkitSerializer.toItemStack
@@ -17,6 +18,7 @@ import org.bukkit.Location
 import org.bukkit.inventory.Merchant
 import org.bukkit.inventory.MerchantRecipe
 
+@Serializable
 data class Shopkeeper(
     val id: String,
     val loc: String,

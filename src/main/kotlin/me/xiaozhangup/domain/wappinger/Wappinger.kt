@@ -1,11 +1,12 @@
 package me.xiaozhangup.domain.wappinger
 
-import me.xiaozhangup.capybara.CapybaraMachinery.gson
+import kotlinx.serialization.encodeToString
 import me.xiaozhangup.capybara.exec
 import me.xiaozhangup.capybara.serves.payment.AfdianPayment
 import me.xiaozhangup.capybara.serves.payment.AfdianPayment.board
 import me.xiaozhangup.capybara.utils.buildMessage
 import me.xiaozhangup.capybara.utils.whiteColorCode
+import me.xiaozhangup.domain.OrangDomain.json
 import me.xiaozhangup.domain.wappinger.objects.DataWarp
 import me.xiaozhangup.domain.wappinger.objects.LocationWarp
 import org.bukkit.command.CommandSender
@@ -102,7 +103,7 @@ object Wappinger {
             if (!file.exists()) file.createNewFile()
 
             file.writeText(
-                gson.toJson(
+                json.encodeToString(
                     warps.first { it.uuid.toString() == file.nameWithoutExtension }.toDataWarp()
                 )
             )
@@ -165,7 +166,7 @@ object Wappinger {
         warpsFolder.listFiles()
             ?.filter { it.name.endsWith(".json") }
             ?.forEach { file ->
-                val data = gson.fromJson(file.readText(), DataWarp::class.java)
+                val data = json.decodeFromString(DataWarp.serializer(), file.readText())
                 warps += data.toLocationWarp()
             }
         info("[Wappinger] Loaded ${warps.size} warp!")

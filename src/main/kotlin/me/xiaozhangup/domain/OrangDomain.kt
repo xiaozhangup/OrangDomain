@@ -65,9 +65,10 @@ object OrangDomain : Plugin() {
     val worlds = ArrayList<String>()
     val spawn = WorldSpawnCover
     val plugin by lazy { BukkitPlugin.getInstance() }
-    private val json by lazy {
+    val json by lazy {
         Json {
             coerceInputValues = true
+            allowStructuredMapKeys = true
         }
     }
 
