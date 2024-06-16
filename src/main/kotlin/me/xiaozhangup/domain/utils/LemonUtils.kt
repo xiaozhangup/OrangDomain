@@ -1,6 +1,6 @@
 package me.xiaozhangup.domain.utils
 
-import me.xiaozhangup.capybara.exec
+import me.xiaozhangup.capybara.utils.exec
 import me.xiaozhangup.domain.OrangDomain
 import me.xiaozhangup.domain.common.permission.Permission
 import me.xiaozhangup.domain.common.poly.BarrierPoly

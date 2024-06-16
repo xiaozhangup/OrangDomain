@@ -61,3 +61,19 @@ configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
+
+publishing {
+    repositories {
+        mavenLocal()
+    }
+
+    publications {
+        create<MavenPublication>("maven") {
+            artifactId = rootProject.name
+            groupId = "me.xiaozhangup"
+            version = rootProject.version.toString()
+
+            artifact("/build/libs/${rootProject.name}-${rootProject.version}.jar")
+        }
+    }
+}

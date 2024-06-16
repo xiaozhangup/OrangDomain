@@ -1,6 +1,6 @@
 package me.xiaozhangup.domain.binder
 
-import me.xiaozhangup.capybara.exec
+import me.xiaozhangup.capybara.utils.exec
 import me.xiaozhangup.capybara.utils.buildSimpleMessage
 import me.xiaozhangup.capybara.utils.serializer.StringSerializer
 import org.bukkit.Location

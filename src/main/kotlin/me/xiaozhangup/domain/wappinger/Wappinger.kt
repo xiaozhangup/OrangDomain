@@ -1,7 +1,7 @@
 package me.xiaozhangup.domain.wappinger
 
 import kotlinx.serialization.encodeToString
-import me.xiaozhangup.capybara.exec
+import me.xiaozhangup.capybara.utils.exec
 import me.xiaozhangup.capybara.serves.payment.AfdianPayment
 import me.xiaozhangup.capybara.serves.payment.AfdianPayment.board
 import me.xiaozhangup.capybara.utils.buildMessage
