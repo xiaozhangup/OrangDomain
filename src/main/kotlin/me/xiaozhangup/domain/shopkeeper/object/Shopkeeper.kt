@@ -8,7 +8,7 @@ import ink.ptms.adyeshach.impl.entity.controller.ControllerLookAtPlayer
 import ink.ptms.adyeshach.impl.entity.trait.impl.setTraitTitle
 import ink.ptms.adyeshach.impl.entity.trait.impl.setTraitTitleHeight
 import kotlinx.serialization.Serializable
-import me.xiaozhangup.capybara.mini
+import me.xiaozhangup.capybara.utils.miniMessage
 import me.xiaozhangup.capybara.utils.modifiedColorCode
 import me.xiaozhangup.capybara.utils.serializer.BukkitSerializer.toItemStack
 import me.xiaozhangup.capybara.utils.serializer.BukkitSerializer.toLocation
@@ -43,7 +43,7 @@ data class Shopkeeper(
     )
 
     fun makeMerchant(): Merchant {
-        val merchant = Bukkit.createMerchant(mini(name))
+        val merchant = Bukkit.createMerchant(miniMessage(name))
         val recipes = mutableListOf<MerchantRecipe>()
 
         merchants.forEach { (r, c) ->
