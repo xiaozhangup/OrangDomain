@@ -35,19 +35,25 @@ class RefreshRunnable(
                 if (material.isEmpty()) continue
 
                 val type = material.random()
-                if (
-                    getLinkedBlocks(block).filter { group.blocks.containsKey(it.type) }.size < group.intensity &&
-                    !block.isHangingBlock()
-                ) {
-                    if (failed > 0) {
-                        failed--
-                    }
+                val linkedBlocks = getLinkedBlocks(block).filter {
+                    group.blocks.containsKey(it.type)
+                }
+                if (linkedBlocks.size < group.intensity) {
+                    if (!block.isHangingBlock()) {
+                        if (failed > 0) {
+                            failed--
+                        }
 
-                    block.type = type
-                    break
+                        block.type = type
+                        break
+                    } else {
+                        failed++
+                        continue
+                    }
                 } else {
-                    failed++
-                    continue
+                    linkedBlocks.firstOrNull {
+                        it.location.getNearbyPlayers(6.0).isEmpty() && !block.isHangingBlock()
+                    }?.type = group.source
                 }
             }
         }
