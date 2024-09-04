@@ -35,7 +35,7 @@ class BarrierPoly(
 ) {
     fun isDestructible(material: Material): Boolean {
         return destructible.contains(material.name) || RegenLoader.regens[id]?.map { it.materials }?.flatten()
-            ?.contains(material) ?: false
+            ?.contains(material) == true
     }
 
     fun teleport(player: Player) {

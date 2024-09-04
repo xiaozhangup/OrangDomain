@@ -1,4 +1,4 @@
-package me.xiaozhangup.domain.common
+package me.xiaozhangup.domain.common.placeholder
 
 import me.xiaozhangup.domain.utils.getPoly
 import org.bukkit.entity.Player

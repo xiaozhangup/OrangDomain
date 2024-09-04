@@ -14,6 +14,8 @@ taboolib {
         install(
             CHAT,
             UI,
+            NMS,
+            NMS_UTIL,
             CONFIGURATION,
             EXPANSION_COMMAND_HELPER,
             EXPANSION_PLAYER_FAKE_OP
@@ -62,6 +64,11 @@ configure<JavaPluginConvention> {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
+tasks.register<Jar>("sourceJar") {
+    from(sourceSets["main"].allSource)
+    archiveClassifier.set("sources")
+}
+
 publishing {
     repositories {
         mavenLocal()
@@ -73,7 +80,9 @@ publishing {
             groupId = "me.xiaozhangup"
             version = rootProject.version.toString()
 
-            artifact("/build/libs/${rootProject.name}-${rootProject.version}.jar")
+            from(components["kotlin"])
+            artifact(tasks["sourceJar"])
+            artifact("/build/libs/${rootProject.name}-${rootProject.version}-api.jar")
         }
     }
 }

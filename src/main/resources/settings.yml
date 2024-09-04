@@ -3,6 +3,11 @@ ProtectWorlds:
   - Lobby
 
 TimeSyncWorlds: []
+Looking:
+  hurtable: ""
+  breakable: ""
+  interactable: ""
+  unusable: ""
 
 Join:
   new_main:

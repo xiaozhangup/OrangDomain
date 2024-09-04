@@ -2,6 +2,7 @@ package me.xiaozhangup.domain.common.extension
 
 import me.xiaozhangup.domain.OrangDomain
 import me.xiaozhangup.domain.OrangDomain.regions
+import me.xiaozhangup.domain.common.poly.BarrierPoly
 import me.xiaozhangup.domain.utils.getPoly
 import me.xiaozhangup.domain.utils.rootDamager
 import org.bukkit.entity.*
@@ -45,5 +46,25 @@ object PolyEntityControl {
         if (OrangDomain.worlds.contains(e.entity.world.name) && !player.isOp) {
             e.isCancelled = true
         }
+    }
+
+    /**
+     * 判断是否可以伤害动物
+     *
+     * @param poly Poly对象
+     * @return 如果允许伤害动物则返回true
+     */
+    fun canHurtAnimal(poly: BarrierPoly): Boolean {
+        return regions.getBoolean("${poly.id}.spawnAnimal")
+    }
+
+    /**
+     * 判断是否可以伤害怪物
+     *
+     * @param poly Poly对象
+     * @return 如果允许伤害怪物则返回true
+     */
+    fun canHurtMonster(poly: BarrierPoly): Boolean {
+        return regions.getBoolean("${poly.id}.spawnMonster")
     }
 }
