@@ -3,26 +3,28 @@ import io.izzel.taboolib.gradle.*
 plugins {
     `java-library`
     `maven-publish`
-    id("io.izzel.taboolib") version "2.0.11"
+    id("io.izzel.taboolib") version "2.0.17"
     id("org.jetbrains.kotlin.jvm") version "1.8.22"
     kotlin("plugin.serialization") version "1.8.22"
 }
 
 taboolib {
     env {
-        install(UNIVERSAL, BUKKIT, BUKKIT_ALL)
         install(
-            CHAT,
-            UI,
-            NMS,
-            NMS_UTIL,
-            CONFIGURATION,
-            EXPANSION_COMMAND_HELPER,
-            EXPANSION_PLAYER_FAKE_OP
+            Bukkit,
+            BukkitNMS,
+            BukkitHook,
+            BukkitUtil,
+            BukkitNMSUtil,
+            BukkitUI,
+            BukkitFakeOp,
+            Basic,
+            MinecraftChat,
+            CommandHelper
         )
 
         version {
-            taboolib = "6.1.2-beta10"
+            taboolib = "6.2.0-beta5"
         }
     }
 
@@ -33,7 +35,7 @@ taboolib {
         }
     }
 
-//    relocate("kotlinx.serialization", "kotlinx.serialization133")
+    relocate("kotlinx.serialization", "kotlinx.serialization140")
 }
 
 repositories {

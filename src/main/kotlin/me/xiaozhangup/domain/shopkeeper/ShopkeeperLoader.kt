@@ -40,7 +40,7 @@ object ShopkeeperLoader {
 
         shops.forEach {
             newFile(shopkeepers, "${it.id}.json").writeText(
-                json.encodeToString(this)
+                json.encodeToString(it)
             )
         } // 保存或覆盖的所有的文件
     }

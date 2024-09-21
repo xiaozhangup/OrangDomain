@@ -27,15 +27,17 @@ import java.nio.charset.StandardCharsets
 
 @RuntimeDependencies(
     RuntimeDependency(
-        "org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3",
+        "!org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.4.0",
         test = "!kotlinx.serialization.Serializer",
-        relocate = ["!kotlin.", "!kotlin1822."]
+        relocate = ["!kotlin.", "!kotlin1822.", "!kotlinx.serialization.", "!kotlinx.serialization140."],
+        transitive = false
     ),
     RuntimeDependency(
-        "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3",
+        "!org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.4.0",
         test = "!kotlinx.serialization.json.Json",
-        relocate = ["!kotlin.", "!kotlin1822."]
-    )
+        relocate = ["!kotlin.", "!kotlin1822.", "!kotlinx.serialization.", "!kotlinx.serialization140."],
+        transitive = false
+    ),
 )
 object OrangDomain : Plugin() {
 
