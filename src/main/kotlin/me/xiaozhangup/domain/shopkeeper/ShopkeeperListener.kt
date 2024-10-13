@@ -1,13 +1,14 @@
 package me.xiaozhangup.domain.shopkeeper
 
-import ink.ptms.adyeshach.core.event.AdyeshachEntityInteractEvent
+import de.oliver.fancynpcs.api.actions.ActionTrigger
+import de.oliver.fancynpcs.api.events.NpcInteractEvent
 import taboolib.common.platform.event.SubscribeEvent
 
 object ShopkeeperListener {
     @SubscribeEvent
-    fun e(e: AdyeshachEntityInteractEvent) {
-        val entityId = e.entity.id
-        if (entityId.startsWith("shopkeeper-") && e.isMainHand) {
+    fun e(e: NpcInteractEvent) {
+        val entityId = e.npc.data.name
+        if (entityId.startsWith("shopkeeper-") && e.interactionType == ActionTrigger.RIGHT_CLICK) {
             val id = entityId.substringAfter("shopkeeper-")
             val player = e.player
 

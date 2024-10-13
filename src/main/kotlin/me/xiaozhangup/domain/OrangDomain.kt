@@ -27,15 +27,22 @@ import java.nio.charset.StandardCharsets
 
 @RuntimeDependencies(
     RuntimeDependency(
-        "!org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.4.0",
+        "!org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.6.3",
         test = "!kotlinx.serialization.Serializer",
-        relocate = ["!kotlin.", "!kotlin1822.", "!kotlinx.serialization.", "!kotlinx.serialization140."],
+        relocate = ["!kotlin.", "!kotlin1925.", "!kotlinx.serialization.", "!kotlinx.serialization163."],
         transitive = false
     ),
     RuntimeDependency(
-        "!org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.4.0",
+        "!org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.6.3",
         test = "!kotlinx.serialization.json.Json",
-        relocate = ["!kotlin.", "!kotlin1822.", "!kotlinx.serialization.", "!kotlinx.serialization140."],
+        relocate = ["!kotlin.", "!kotlin1925.", "!kotlinx.serialization.", "!kotlinx.serialization163."],
+        transitive = false
+    ),
+    RuntimeDependency(
+        "ink.pmc.advkt:core:1.0.0",
+        test = "ink.pmc.advkt.sound.SoundKt",
+        relocate = ["!kotlin.", "!kotlin1925."],
+        repository = "https://maven.nostal.ink/repository/maven-public",
         transitive = false
     ),
 )

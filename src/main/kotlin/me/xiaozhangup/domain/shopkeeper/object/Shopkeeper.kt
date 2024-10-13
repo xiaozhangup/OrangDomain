@@ -1,12 +1,8 @@
 package me.xiaozhangup.domain.shopkeeper.`object`
 
-import ink.ptms.adyeshach.core.Adyeshach
-import ink.ptms.adyeshach.core.entity.EntityTypes
-import ink.ptms.adyeshach.core.entity.manager.ManagerType
-import ink.ptms.adyeshach.core.entity.type.AdyHuman
-import ink.ptms.adyeshach.impl.entity.controller.ControllerLookAtPlayer
-import ink.ptms.adyeshach.impl.entity.trait.impl.setTraitTitle
-import ink.ptms.adyeshach.impl.entity.trait.impl.setTraitTitleHeight
+import de.oliver.fancynpcs.api.FancyNpcsPlugin
+import de.oliver.fancynpcs.api.NpcData
+import de.oliver.fancynpcs.api.utils.SkinFetcher
 import kotlinx.serialization.Serializable
 import me.xiaozhangup.capybara.utils.miniMessage
 import me.xiaozhangup.capybara.utils.modifiedColorCode
@@ -17,6 +13,7 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.inventory.Merchant
 import org.bukkit.inventory.MerchantRecipe
+import java.util.UUID
 
 @Serializable
 data class Shopkeeper(
@@ -67,46 +64,23 @@ data class Shopkeeper(
     }
 
     fun createNPC() {
-        val manager = Adyeshach.api().getPublicEntityManager(ManagerType.PERSISTENT)
+        val data = NpcData("shopkeeper-$id", UUID.randomUUID(), getLocation())
+        data.skin = SkinFetcher.fetchSkin(skin).get()
+        data.displayName = "@none"
+        data.isTurnToPlayer = true
 
-        manager.create(
-            EntityTypes.PLAYER,
-            getLocation()
-        ) { entity ->
-            entity as AdyHuman
-
-            entity.registerController(ControllerLookAtPlayer(entity, 8.0, 1.0))
-            entity.setTraitTitleHeight(0.0)
-
-            entity.id = "shopkeeper-$id"
-
-            // 加载已有的数据并应用
-            entity.setTexture(skin)
-            entity.setSkinCapeEnabled(false)
-
-            // 名称和头衔加载
-            entity.setName("")
-            entity.setTraitTitle(null)
-
-            val nameColor = try {
-                modifiedColorCode(color, 0.7f)
-            } catch (_: Exception) {
-                color
-            }
-            entity.setTraitTitle(listOf("&{$nameColor}&l🛒", "&{$color}$name"))
-        }
+        val npc = FancyNpcsPlugin.get().npcAdapter.apply(data)
+        FancyNpcsPlugin.get().npcManager.registerNpc(npc)
+        npc.create()
+        npc.spawnForAll()
     }
 
     fun removeNPC(): Boolean {
-        val manager = Adyeshach.api().getPublicEntityManager(ManagerType.PERSISTENT)
-
-        manager.getEntities().filter { instance ->
-            instance.id == "shopkeeper-$id"
-        }.forEach { instance ->
-            instance.remove()
+        val npc = FancyNpcsPlugin.get().npcManager.getNpc("shopkeeper-$id")
+        if (npc != null) {
+            FancyNpcsPlugin.get().npcManager.removeNpc(npc)
             return true
         }
-
         return false
     }
 

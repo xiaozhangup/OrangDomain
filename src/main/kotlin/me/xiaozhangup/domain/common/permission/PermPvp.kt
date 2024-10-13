@@ -34,10 +34,6 @@ object PermPvp : Permission, Listener {
     override val playerSide: Boolean
         get() = true
 
-    private val bootableEntity = listOf(
-        EntityType.FISHING_HOOK
-    )
-
     override fun generateMenuItem(value: Boolean): ItemStack {
         return buildItem(XMaterial.DIAMOND_SWORD) {
             name = "&fPVP ${value.display} &7($id)"
