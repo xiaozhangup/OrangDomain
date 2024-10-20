@@ -354,6 +354,16 @@ object BarrierCommand {
         }
     }
 
+    @CommandBody
+    val current = subCommand {
+        execute<Player> { sender, _, _ ->
+            val poly = sender.location.getPoly() ?: return@execute run {
+                sender.error("您必须在一个领地内")
+            }
+            sender.info("当前领地: ${poly.name} (${poly.id})")
+        }
+    }
+
     private fun initConfigSection(build: BarrierPoly) {
         OrangDomain.regions["${build.id}.spawnAnimal"] = false
         OrangDomain.regions["${build.id}.spawnMonster"] = false
