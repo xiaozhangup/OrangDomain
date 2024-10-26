@@ -38,6 +38,7 @@ object LookingPlaceholder : PlaceholderExpansion {
             Type.YAML
         )
     }
+    private val local by lazy { MinecraftLanguage.getDefaultLanguageFile()!! }
     private var lastModification = 0L
     private var lastAccess = 0L
 
@@ -89,9 +90,8 @@ object LookingPlaceholder : PlaceholderExpansion {
     }
 
     fun getTranslate(stack: Material): String {
-        val file = MinecraftLanguage.getDefaultLanguageFile() ?: return "NO_LOCALE"
-        val key = stack.key.key
-        val result = file[key] ?: run {
+        var result = local[MinecraftLanguage.LanguageKey(MinecraftLanguage.LanguageKey.Type.NORMAL, stack.translationKey())] ?: ""
+        if (result.isBlank()) {
             if (currentTimeMillis() - lastAccess > 3000) {
                 if (translateMapping.lastModified() > lastModification) {
                     lastModification = translateMapping.lastModified()
@@ -100,9 +100,10 @@ object LookingPlaceholder : PlaceholderExpansion {
                 }
                 lastAccess = currentTimeMillis()
             } // 自动同步的操作
-            mapping.getString(key.replace('.', '_'), "")!!
-        }
-        if (result.isBlank()) {
+
+            val key = stack.key.key // 通过人类可用的key寻找，找不到就写入
+            result = mapping.getString(key.replace('.', '_'), "")!!
+
             mapping[key.replace('.', '_')] = ""
             mapping.saveToFile()
             warning("[Looking] No translate found for $key, please translate it in translate.mapping.")
