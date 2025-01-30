@@ -43,7 +43,7 @@ taboolib {
 repositories {
     mavenLocal()
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    maven("https://papermc.io/repo/repository/maven-public/")
+    maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://maven.evokegames.gg/snapshots")
     maven("https://repo.codemc.io/repository/maven-releases/")
     maven("https://repo.fancyplugins.de/releases")

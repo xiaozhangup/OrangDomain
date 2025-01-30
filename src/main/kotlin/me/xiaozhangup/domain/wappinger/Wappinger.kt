@@ -1,9 +1,12 @@
 package me.xiaozhangup.domain.wappinger
 
 import kotlinx.serialization.encodeToString
+import me.xiaozhangup.capybara.serves.payment.AfdianContent.back
+import me.xiaozhangup.capybara.serves.payment.AfdianContent.board
+import me.xiaozhangup.capybara.serves.payment.AfdianContent.next
+import me.xiaozhangup.capybara.serves.payment.AfdianContent.previous
 import me.xiaozhangup.capybara.utils.exec
 import me.xiaozhangup.capybara.serves.payment.AfdianPayment
-import me.xiaozhangup.capybara.serves.payment.AfdianPayment.board
 import me.xiaozhangup.capybara.utils.buildMessage
 import me.xiaozhangup.capybara.utils.whiteColorCode
 import me.xiaozhangup.domain.OrangDomain.json
@@ -135,7 +138,7 @@ object Wappinger {
             }
 
             if (fromMain) {
-                set('m', AfdianPayment.back) {
+                set('m', back) {
                     player.exec("cd")
                 }
             } else {
@@ -144,10 +147,10 @@ object Wappinger {
             set('=') { board }
 
             setPreviousPage(getFirstSlot('p')) { _, _ ->
-                AfdianPayment.previous
+                previous
             }
             setNextPage(getFirstSlot('n')) { _, _ ->
-                AfdianPayment.next
+                next
             }
 
             onClick { _, element ->

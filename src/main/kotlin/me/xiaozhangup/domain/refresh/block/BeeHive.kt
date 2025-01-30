@@ -25,6 +25,7 @@ object BeeHive {
         if (beehive.honeyLevel < 1) {
             if (baffle.hasNext(fromLocation(block.location))) {
                 beehive.honeyLevel = 5
+                block.blockData = beehive
             } else {
                 e.player.sendActionBar(component)
             }
