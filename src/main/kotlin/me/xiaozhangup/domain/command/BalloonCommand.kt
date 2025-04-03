@@ -10,13 +10,14 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import taboolib.common.platform.command.CommandBody
 import taboolib.common.platform.command.CommandHeader
+import taboolib.common.platform.command.PermissionDefault
 import taboolib.common.platform.command.mainCommand
 import taboolib.common.platform.command.subCommand
 import taboolib.expansion.createHelper
 
 @CommandHeader(
     name = "balloon",
-    permission = "barrier.main"
+    permissionDefault = PermissionDefault.TRUE
 )
 object BalloonCommand {
 
@@ -26,7 +27,7 @@ object BalloonCommand {
     }
 
     //bres create 测试
-    @CommandBody
+    @CommandBody(permission = "barrier.main")
     val create = subCommand {
         dynamic("id") {
             dynamic("name") {
@@ -47,7 +48,7 @@ object BalloonCommand {
         }
     }
 
-    @CommandBody
+    @CommandBody(permission = "barrier.main")
     val reload = subCommand {
         execute<CommandSender> { sender, _, _ ->
             OrangDomain.balloon.reload()

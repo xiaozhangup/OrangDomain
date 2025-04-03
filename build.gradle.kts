@@ -25,7 +25,7 @@ taboolib {
         )
 
         version {
-            taboolib = "6.2.0-beta15"
+            taboolib = "6.2.3-20d868d"
         }
     }
 

@@ -1,6 +1,7 @@
 package me.xiaozhangup.domain.portal
 
 import io.papermc.paper.entity.TeleportFlag
+import me.xiaozhangup.capybara.serves.quest.impl.guide.GuideRecord
 import me.xiaozhangup.domain.OrangDomain
 import me.xiaozhangup.domain.utils.execute
 import org.bukkit.Location
@@ -28,6 +29,7 @@ object PortalPacket {
         OrangDomain.config.getStringList("Join.${to.id}").forEach {
             player.execute(it)
         }
+        GuideRecord.markEvent(player, "%${to.id}%")
 
         submit(delay = to.delay) {
             player.teleport(

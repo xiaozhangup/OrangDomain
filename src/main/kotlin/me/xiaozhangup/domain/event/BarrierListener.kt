@@ -1,5 +1,7 @@
 package me.xiaozhangup.domain.event
 
+import me.xiaozhangup.capybara.menu.markOpenedMenu
+import me.xiaozhangup.capybara.serves.quest.impl.guide.GuideRecord
 import me.xiaozhangup.domain.OrangDomain
 import me.xiaozhangup.domain.utils.error
 import me.xiaozhangup.domain.utils.execute
@@ -8,6 +10,7 @@ import me.xiaozhangup.domain.utils.info
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.Particle
 import org.bukkit.entity.Player
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
@@ -15,10 +18,10 @@ import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.inventory.EquipmentSlot
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
-import taboolib.common.platform.ProxyParticle
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.adaptPlayer
 import taboolib.common.platform.function.submit
+import taboolib.library.xseries.ProxyParticle
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.component1
@@ -41,14 +44,11 @@ object BarrierListener {
         }
     }
 
-    private val particle = ProxyParticle.END_ROD
     fun sendParticle(player: Player, location: Location) {
-        particle.sendTo(
-            adaptPlayer(player),
-            taboolib.common.util.Location(
-                location.world!!.name, location.x + 0.5, location.y + 1.5, location.z + 0.5
-            ),
-            count = 2
+        player.spawnParticle(
+            Particle.END_ROD,
+            location.clone().add(0.5, 0.5, 0.5),
+            2
         )
     }
 
@@ -110,16 +110,20 @@ object BarrierListener {
 
     @SubscribeEvent
     fun e(event: BarrierPlayerJoinPolyEvent) {
-        OrangDomain.config.getStringList("Join.${event.poly.id}").forEach {
+        val id = event.poly.id
+        OrangDomain.config.getStringList("Join.$id").forEach {
             event.player.execute(it)
         }
+        GuideRecord.markEvent(event.player, "%$id%")
     }
 
     @SubscribeEvent
     fun e(event: BarrierPlayerLeavePolyEvent) {
-        OrangDomain.config.getStringList("Leave.${event.poly.id}").forEach {
+        val id = event.poly.id
+        OrangDomain.config.getStringList("Leave.$id").forEach {
             event.player.execute(it)
         }
+        GuideRecord.markEvent(event.player, "&$id&")
     }
 
     fun addPoint(
