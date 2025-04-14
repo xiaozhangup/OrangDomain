@@ -99,8 +99,12 @@ publishing {
             version = rootProject.version.toString()
 
             from(components["kotlin"])
-            artifact(tasks["sourceJar"])
-            artifact("/build/libs/${rootProject.name}-${rootProject.version}-api.jar")
+            artifact(tasks["sourceJar"]) {
+                classifier = "sources"
+            }
+            artifact(file("build/libs/${rootProject.name}-${rootProject.version}-api.jar")) {
+                classifier = "api"
+            }
         }
     }
 }
