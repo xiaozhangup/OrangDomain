@@ -1,6 +1,5 @@
 package me.xiaozhangup.domain.refresh.block
 
-import ink.pmc.advkt.component.component
 import me.xiaozhangup.domain.utils.fromLocation
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor

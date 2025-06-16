@@ -26,18 +26,19 @@ taboolib {
 
         version {
             taboolib = "6.2.3-20d868d"
+            coroutines = "1.8.1"
+            skipKotlin = true
+            skipKotlinRelocate = true
         }
     }
 
     description {
         dependencies {
-            name("CapybaraMachinery")
+            name("WhaleMechanism")
+            name("CarbKotlin")
             name("FancyNpcs")
         }
     }
-
-    relocate("kotlinx.serialization", "kotlinx.serialization163")
-//    relocate("me.tofaa.entitylib", "me.xiaozhangup.domain.lib.entitylib")
 }
 
 repositories {
@@ -53,12 +54,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly("me.xiaozhangup:CapybaraMachinery:1.0.0")
+    compileOnly("me.xiaozhangup:WhaleMechanism:1.0.1")
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.1")
-//    compileOnly("de.oliver:FancyNpcs:2.2.2")
-//    compileOnly("com.github.retrooper:packetevents-spigot:2.5.0")
-//    compileOnly("me.tofaa.entitylib:spigot:2.4.10-SNAPSHOT")
     compileOnly("ink.pmc.advkt:core:1.0.0-SNAPSHOT")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")

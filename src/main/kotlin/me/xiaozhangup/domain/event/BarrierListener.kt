@@ -1,7 +1,5 @@
 package me.xiaozhangup.domain.event
 
-import me.xiaozhangup.capybara.menu.markOpenedMenu
-import me.xiaozhangup.capybara.serves.quest.impl.guide.GuideRecord
 import me.xiaozhangup.domain.OrangDomain
 import me.xiaozhangup.domain.utils.error
 import me.xiaozhangup.domain.utils.execute
@@ -19,14 +17,9 @@ import org.bukkit.inventory.EquipmentSlot
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.event.SubscribeEvent
-import taboolib.common.platform.function.adaptPlayer
 import taboolib.common.platform.function.submit
-import taboolib.library.xseries.ProxyParticle
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.set
 
 object BarrierListener {
 
@@ -114,7 +107,6 @@ object BarrierListener {
         OrangDomain.config.getStringList("Join.$id").forEach {
             event.player.execute(it)
         }
-        GuideRecord.markEvent(event.player, "%$id%")
     }
 
     @SubscribeEvent
@@ -123,7 +115,6 @@ object BarrierListener {
         OrangDomain.config.getStringList("Leave.$id").forEach {
             event.player.execute(it)
         }
-        GuideRecord.markEvent(event.player, "&$id&")
     }
 
     fun addPoint(

@@ -1,11 +1,9 @@
 package me.xiaozhangup.domain.shopkeeper
 
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
-import me.xiaozhangup.capybara.utils.buildMessage
-import me.xiaozhangup.capybara.utils.whiteColorCode
 import me.xiaozhangup.domain.OrangDomain.json
 import me.xiaozhangup.domain.shopkeeper.`object`.Shopkeeper
+import me.xiaozhangup.whale.util.chat.Notify
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
@@ -21,9 +19,7 @@ import java.io.File
 object ShopkeeperLoader {
     val shops = mutableListOf<Shopkeeper>()
     val shopkeepers by lazy { newFile(getDataFolder(), "shopkeepers", folder = true) }
-
-    private const val color = "#7e867c"
-    private val prefix = whiteColorCode(color)
+    val notify = Notify("村民", "#7e867c")
 
     @Awake(LifeCycle.ACTIVE)
     fun init() {
@@ -50,7 +46,7 @@ object ShopkeeperLoader {
         command("shopkeeper", permissionDefault = PermissionDefault.OP) {
             literal("list") {
                 execute<CommandSender> { sender, _, _ ->
-                    sender.notify("目前的全部村民如下: ${shops.joinToString(", ") { it.id }}")
+                    notify.send(sender, "目前的全部村民如下: ${shops.joinToString(", ") { it.id }}")
                 }
             }
 
@@ -72,7 +68,7 @@ object ShopkeeperLoader {
                             }
 
                             shop.merchants = recipes
-                            sender.notify("成功从文件中导入交易内容!")
+                            notify.send(sender, "成功从文件中导入交易内容!")
                         }
                     }
                 }
@@ -88,13 +84,13 @@ object ShopkeeperLoader {
                         val shop = shops.firstOrNull { it.id == arg }
 
                         if (shop == null) {
-                            sender.notify("没有到找这个村民!")
+                            notify.send(sender, "没有到找这个村民!")
                             return@execute
                         }
 
                         shop.removeNPC()
                         shops.remove(shop)
-                        sender.notify("成功移除了这个村民!")
+                        notify.send(sender, "成功移除了这个村民!")
                     }
                 }
             }
@@ -121,7 +117,7 @@ object ShopkeeperLoader {
                                     shops += keeper
                                     keeper.createNPC()
 
-                                    sender.notify("成功创建了一个ID为 ${context["id"]} 的村民!")
+                                    notify.send(sender, "成功创建了一个ID为 ${context["id"]} 的村民!")
                                 }
                             }
                         }
@@ -129,8 +125,8 @@ object ShopkeeperLoader {
                 }
 
                 execute<CommandSender> { sender, _, _ ->
-                    sender.notify("命令需求: /shopkeeper create [ID] [名字] [皮肤] [颜色]")
-                    sender.notify("例子: /shopkeeper create spring 春节活动兑换 mlbjqjvz1y0uhduz #ffcb74")
+                    notify.send(sender, "命令需求: /shopkeeper create [ID] [名字] [皮肤] [颜色]")
+                    notify.send(sender, "例子: /shopkeeper create spring 春节活动兑换 mlbjqjvz1y0uhduz #ffcb74")
                 }
             }
 
@@ -144,7 +140,7 @@ object ShopkeeperLoader {
                         val shop = shops.firstOrNull { it.id == arg }
 
                         if (shop == null) {
-                            sender.notify("没有到找这个村民!")
+                            notify.send(sender, "没有到找这个村民!")
                             return@execute
                         }
 
@@ -163,13 +159,13 @@ object ShopkeeperLoader {
                         val shop = shops.firstOrNull { it.id == arg }
 
                         if (shop == null) {
-                            sender.notify("没有到找这个村民!")
+                            notify.send(sender, "没有到找这个村民!")
                             return@execute
                         }
 
                         shop.removeNPC()
                         shop.createNPC()
-                        sender.notify("村民刷新成功!")
+                        notify.send(sender, "村民刷新成功!")
                     }
                 }
             }
@@ -177,15 +173,11 @@ object ShopkeeperLoader {
             literal("save") {
                 execute<CommandSender> { sender, _, _ ->
                     shutdown()
-                    sender.notify("所有村民已经全部保存!")
+                    notify.send(sender, "所有村民已经全部保存!")
                 }
             }
 
             createHelper()
         }
-    }
-
-    fun CommandSender.notify(string: String) {
-        sendMessage(buildMessage("村民", string, color, prefix))
     }
 }

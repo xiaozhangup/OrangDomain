@@ -1,9 +1,9 @@
 package me.xiaozhangup.domain.utils
 
-import me.xiaozhangup.capybara.utils.exec
 import me.xiaozhangup.domain.OrangDomain
 import me.xiaozhangup.domain.common.permission.Permission
 import me.xiaozhangup.domain.common.poly.BarrierPoly
+import me.xiaozhangup.whale.util.ext.executeCommand
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.command.CommandSender
@@ -152,6 +152,6 @@ fun Player.execute(command: String) {
             command.substringAfter("console:").replacePlaceholder(this)
         )
     } else {
-        exec(command.replacePlaceholder(this))
+        executeCommand(command.replacePlaceholder(this))
     }
 }

@@ -1,8 +1,14 @@
 package me.xiaozhangup.domain.utils
 
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.World
 import org.bukkit.block.Block
+import org.bukkit.inventory.ItemStack
+import taboolib.platform.util.deserializeToItemStack
+import taboolib.platform.util.serializeToByteArray
+import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
@@ -64,4 +70,28 @@ fun isPlayerInRectangle(location: Location, loc1: Location, loc2: Location): Boo
             location.x >= minX && location.x <= maxX &&
             location.y >= minY && location.y <= maxY &&
             location.z >= minZ && location.z <= maxZ
+}
+
+fun ItemStack.toBase64(): String {
+    return Base64.getEncoder().encodeToString(serializeToByteArray())
+}
+
+fun String.toItemStack(): ItemStack {
+    return Base64.getDecoder().decode(this).deserializeToItemStack()
+}
+
+fun Location.toRecorded(): String {
+    val loc = this
+    return loc.world!!.name + ":" + loc.x + ":" + loc.y + ":" + loc.z + ":" + loc.yaw + ":" + loc.pitch
+}
+
+fun String.toLocation(): Location {
+    val locData = this.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+    val world: World? = Bukkit.getWorld(locData[0])
+    val x = locData[1].toDouble()
+    val y = locData[2].toDouble()
+    val z = locData[3].toDouble()
+    val yaw = locData[4].toFloat()
+    val pitch = locData[5].toFloat()
+    return Location(world, x, y, z, yaw, pitch)
 }

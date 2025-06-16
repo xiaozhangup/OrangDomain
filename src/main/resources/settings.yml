@@ -2,12 +2,7 @@ ClaimTool: "APPLE"
 ProtectWorlds:
   - Lobby
 
-TimeSyncWorlds: []
-Looking:
-  hurtable: ""
-  breakable: ""
-  interactable: ""
-  unusable: ""
+TimeSyncWorlds: [ ]
 
 Join:
   new_main:

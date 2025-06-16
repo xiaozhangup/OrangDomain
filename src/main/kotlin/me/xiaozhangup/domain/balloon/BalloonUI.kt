@@ -1,6 +1,6 @@
 package me.xiaozhangup.domain.balloon
 
-import me.xiaozhangup.capybara.utils.exec
+import me.xiaozhangup.whale.util.ext.executeCommand
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -74,7 +74,7 @@ object BalloonUI {
             set('=', background)
             set('i', icon)
             set('b', back) {
-                player.exec("isgo")
+                player.executeCommand("isgo")
             }
             slotsBy(' ')
 

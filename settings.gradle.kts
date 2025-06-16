@@ -1,1 +1,1 @@
-rootProject.name="OrangDomain"
+rootProject.name = "OrangDomain"

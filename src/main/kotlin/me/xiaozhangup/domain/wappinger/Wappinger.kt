@@ -1,17 +1,12 @@
 package me.xiaozhangup.domain.wappinger
 
 import kotlinx.serialization.encodeToString
-import me.xiaozhangup.capybara.serves.payment.AfdianContent.back
-import me.xiaozhangup.capybara.serves.payment.AfdianContent.board
-import me.xiaozhangup.capybara.serves.payment.AfdianContent.next
-import me.xiaozhangup.capybara.serves.payment.AfdianContent.previous
-import me.xiaozhangup.capybara.utils.exec
-import me.xiaozhangup.capybara.serves.payment.AfdianPayment
-import me.xiaozhangup.capybara.utils.buildMessage
-import me.xiaozhangup.capybara.utils.whiteColorCode
 import me.xiaozhangup.domain.OrangDomain.json
 import me.xiaozhangup.domain.wappinger.objects.DataWarp
 import me.xiaozhangup.domain.wappinger.objects.LocationWarp
+import me.xiaozhangup.whale.menu.component.icon.MenuIcon
+import me.xiaozhangup.whale.util.chat.Notify
+import me.xiaozhangup.whale.util.ext.executeCommand
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
@@ -30,8 +25,7 @@ import java.util.*
 object Wappinger {
     private val warpsFolder by lazy { File(getDataFolder(), "warps") }
     private val warps = mutableListOf<LocationWarp>()
-    private val color = "#9370DB"
-    private val prefix = whiteColorCode(color)
+    private val notify = Notify("传送", "#9370DB")
 
     @Awake(LifeCycle.ENABLE)
     fun load() {
@@ -47,7 +41,7 @@ object Wappinger {
                 execute<CommandSender> { sender, _, _ ->
                     saveAll()
                     loadWarps()
-                    sender.notify("成功重载了所有传送点, 总计 ${warps.size} 个")
+                    notify.send(sender, "成功重载了所有传送点, 总计 ${warps.size} 个")
                 }
             }
             literal("add", permission = "wappinger.add") {
@@ -64,18 +58,18 @@ object Wappinger {
 
                         saveAll()
                         loadWarps()
-                        sender.notify("成功创建了一个名称为 $argument 的传送点!")
+                        notify.send(sender, "成功创建了一个名称为 $argument 的传送点!")
                     }
                 }
 
                 execute<Player> { sender, _, _ ->
-                    sender.notify("还需要提供一个 ID 作为参数!")
+                    notify.send(sender, "还需要提供一个 ID 作为参数!")
                 }
             }
             literal("merge", permission = "wappinger.merge") {
                 execute<CommandSender> { sender, _, _ ->
                     merge()
-                    sender.notify("已经从旧版数据文件迁移到新版")
+                    notify.send(sender, "已经从旧版数据文件迁移到新版")
                 }
             }
 
@@ -113,10 +107,6 @@ object Wappinger {
         } // 保存现有的传送点
     }
 
-    private fun CommandSender.notify(string: String) {
-        sendMessage(buildMessage("传送", string, color, prefix))
-    }
-
     private fun openWarps(player: Player, fromMain: Boolean = false) {
         player.openMenu<PageableChest<LocationWarp>>(title = "全部的可用传送点") {
             map(
@@ -138,25 +128,25 @@ object Wappinger {
             }
 
             if (fromMain) {
-                set('m', back) {
-                    player.exec("cd")
+                set('m', MenuIcon.BACK) {
+                    player.executeCommand("cd")
                 }
             } else {
-                set('m', board)
+                set('m', MenuIcon.BLACK_PANE)
             }
-            set('=') { board }
+            set('=') { MenuIcon.BLACK_PANE }
 
             setPreviousPage(getFirstSlot('p')) { _, _ ->
-                previous
+                MenuIcon.PRE
             }
             setNextPage(getFirstSlot('n')) { _, _ ->
-                next
+                MenuIcon.NEXT
             }
 
             onClick { _, element ->
                 player.closeInventory()
                 player.teleportAsync(element.location).thenAccept {
-                    player.notify("您已被传送至 ${element.name}...")
+                    notify.send(player, "您已被传送至 {0}...", element.name)
                 }
             }
 

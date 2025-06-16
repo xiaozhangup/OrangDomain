@@ -4,16 +4,15 @@ import de.oliver.fancynpcs.api.FancyNpcsPlugin
 import de.oliver.fancynpcs.api.NpcData
 import de.oliver.fancynpcs.api.utils.SkinFetcher
 import kotlinx.serialization.Serializable
-import me.xiaozhangup.capybara.utils.miniMessage
-import me.xiaozhangup.capybara.utils.modifiedColorCode
-import me.xiaozhangup.capybara.utils.serializer.BukkitSerializer.toItemStack
-import me.xiaozhangup.capybara.utils.serializer.BukkitSerializer.toLocation
-import me.xiaozhangup.capybara.utils.serializer.BukkitSerializer.toRecorded
+import me.xiaozhangup.domain.utils.toItemStack
+import me.xiaozhangup.domain.utils.toLocation
+import me.xiaozhangup.domain.utils.toRecorded
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.inventory.Merchant
 import org.bukkit.inventory.MerchantRecipe
-import java.util.UUID
+import java.util.*
 
 @Serializable
 data class Shopkeeper(
@@ -40,7 +39,7 @@ data class Shopkeeper(
     )
 
     fun makeMerchant(): Merchant {
-        val merchant = Bukkit.createMerchant(miniMessage(name))
+        val merchant = Bukkit.createMerchant(MiniMessage.miniMessage().deserialize(name))
         val recipes = mutableListOf<MerchantRecipe>()
 
         merchants.forEach { (r, c) ->

@@ -1,7 +1,7 @@
 package me.xiaozhangup.domain.wappinger.objects
 
-import me.xiaozhangup.capybara.utils.serializer.BukkitSerializer.toBase64
-import me.xiaozhangup.capybara.utils.serializer.BukkitSerializer.toRecorded
+import me.xiaozhangup.domain.utils.toBase64
+import me.xiaozhangup.domain.utils.toRecorded
 import org.bukkit.Location
 import org.bukkit.inventory.ItemStack
 import java.util.*

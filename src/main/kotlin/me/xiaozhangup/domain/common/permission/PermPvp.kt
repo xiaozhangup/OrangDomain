@@ -4,7 +4,6 @@ import me.xiaozhangup.domain.utils.display
 import me.xiaozhangup.domain.utils.getPoly
 import me.xiaozhangup.domain.utils.register
 import me.xiaozhangup.domain.utils.rootDamager
-import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent

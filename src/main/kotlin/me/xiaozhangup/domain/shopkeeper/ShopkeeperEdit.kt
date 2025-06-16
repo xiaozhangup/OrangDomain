@@ -1,9 +1,9 @@
 package me.xiaozhangup.domain.shopkeeper
 
-import me.xiaozhangup.capybara.utils.serializer.BukkitSerializer.toBase64
-import me.xiaozhangup.capybara.utils.serializer.BukkitSerializer.toItemStack
 import me.xiaozhangup.domain.shopkeeper.ShopkeeperLoader.notify
 import me.xiaozhangup.domain.shopkeeper.`object`.Shopkeeper
+import me.xiaozhangup.domain.utils.toBase64
+import me.xiaozhangup.domain.utils.toItemStack
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import taboolib.module.ui.openMenu
@@ -24,7 +24,7 @@ object ShopkeeperEdit {
 
     fun openEdit(shopkeeper: Shopkeeper, player: Player) {
         if (shopkeeper.merchants.size > 15) {
-            player.notify("该村民不支持普通编辑操作!")
+            notify.send(player, "该村民不支持普通编辑操作!")
             return
         }
         player.openMenu<StorableChest>(title = "") {

@@ -2,7 +2,6 @@ package me.xiaozhangup.domain.command
 
 import me.xiaozhangup.domain.OrangDomain
 import me.xiaozhangup.domain.common.openMenu
-import me.xiaozhangup.domain.common.placeholder.LookingPlaceholder
 import me.xiaozhangup.domain.common.poly.BarrierPoly
 import me.xiaozhangup.domain.event.BarrierListener
 import me.xiaozhangup.domain.utils.error
@@ -344,10 +343,6 @@ object BarrierCommand {
                 OrangDomain.realisticTime.shutdown()
                 OrangDomain.initTimeSync()
                 OrangDomain.initWorldSpawn()
-            }.exceptionOrNull()
-
-            runCatching {
-                LookingPlaceholder.refreshIcons()
             }.exceptionOrNull()
 
             sender.info("已成功重载所有配置文件")

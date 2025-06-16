@@ -14,8 +14,6 @@ import me.xiaozhangup.domain.regen.RegenLoader
 import me.xiaozhangup.domain.utils.toLocation
 import org.bukkit.Material
 import taboolib.common.LifeCycle
-import taboolib.common.env.RuntimeDependencies
-import taboolib.common.env.RuntimeDependency
 import taboolib.common.io.newFile
 import taboolib.common.platform.Awake
 import taboolib.common.platform.Plugin
@@ -25,27 +23,6 @@ import taboolib.module.configuration.Configuration
 import taboolib.platform.BukkitPlugin
 import java.nio.charset.StandardCharsets
 
-@RuntimeDependencies(
-    RuntimeDependency(
-        "!org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.6.3",
-        test = "!kotlinx.serialization.Serializer",
-        relocate = ["!kotlin.", "!kotlin1925.", "!kotlinx.serialization.", "!kotlinx.serialization163."],
-        transitive = false
-    ),
-    RuntimeDependency(
-        "!org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.6.3",
-        test = "!kotlinx.serialization.json.Json",
-        relocate = ["!kotlin.", "!kotlin1925.", "!kotlinx.serialization.", "!kotlinx.serialization163."],
-        transitive = false
-    ),
-    RuntimeDependency(
-        "ink.pmc.advkt:core:1.0.0",
-        test = "ink.pmc.advkt.sound.SoundKt",
-        relocate = ["!kotlin.", "!kotlin1925."],
-        repository = "https://maven.nostal.ink/repository/maven-public",
-        transitive = false
-    ),
-)
 object OrangDomain : Plugin() {
 
     @Config(migrate = true, value = "settings.yml")

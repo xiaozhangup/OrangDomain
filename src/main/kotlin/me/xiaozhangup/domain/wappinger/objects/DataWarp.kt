@@ -1,9 +1,9 @@
 package me.xiaozhangup.domain.wappinger.objects
 
 import kotlinx.serialization.Serializable
-import me.xiaozhangup.capybara.utils.serializer.BukkitSerializer.toItemStack
-import me.xiaozhangup.capybara.utils.serializer.BukkitSerializer.toLocation
 import me.xiaozhangup.domain.utils.serializable.UUIDSerializable
+import me.xiaozhangup.domain.utils.toItemStack
+import me.xiaozhangup.domain.utils.toLocation
 import java.util.*
 
 @Serializable
