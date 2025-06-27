@@ -63,12 +63,18 @@ object BarrierCommand {
                 }
             }
         }
+
+        createHelper()
     }
 
     @CommandBody
     val list = subCommand {
         execute<CommandSender> { sender, _, _ ->
-            OrangDomain.polys.forEach {
+            val player = sender as? Player
+            OrangDomain.polys.filter {
+                if (player == null) true
+                else it.worldName() == player.world.name
+            }.forEach {
                 sender.info("${it.name} (${it.id})")
             }
         }
@@ -77,8 +83,12 @@ object BarrierCommand {
     @CommandBody
     val edit = subCommand {
         dynamic(comment = "领地名") {
-            suggestion<CommandSender> { _, _ ->
-                OrangDomain.polys.map { it.id }
+            suggestion<CommandSender> {sender, _ ->
+                val player = sender as? Player
+                OrangDomain.polys.filter {
+                    if (player == null) true
+                    else it.worldName() == player.world.name
+                }.map { it.id }
             }
             execute<Player> { sender, context, _ ->
                 val poly =
@@ -99,8 +109,12 @@ object BarrierCommand {
     @CommandBody
     val addDestructible = subCommand {
         dynamic(comment = "领地ID") {
-            suggestion<CommandSender> { _, _ ->
-                OrangDomain.polys.map { it.id }
+            suggestion<CommandSender> {sender, _ ->
+                val player = sender as? Player
+                OrangDomain.polys.filter {
+                    if (player == null) true
+                    else it.worldName() == player.world.name
+                }.map { it.id }
             }
             execute<Player> { sender, context, _ ->
                 val poly =
@@ -122,8 +136,12 @@ object BarrierCommand {
     @CommandBody
     val listDestructible = subCommand {
         dynamic(comment = "领地名") {
-            suggestion<CommandSender> { _, _ ->
-                OrangDomain.polys.map { it.id }
+            suggestion<CommandSender> {sender, _ ->
+                val player = sender as? Player
+                OrangDomain.polys.filter {
+                    if (player == null) true
+                    else it.worldName() == player.world.name
+                }.map { it.id }
             }
             execute<Player> { sender, context, _ ->
                 val poly =
@@ -138,8 +156,12 @@ object BarrierCommand {
     @CommandBody
     val removeDestructible = subCommand {
         dynamic(comment = "领地名") {
-            suggestion<CommandSender> { _, _ ->
-                OrangDomain.polys.map { it.id }
+            suggestion<CommandSender> {sender, _ ->
+                val player = sender as? Player
+                OrangDomain.polys.filter {
+                    if (player == null) true
+                    else it.worldName() == player.world.name
+                }.map { it.id }
             }
             execute<Player> { sender, context, _ ->
                 val poly =
@@ -164,8 +186,12 @@ object BarrierCommand {
     @CommandBody
     val addInteractive = subCommand {
         dynamic(comment = "领地名") {
-            suggestion<CommandSender> { _, _ ->
-                OrangDomain.polys.map { it.id }
+            suggestion<CommandSender> {sender, _ ->
+                val player = sender as? Player
+                OrangDomain.polys.filter {
+                    if (player == null) true
+                    else it.worldName() == player.world.name
+                }.map { it.id }
             }
             execute<Player> { sender, context, _ ->
                 val poly =
@@ -187,8 +213,12 @@ object BarrierCommand {
     @CommandBody
     val listInteractive = subCommand {
         dynamic(comment = "领地名") {
-            suggestion<CommandSender> { _, _ ->
-                OrangDomain.polys.map { it.id }
+            suggestion<CommandSender> {sender, _ ->
+                val player = sender as? Player
+                OrangDomain.polys.filter {
+                    if (player == null) true
+                    else it.worldName() == player.world.name
+                }.map { it.id }
             }
             execute<Player> { sender, context, _ ->
                 val poly =
@@ -203,8 +233,12 @@ object BarrierCommand {
     @CommandBody
     val removeInteractive = subCommand {
         dynamic(comment = "领地名") {
-            suggestion<CommandSender> { _, _ ->
-                OrangDomain.polys.map { it.id }
+            suggestion<CommandSender> {sender, _ ->
+                val player = sender as? Player
+                OrangDomain.polys.filter {
+                    if (player == null) true
+                    else it.worldName() == player.world.name
+                }.map { it.id }
             }
             execute<Player> { sender, context, _ ->
                 val poly =
@@ -229,8 +263,12 @@ object BarrierCommand {
     @CommandBody
     val remove = subCommand {
         dynamic(comment = "领地名") {
-            suggestion<CommandSender> { _, _ ->
-                OrangDomain.polys.map { it.id }
+            suggestion<CommandSender> {sender, _ ->
+                val player = sender as? Player
+                OrangDomain.polys.filter {
+                    if (player == null) true
+                    else it.worldName() == player.world.name
+                }.map { it.id }
             }
             execute<Player> { sender, context, _ ->
                 val poly =
@@ -255,8 +293,12 @@ object BarrierCommand {
     @CommandBody
     val priority = subCommand {
         dynamic(comment = "领地名") {
-            suggestion<CommandSender> { _, _ ->
-                OrangDomain.polys.map { it.id }
+            suggestion<CommandSender> {sender, _ ->
+                val player = sender as? Player
+                OrangDomain.polys.filter {
+                    if (player == null) true
+                    else it.worldName() == player.world.name
+                }.map { it.id }
             }
             dynamic(comment = "优先级 (越大越高)") {
                 execute<Player> { sender, context, _ ->
@@ -280,8 +322,12 @@ object BarrierCommand {
     @CommandBody
     val tp = subCommand {
         dynamic(comment = "领地名") {
-            suggestion<CommandSender> { _, _ ->
-                OrangDomain.polys.map { it.id }
+            suggestion<CommandSender> {sender, _ ->
+                val player = sender as? Player
+                OrangDomain.polys.filter {
+                    if (player == null) true
+                    else it.worldName() == player.world.name
+                }.map { it.id }
             }
             dynamic(comment = "玩家名") {
                 suggestion<CommandSender> { _, _ ->

@@ -60,6 +60,10 @@ class BarrierPoly(
         }
     }
 
+    fun worldName(): String {
+        return nodes.first().world.name
+    }
+
     fun inNode(location: Location): Boolean {
         if (nodes.first().world != location.world) {
             return false

@@ -13,10 +13,14 @@ import me.xiaozhangup.domain.refresh.RefreshLoader
 import me.xiaozhangup.domain.regen.RegenLoader
 import me.xiaozhangup.domain.utils.toLocation
 import org.bukkit.Material
+import org.bukkit.entity.EntityType
+import org.bukkit.entity.Player
+import org.bukkit.event.entity.EntityDamageEvent
 import taboolib.common.LifeCycle
 import taboolib.common.io.newFile
 import taboolib.common.platform.Awake
 import taboolib.common.platform.Plugin
+import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.getDataFolder
 import taboolib.module.configuration.Config
 import taboolib.module.configuration.Configuration
@@ -119,7 +123,6 @@ object OrangDomain : Plugin() {
         initBalloons()
         initPortals()
         initTimeSync()
-        initWorldSpawn()
 
         RegenLoader.init()
         RefreshLoader.init()
