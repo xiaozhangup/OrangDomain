@@ -49,7 +49,6 @@ object OrangDomain : Plugin() {
     val refreshes = ArrayList<RefreshPoly>()
     val permissions = ArrayList<Permission>()
     val worlds = ArrayList<String>()
-    val spawn = WorldSpawnCover
     val plugin by lazy { BukkitPlugin.getInstance() }
     val json by lazy {
         Json {
@@ -164,11 +163,5 @@ object OrangDomain : Plugin() {
         realisticTime = WorldRealisticTime(
             config.getStringList("TimeSyncWorlds")
         )
-    }
-
-    fun initWorldSpawn() {
-        val location = config.getString("SpawnLocation")
-
-        spawn.location = if (location != null) toLocation(location) else null
     }
 }

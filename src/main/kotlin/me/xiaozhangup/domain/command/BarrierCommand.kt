@@ -316,18 +316,6 @@ object BarrierCommand {
     }
 
     @CommandBody
-    val setSpawn = subCommand {
-        execute<Player> { sender, _, _ ->
-            OrangDomain.config["SpawnLocation"] = fromLocation(sender.location)
-            OrangDomain.config.saveToFile()
-
-            sender.world.spawnLocation = sender.location
-
-            OrangDomain.initWorldSpawn()
-        }
-    }
-
-    @CommandBody
     val reload = subCommand {
         execute<Player> { sender, _, _ ->
             OrangDomain.regions.reload()
@@ -342,7 +330,6 @@ object BarrierCommand {
             runCatching {
                 OrangDomain.realisticTime.shutdown()
                 OrangDomain.initTimeSync()
-                OrangDomain.initWorldSpawn()
             }.exceptionOrNull()
 
             sender.info("已成功重载所有配置文件")
