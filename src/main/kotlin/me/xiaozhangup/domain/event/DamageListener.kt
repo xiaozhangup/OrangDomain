@@ -1,5 +1,6 @@
 package me.xiaozhangup.domain.event
 
+import me.xiaozhangup.whale.command.minecraft.MinecraftSpawn
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageEvent
@@ -14,7 +15,9 @@ object DamageListener {
 
             e.isCancelled = true
             player.fallDistance = 0f
-            player.teleportAsync(player.world.spawnLocation)
+            player.teleportAsync(
+                MinecraftSpawn.getPreciseSpawn(player.world)
+            )
         }
     }
 }
