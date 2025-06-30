@@ -1,8 +1,8 @@
 package me.xiaozhangup.domain.utils
 
 import me.xiaozhangup.domain.OrangDomain
-import me.xiaozhangup.domain.common.permission.Permission
-import me.xiaozhangup.domain.common.poly.BarrierPoly
+import me.xiaozhangup.domain.poly.Poly
+import me.xiaozhangup.domain.poly.permission.Permission
 import me.xiaozhangup.whale.util.ext.executeCommand
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -20,7 +20,7 @@ import taboolib.platform.util.buildItem
 import java.util.*
 
 
-fun Location.getPoly(): BarrierPoly? {
+fun Location.getPoly(): Poly? {
     return OrangDomain.polys.filter { it.inNode(this) }.maxByOrNull { it.priority }
 }
 

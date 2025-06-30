@@ -1,9 +1,0 @@
-stone_ore:
-  period: 3600
-  intensity: 2
-  skip_failed: 8
-  source: STONE
-  regions:
-    - new_debug
-  blocks:
-    COAL_ORE: 30..60

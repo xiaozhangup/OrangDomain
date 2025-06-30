@@ -2,29 +2,17 @@ package me.xiaozhangup.domain
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import me.xiaozhangup.domain.balloon.BalloonUI
-import me.xiaozhangup.domain.balloon.BalloonWarp
-import me.xiaozhangup.domain.common.permission.Permission
-import me.xiaozhangup.domain.common.poly.BarrierPoly
-import me.xiaozhangup.domain.common.poly.RefreshPoly
-import me.xiaozhangup.domain.portal.Portal
-import me.xiaozhangup.domain.portal.PortalPacket.portals
-import me.xiaozhangup.domain.refresh.RefreshLoader
-import me.xiaozhangup.domain.regen.RegenLoader
-import me.xiaozhangup.domain.utils.toLocation
+import me.xiaozhangup.domain.poly.Poly
+import me.xiaozhangup.domain.poly.permission.Permission
+import me.xiaozhangup.domain.module.RealisticTime
 import org.bukkit.Material
-import org.bukkit.entity.EntityType
-import org.bukkit.entity.Player
-import org.bukkit.event.entity.EntityDamageEvent
 import taboolib.common.LifeCycle
 import taboolib.common.io.newFile
 import taboolib.common.platform.Awake
 import taboolib.common.platform.Plugin
-import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.getDataFolder
 import taboolib.module.configuration.Config
 import taboolib.module.configuration.Configuration
-import taboolib.platform.BukkitPlugin
 import java.nio.charset.StandardCharsets
 
 object OrangDomain : Plugin() {
@@ -37,57 +25,25 @@ object OrangDomain : Plugin() {
     lateinit var regions: Configuration
         private set
 
-    @Config(value = "regen.yml")
-    lateinit var regen: Configuration
-        private set
-
-    @Config(value = "refresh.yml")
-    lateinit var refresh: Configuration
-        private set
-
-    @Config(value = "balloon.yml")
-    lateinit var balloon: Configuration
-        private set
-
-    val polys = ArrayList<BarrierPoly>()
-    val refreshes = ArrayList<RefreshPoly>()
+    val polys = ArrayList<Poly>()
     val permissions = ArrayList<Permission>()
     val worlds = ArrayList<String>()
-    val plugin by lazy { BukkitPlugin.getInstance() }
     val json by lazy {
         Json {
             coerceInputValues = true
             allowStructuredMapKeys = true
+            prettyPrint = true
         }
     }
-
-    lateinit var realisticTime: WorldRealisticTime
 
     fun getTool(): Material {
         return Material.valueOf(config.getString("ClaimTool", "APPLE")!!)
     }
 
-
-    fun deletePoly(id: BarrierPoly) {
+    fun deletePoly(id: Poly) {
         newFile(
             getDataFolder(),
             "data/${id.id}.json"
-        ).delete()
-    }
-
-    fun deleteRefresh(id: RefreshPoly) {
-        refreshes.remove(id)
-        newFile(
-            getDataFolder(),
-            "refresh/${id.id}.json"
-        ).delete()
-    }
-
-    fun deletePortal(id: Portal) {
-        portals.remove(id)
-        newFile(
-            getDataFolder(),
-            "portal/${id.id}.json"
         ).delete()
     }
 
@@ -99,72 +55,19 @@ object OrangDomain : Plugin() {
         ).writeText(json.encodeToString(poly), StandardCharsets.UTF_8)
     }
 
-    fun saveRefresh(id: String) {
-        val poly = refreshes.firstOrNull { it.id == id } ?: return
-        newFile(
-            getDataFolder(),
-            "refresh/${id}.json"
-        ).writeText(json.encodeToString(poly), StandardCharsets.UTF_8)
-    }
-
-    fun savePortal(id: String) {
-        val poly = portals.firstOrNull { it.id == id } ?: return
-        newFile(
-            getDataFolder(),
-            "portal/${id}.json"
-        ).writeText(json.encodeToString(poly), StandardCharsets.UTF_8)
-    }
-
     @Awake(LifeCycle.ACTIVE)
     fun import() {
         worlds.addAll(config.getStringList("ProtectWorlds"))
         initPolys()
-        initRefreshes()
-        initBalloons()
-        initPortals()
-        initTimeSync()
-
-        RegenLoader.init()
-        RefreshLoader.init()
+        RealisticTime.loadWorlds()
     }
 
     fun initPolys() {
         polys.clear()
         newFile(getDataFolder(), "data", folder = true).listFiles()?.map { file ->
             if (file.name.endsWith(".json")) {
-                polys.add(json.decodeFromString(BarrierPoly.serializer(), file.readText(StandardCharsets.UTF_8)))
+                polys.add(json.decodeFromString(Poly.serializer(), file.readText(StandardCharsets.UTF_8)))
             }
         }
-    }
-
-    fun initPortals() {
-        portals.clear()
-        newFile(getDataFolder(), "portal", folder = true).listFiles()?.map { file ->
-            if (file.name.endsWith(".json")) {
-                portals.add(json.decodeFromString(Portal.serializer(), file.readText(StandardCharsets.UTF_8)))
-            }
-        }
-    }
-
-    fun initRefreshes() {
-        refreshes.clear()
-        newFile(getDataFolder(), "refresh", folder = true).listFiles()?.map { file ->
-            if (file.name.endsWith(".json")) {
-                refreshes.add(json.decodeFromString(RefreshPoly.serializer(), file.readText(StandardCharsets.UTF_8)))
-            }
-        }
-    }
-
-    fun initBalloons() {
-        BalloonUI.balloons.clear()
-        balloon.getKeys(false).forEach {
-            BalloonUI.balloons += BalloonWarp(balloon.getConfigurationSection(it)!!, it)
-        }
-    }
-
-    fun initTimeSync() {
-        realisticTime = WorldRealisticTime(
-            config.getStringList("TimeSyncWorlds")
-        )
     }
 }
