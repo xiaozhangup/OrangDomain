@@ -1,18 +1,18 @@
 package me.xiaozhangup.domain
 
+import com.jeff_media.customblockdata.CustomBlockData
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import me.xiaozhangup.domain.module.RealisticTime
 import me.xiaozhangup.domain.poly.Poly
 import me.xiaozhangup.domain.poly.permission.Permission
-import me.xiaozhangup.domain.module.RealisticTime
 import org.bukkit.Material
-import taboolib.common.LifeCycle
 import taboolib.common.io.newFile
-import taboolib.common.platform.Awake
 import taboolib.common.platform.Plugin
 import taboolib.common.platform.function.getDataFolder
 import taboolib.module.configuration.Config
 import taboolib.module.configuration.Configuration
+import taboolib.platform.BukkitPlugin
 import java.nio.charset.StandardCharsets
 
 object OrangDomain : Plugin() {
@@ -28,12 +28,21 @@ object OrangDomain : Plugin() {
     val polys = ArrayList<Poly>()
     val permissions = ArrayList<Permission>()
     val worlds = ArrayList<String>()
+    val plugin by lazy { BukkitPlugin.getInstance() }
     val json by lazy {
         Json {
             coerceInputValues = true
             allowStructuredMapKeys = true
             prettyPrint = true
         }
+    }
+
+    override fun onEnable() {
+        CustomBlockData.registerListener(plugin)
+    }
+
+    override fun onActive() {
+        import()
     }
 
     fun getTool(): Material {
@@ -55,7 +64,6 @@ object OrangDomain : Plugin() {
         ).writeText(json.encodeToString(poly), StandardCharsets.UTF_8)
     }
 
-    @Awake(LifeCycle.ACTIVE)
     fun import() {
         worlds.addAll(config.getStringList("ProtectWorlds"))
         initPolys()

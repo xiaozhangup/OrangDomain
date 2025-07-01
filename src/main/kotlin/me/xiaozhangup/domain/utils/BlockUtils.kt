@@ -1,5 +1,7 @@
 package me.xiaozhangup.domain.utils
 
+import com.jeff_media.customblockdata.CustomBlockData
+import me.xiaozhangup.domain.OrangDomain.plugin
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -95,3 +97,5 @@ fun String.toLocation(): Location {
     val pitch = locData[5].toFloat()
     return Location(world, x, y, z, yaw, pitch)
 }
+
+val Block.customBlockData get() : CustomBlockData = CustomBlockData(this, plugin)

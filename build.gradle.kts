@@ -34,15 +34,18 @@ taboolib {
 
     description {
         dependencies {
-            name("WhaleMechanism")
             name("CarbKotlin")
-            name("FancyNpcs")
+            name("WhaleMechanism")
+            name("Coins")
         }
     }
+
+    relocate("com.jeff_media.customblockdata", "me.xiaozhangup.ceramic.lib.customblockdata")
 }
 
 repositories {
     mavenLocal()
+    mavenCentral()
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://maven.evokegames.gg/snapshots")
@@ -50,14 +53,15 @@ repositories {
     maven("https://repo.fancyplugins.de/releases")
     maven("https://jitpack.io")
     maven("https://maven.nostal.ink/repository/maven-public/")
-    mavenCentral()
 }
 
 dependencies {
     compileOnly("me.xiaozhangup:WhaleMechanism:1.0.1")
     compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.1")
-    compileOnly("ink.pmc.advkt:core:1.0.0-SNAPSHOT")
+
+    taboo("com.jeff-media:custom-block-data:2.2.5")
+
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     compileOnly(kotlin("stdlib"))
@@ -97,12 +101,6 @@ publishing {
             version = rootProject.version.toString()
 
             from(components["kotlin"])
-            artifact(tasks["sourceJar"]) {
-                classifier = "sources"
-            }
-            artifact(file("build/libs/${rootProject.name}-${rootProject.version}-api.jar")) {
-                classifier = "api"
-            }
         }
     }
 }
