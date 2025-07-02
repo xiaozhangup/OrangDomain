@@ -6,6 +6,7 @@ import kotlinx.serialization.encodeToString
 import me.xiaozhangup.domain.OrangDomain.json
 import me.xiaozhangup.domain.ores.Ores.data
 import me.xiaozhangup.domain.ores.Ores.oreKey
+import me.xiaozhangup.domain.ores.Ores.refreshingKey
 import me.xiaozhangup.domain.ores.Ores.rotations
 import me.xiaozhangup.domain.ores.Ores.textures
 import me.xiaozhangup.domain.utils.IntervalTrigger
@@ -25,7 +26,6 @@ import taboolib.common.function.throttle
 import taboolib.common.io.newFile
 import taboolib.library.configuration.ConfigurationSection
 import java.util.*
-import kotlin.collections.plusAssign
 import kotlin.math.max
 import kotlin.math.min
 
@@ -96,12 +96,13 @@ data class Refreshing(
 
         if (blocks.isNotEmpty()) {
             val b = blocks.random()
-            val id = setting!!.weight.random()!!
+            val texture = setting!!.weight.random()!!
             placeSkullBlock(
-                textures[id] ?: throw IllegalArgumentException("Texture $id not found"),
+                textures[texture] ?: throw IllegalArgumentException("Texture $texture not found"),
                 b
             )
-            b.customBlockData.set(oreKey, PersistentDataType.STRING, id)
+            b.customBlockData.set(oreKey, PersistentDataType.STRING, texture)
+            b.customBlockData.set(refreshingKey, PersistentDataType.STRING, id)
             failed = 0
 
             // 记录这个成功的点位
@@ -167,8 +168,8 @@ data class Refreshing(
         for (x in -range..range) {
             for (y in -range..range) {
                 for (z in -range..range) {
-                    val block = block.getRelative(x, y, z)
-                    if (boolean(block)) {
+                    val b = block.getRelative(x, y, z)
+                    if (boolean(b)) {
                         return true
                     }
                 }

@@ -12,14 +12,11 @@ plugins {
 taboolib {
     env {
         install(
+            Basic,
             Bukkit,
-            BukkitNMS,
             BukkitHook,
             BukkitUtil,
-            BukkitNMSUtil,
             BukkitUI,
-            BukkitFakeOp,
-            Basic,
             MinecraftChat,
             CommandHelper
         )
@@ -56,8 +53,8 @@ repositories {
 }
 
 dependencies {
+    compileOnly("me.xiaozhangup.octopus:octopus-api:1.21.4-R0.1-SNAPSHOT")
     compileOnly("me.xiaozhangup:WhaleMechanism:1.0.1")
-    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.1")
 
     taboo("com.jeff-media:custom-block-data:2.2.5")

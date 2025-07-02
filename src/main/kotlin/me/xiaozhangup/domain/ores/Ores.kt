@@ -14,6 +14,7 @@ import org.bukkit.block.BlockFace
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.persistence.PersistentDataType
 import taboolib.common.LifeCycle
 import taboolib.common.io.newFile
 import taboolib.common.platform.Awake
@@ -22,6 +23,7 @@ import taboolib.common.platform.command.command
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.getDataFolder
 import taboolib.common.platform.function.submit
+import taboolib.expansion.createHelper
 import taboolib.module.configuration.Config
 import taboolib.module.configuration.Configuration
 import taboolib.module.configuration.util.getMap
@@ -34,6 +36,7 @@ object Ores {
     val data by lazy { newFile(getDataFolder(), "ore", folder = true, create = true) }
     val coins by lazy { Bukkit.getPluginManager().getPlugin("Coins") as Coins }
     val oreKey by lazy { NamespacedKey(plugin, "ore") }
+    val refreshingKey by lazy { NamespacedKey(plugin, "refreshing") }
     val refreshing: MutableMap<String, Refreshing> = mutableMapOf()
     var textures: Map<String, String> = mapOf()
     val rotations = listOf(
@@ -107,6 +110,8 @@ object Ores {
                         ore.saveToFile()
                         refreshing[id] = ref
                         ref.saveRefreshing()
+                        selected = null to null
+                        notify.send(sender, "已创建刷新 {0}", name)
                     }
                 }
             }
@@ -139,6 +144,8 @@ object Ores {
                     notify.send(sender, "已重载刷新")
                 }
             }
+
+            createHelper()
         }
         schedule()
     }
@@ -170,7 +177,9 @@ object Ores {
         val block = e.block
         if (block.type != Material.PLAYER_HEAD) return
         if (!block.customBlockData.has(oreKey)) return
-        val ref = refreshing.values.firstOrNull { it.inRefreshing(block) } ?: return
+        val ref = block.customBlockData.get(refreshingKey, PersistentDataType.STRING)?.let {
+            refreshing[it]
+        } ?: refreshing.values.firstOrNull { it.inRefreshing(block) } ?: return
         val setting = ref.setting ?: return
 
         // 金币的掉落

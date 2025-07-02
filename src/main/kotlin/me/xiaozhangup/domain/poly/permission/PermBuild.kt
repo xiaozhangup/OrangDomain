@@ -43,9 +43,7 @@ object PermBuild : Permission, Listener {
     private val interactableEntity = listOf(
         EntityType.VILLAGER,
         EntityType.ARMOR_STAND,
-        EntityType.PLAYER,
-        EntityType.BOAT, // 节日特别添加
-        EntityType.CHEST_BOAT // 节日特别添加
+        EntityType.PLAYER
     )
 
     override fun generateMenuItem(value: Boolean): ItemStack {
