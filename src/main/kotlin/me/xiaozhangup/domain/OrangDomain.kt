@@ -34,6 +34,7 @@ object OrangDomain : Plugin() {
             coerceInputValues = true
             allowStructuredMapKeys = true
             prettyPrint = true
+            ignoreUnknownKeys = true
         }
     }
 

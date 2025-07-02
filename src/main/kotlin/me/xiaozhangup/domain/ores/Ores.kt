@@ -1,6 +1,5 @@
 package me.xiaozhangup.domain.ores
 
-import kotlinx.serialization.encodeToString
 import me.justeli.coins.Coins
 import me.xiaozhangup.domain.OrangDomain.json
 import me.xiaozhangup.domain.OrangDomain.plugin
@@ -31,9 +30,9 @@ import java.io.File
 object Ores {
 
     private var notify = Notify("矿石", "#54a4ff")
-    private val data by lazy { newFile(getDataFolder(), "ore", folder = true, create = true) }
-    private val coins by lazy { Bukkit.getPluginManager().getPlugin("Coins") as Coins }
     private var selected: Pair<Location?, Location?> = null to null
+    val data by lazy { newFile(getDataFolder(), "ore", folder = true, create = true) }
+    val coins by lazy { Bukkit.getPluginManager().getPlugin("Coins") as Coins }
     val oreKey by lazy { NamespacedKey(plugin, "ore") }
     val refreshing: MutableMap<String, Refreshing> = mutableMapOf()
     var textures: Map<String, String> = mapOf()
@@ -89,12 +88,12 @@ object Ores {
                             return@execute
                         }
 
-                        if (refreshing.values.any {
-                                it.inRefreshing(selected.first!!) || it.inRefreshing(selected.second!!)
-                            }) {
-                            notify.send(sender, "与其他刷新区域交叉")
-                            return@execute
-                        }
+//                        if (refreshing.values.any {
+//                                it.inRefreshing(selected.first!!) || it.inRefreshing(selected.second!!)
+//                            }) {
+//                            notify.send(sender, "与其他刷新区域交叉")
+//                            return@execute
+//                        } 允许交叉
 
                         val ref = Refreshing(
                             id,
@@ -107,7 +106,7 @@ object Ores {
                         }
                         ore.saveToFile()
                         refreshing[id] = ref
-                        saveRefreshing(ref)
+                        ref.saveRefreshing()
                     }
                 }
             }
@@ -186,10 +185,5 @@ object Ores {
 
         e.isCancelled = true
         block.type = Material.AIR
-    }
-
-    private fun saveRefreshing(ref: Refreshing) {
-        val file = newFile(data, "${ref.id}.json")
-        file.writeText(json.encodeToString(ref))
     }
 }
