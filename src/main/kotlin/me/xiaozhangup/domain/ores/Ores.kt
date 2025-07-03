@@ -4,6 +4,7 @@ import me.justeli.coins.Coins
 import me.xiaozhangup.domain.OrangDomain.json
 import me.xiaozhangup.domain.OrangDomain.plugin
 import me.xiaozhangup.domain.utils.customBlockData
+import me.xiaozhangup.slimecargo.utils.flexibleItem
 import me.xiaozhangup.whale.util.chat.Notify
 import me.xiaozhangup.whale.util.ext.recursiveFiles
 import org.bukkit.Bukkit
@@ -27,6 +28,7 @@ import taboolib.expansion.createHelper
 import taboolib.module.configuration.Config
 import taboolib.module.configuration.Configuration
 import taboolib.module.configuration.util.getMap
+import taboolib.platform.compat.replacePlaceholder
 import java.io.File
 
 object Ores {
@@ -176,23 +178,40 @@ object Ores {
     fun e(e: BlockBreakEvent) {
         val block = e.block
         if (block.type != Material.PLAYER_HEAD) return
-        if (!block.customBlockData.has(oreKey)) return
+        val texture = block.customBlockData.get(oreKey, PersistentDataType.STRING) ?: return
         val ref = block.customBlockData.get(refreshingKey, PersistentDataType.STRING)?.let {
             refreshing[it]
         } ?: refreshing.values.firstOrNull { it.inRefreshing(block) } ?: return
         val setting = ref.setting ?: return
-
-        // 金币的掉落
         val dropLoc = block.location.add(0.5, 0.3, 0.5)
-        repeat(setting.coin) {
-            block.world.dropItemNaturally(
-                dropLoc,
-                coins.createCoin.dropped()
-            )
-        }
-        // TODO 其他掉落物的处理
+        val world = block.world
 
         e.isCancelled = true
         block.type = Material.AIR
+
+        // 破坏的自定义操作
+        val rs = setting.getLoot("*") + setting.getLoot(texture)
+        for (t in rs) {
+            val args = t.split(':', limit = 2)
+            when(args[0]) {
+                "coin" -> {
+                    repeat(args[1].toIntOrNull() ?: 1) {
+                        world.dropItemNaturally(
+                            dropLoc,
+                            coins.createCoin.dropped()
+                        )
+                    }
+                }
+                "item" -> {
+                    world.dropItemNaturally(
+                        dropLoc,
+                        flexibleItem(args[1]) ?: continue
+                    )
+                }
+                "command" -> {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), args[1].replacePlaceholder(e.player))
+                }
+            }
+        }
     }
 }

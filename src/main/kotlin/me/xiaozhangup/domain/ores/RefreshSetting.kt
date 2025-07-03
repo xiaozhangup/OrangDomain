@@ -7,7 +7,6 @@ import taboolib.module.configuration.Configuration
 import taboolib.module.configuration.util.getMap
 
 class RefreshSetting(
-    val coin: Int, // 金币掉落数量
     val interval: Int, // 间隔
     val radius: Int, // 生成矿物的检测半径
     val materials: List<Material>, // 可以生成在什么材质上
@@ -15,14 +14,12 @@ class RefreshSetting(
     val loot: Map<String, List<String>> // 额外的奖励
 ) {
     constructor(id: String, config: Configuration) : this(
-        coin = 1,
         interval = 5,
         materials = listOf(),
         radius = 3,
         weight = RandomList(),
         loot = mapOf()
     ) {
-        config["$id.coin"] = coin
         config["$id.interval"] = interval
         config["$id.materials"] = materials.map { it.name }
         config["$id.radius"] = radius
@@ -31,7 +28,6 @@ class RefreshSetting(
     }
 
     constructor(section: ConfigurationSection) : this(
-        coin = section.getInt("coin", 1),
         interval = section.getInt("interval", 5),
         materials = section.getStringList("materials").map {
             Material.getMaterial(it.uppercase()) ?: throw IllegalArgumentException("Invalid material: $it")
@@ -44,4 +40,8 @@ class RefreshSetting(
         },
         loot = section.getMap<String, List<String>>("loot")
     )
+
+    fun getLoot(type: String): List<String> {
+        return loot[type] ?: listOf()
+    }
 }
