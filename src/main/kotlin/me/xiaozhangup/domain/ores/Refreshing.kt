@@ -84,8 +84,8 @@ data class Refreshing(
         val x = widthXRange().random()
         val z = widthZRange().random()
         val loc = Location(pos1.world, x.toDouble(), 0.0, z.toDouble())
-        val blocks = findAir(loc)
-        if (blocks.isEmpty() && failed >= 7) { // 失败过多且未获取到点位，读缓存
+        val blocks = findSpot(loc)
+        if (blocks.isEmpty() && failed >= 7) { // 失败过多且未获取到点位，读缓存获取
             val block = cache.randomOrNull()?.asLocation()?.block
             if (block != null) {
                 if (isOnSolid(block)) {
@@ -94,25 +94,32 @@ data class Refreshing(
             }
         }
 
-        if (blocks.isNotEmpty()) {
-            val b = blocks.random()
-            val texture = setting!!.weight.random()!!
-            placeSkullBlock(
-                textures[texture] ?: throw IllegalArgumentException("Texture $texture not found"),
-                b
-            )
-            b.customBlockData.set(oreKey, PersistentDataType.STRING, texture)
-            b.customBlockData.set(refreshingKey, PersistentDataType.STRING, id)
-            failed = 0
-
-            // 记录这个成功的点位
-            cache += b.location.asStringWithoutYawPitch()
-            saveCache()
-            return true
+        val b = blocks.randomOrNull()
+        if (b == null) {
+            failed++
+            return false // 没有任何方块
+        }
+        if (b.type == Material.PLAYER_HEAD && b.location.getNearbyPlayers(12.0).isNotEmpty()) {
+            failed++
+            return false // 如果本就是矿物, 则应当规避玩家
         }
 
-        failed++
-        return false
+        // 抽取材质，执行放置
+        val texture = setting!!.weight.random()!!
+        placeSkullBlock(
+            textures[texture] ?: throw IllegalArgumentException("Texture $texture not found"),
+            b
+        )
+
+        val blockData = b.customBlockData
+        blockData.set(oreKey, PersistentDataType.STRING, texture)
+        blockData.set(refreshingKey, PersistentDataType.STRING, id)
+        failed = 0
+
+        // 记录这个成功的点位
+        cache += b.location.asStringWithoutYawPitch()
+        saveCache()
+        return true
     }
 
     fun inRefreshing(block: Block): Boolean {
@@ -131,7 +138,7 @@ data class Refreshing(
         file.writeText(json.encodeToString(this))
     }
 
-    private fun findAir(location: Location): MutableList<Block> {
+    private fun findSpot(location: Location): MutableList<Block> {
         val blocks = mutableListOf<Block>()
         for (i in heightRange()) {
             location.y = i.toDouble()
@@ -178,14 +185,20 @@ data class Refreshing(
         return false
     }
 
-    private fun isOnSolid(block: Block) : Boolean {
+    // 同时收集头颅和空气，即可刷新点位
+    private fun isOnSolid(block: Block): Boolean {
         val down = block.getRelative(BlockFace.DOWN)
-        return block.type.isAir &&
-                down.isSolid &&
-                down.type in setting!!.materials &&
-                !anyNear(block) {
-                    it.type == Material.PLAYER_HEAD && it.customBlockData.has(oreKey)
+        if (down.isSolid && down.type in setting!!.materials) { // 满足底部条件
+            if (block.type.isAir) { // 空气
+                return !anyNear(block) {
+                    it.type == Material.PLAYER_HEAD && it.customBlockData.has(oreKey) // 周围
                 }
+            }
+            if (block.type == Material.PLAYER_HEAD && block.customBlockData.has(oreKey)) { // 原矿
+                return true
+            }
+        }
+        return false
     }
 
     private fun inCooldown(): Boolean {

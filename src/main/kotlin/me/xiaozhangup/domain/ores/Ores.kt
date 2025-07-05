@@ -30,6 +30,8 @@ import taboolib.module.configuration.Configuration
 import taboolib.module.configuration.util.getMap
 import taboolib.platform.compat.replacePlaceholder
 import java.io.File
+import kotlin.math.max
+import kotlin.math.min
 
 object Ores {
 
@@ -135,6 +137,34 @@ object Ores {
                         ore[ref.id] = null
                         notify.send(sender, "已删除刷新 {0}", name)
                     }
+                }
+            }
+
+            literal("clear") {
+                execute<Player> { sender, _, _ ->
+                    val pos1 = selected.first
+                    val pos2 = selected.second
+                    if (pos1 == null || pos2 == null) {
+                        notify.send(sender, "请选择两个位置")
+                        return@execute
+                    }
+
+                    notify.send(sender, "正在清理选区内的所有矿物...")
+                    var count = 0
+                    val world = pos1.world!!
+                    for (x in min(pos1.blockX, pos2.blockX)..max(pos1.blockX, pos2.blockX)) {
+                        for (y in min(pos1.blockY, pos2.blockY)..max(pos1.blockY, pos2.blockY)) {
+                            for (z in min(pos1.blockZ, pos2.blockZ)..max(pos1.blockZ, pos2.blockZ)) {
+                                val block = world.getBlockAt(x, y, z)
+                                if (block.type != Material.PLAYER_HEAD) continue
+                                if (!block.customBlockData.has(oreKey)) continue
+                                block.customBlockData.clear()
+                                block.type = Material.AIR
+                                count++
+                            }
+                        }
+                    }
+                    notify.send(sender, "已清理 {0} 个矿物", count)
                 }
             }
 
