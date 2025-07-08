@@ -4,6 +4,10 @@ import me.xiaozhangup.domain.OrangDomain.worlds
 import me.xiaozhangup.domain.utils.display
 import me.xiaozhangup.domain.utils.getPoly
 import me.xiaozhangup.domain.utils.register
+import net.momirealms.craftengine.bukkit.api.event.CustomBlockBreakEvent
+import net.momirealms.craftengine.bukkit.api.event.CustomBlockPlaceEvent
+import net.momirealms.craftengine.bukkit.api.event.FurnitureBreakEvent
+import net.momirealms.craftengine.bukkit.api.event.FurniturePlaceEvent
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -192,6 +196,54 @@ object PermBuild : Permission, Listener {
             }
         } ?: run {
             if (worlds.contains(e.rightClicked.world.name) && !e.player.isOp) {
+                e.isCancelled = true
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    fun e(e: FurniturePlaceEvent) {
+        val location = e.location()
+        location.getPoly()?.run {
+            if (!hasPermission("build", e.player.name)) {
+                e.isCancelled = true
+                return
+                //e.player.error("缺少权限 &f$id")
+            }
+        } ?: run {
+            if (worlds.contains(location.world.name) && !e.player.isOp) {
+                e.isCancelled = true
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    fun e(e: FurnitureBreakEvent) {
+        val location = e.location()
+        location.getPoly()?.run {
+            if (!hasPermission("build", e.player.name)) {
+                e.isCancelled = true
+                return
+                //e.player.error("缺少权限 &f$id")
+            }
+        } ?: run {
+            if (worlds.contains(location.world.name) && !e.player.isOp) {
+                e.isCancelled = true
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    fun e(e: CustomBlockBreakEvent) {
+        val location = e.location()
+        location.getPoly()?.run {
+            if (!hasPermission("build", e.player.name)) {
+                e.isCancelled = true
+                return
+                //e.player.error("缺少权限 &f$id")
+            }
+        } ?: run {
+            if (worlds.contains(location.world.name) && !e.player.isOp) {
                 e.isCancelled = true
             }
         }

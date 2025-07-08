@@ -1,8 +1,15 @@
 package me.xiaozhangup.domain.portal
 
+import me.xiaozhangup.slimecargo.utils.currentTimeMillis
+import me.xiaozhangup.whale.WhaleVisitor
+import me.xiaozhangup.whale.module.Sign
+import me.xiaozhangup.whale.module.shop.Villager
 import me.xiaozhangup.whale.util.PlayerBaffle
 import me.xiaozhangup.whale.util.chat.Notify
 import me.xiaozhangup.whale.util.chat.Screen
+import me.xiaozhangup.whale.util.ext.daily
+import me.xiaozhangup.whale.util.ext.formattedDate
+import me.xiaozhangup.whale.util.ext.member
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerMoveEvent
@@ -21,6 +28,8 @@ object Portal {
     private var selected: Pair<Location?, Location?> = null to null
     private val notify = Notify("传送", "#f8ae77")
     private val baffle = PlayerBaffle(1, TimeUnit.SECONDS)
+    private val daily by daily { currentTimeMillis().formattedDate("M_d") }
+    private val sign by lazy { WhaleVisitor.getModule(Sign::class) }
     val portals = ArrayList<PortalData>()
 
     @Config(value = "portal.yml")
@@ -116,6 +125,14 @@ object Portal {
         if (baffle.hasNext(player)) {
             Screen.sendScreen(player, fadeIn = 5, stay = 15, fadeOut = 10)
             submit(delay = 6) { player.teleport(portal.target) }
+
+            val member = member(player) ?: return // 计分兼容
+            if (member.meta.getString("portal_enter", portal.id) != daily) {
+                member.meta.setString("portal_enter", portal.id, daily)
+                sign.getRecord(member).apply {
+                    addValue(value = 25)
+                }.writeTo(member)
+            }
         }
     }
 }
