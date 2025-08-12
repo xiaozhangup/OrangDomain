@@ -1,10 +1,7 @@
-ClaimTool: "APPLE"
+TimeSyncWorlds: []
+Join: {}
+Leave: {}
 ProtectWorlds:
-  - Lobby
-
-TimeSyncWorlds: [ ]
-
-Join:
-  new_main:
-    - "WTF"
-Leave:
+  - NewLobby
+  - Floating
+ClaimTool: APPLE

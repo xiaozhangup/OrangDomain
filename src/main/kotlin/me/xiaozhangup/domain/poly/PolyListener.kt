@@ -103,21 +103,21 @@ object PolyListener {
         }
     }
 
-    @SubscribeEvent
-    fun e(event: PlayerJoinPolyEvent) {
-        val id = event.poly.id
-        OrangDomain.config.getStringList("Join.$id").forEach {
-            event.player.execute(it)
-        }
-    }
-
-    @SubscribeEvent
-    fun e(event: PlayerLeavePolyEvent) {
-        val id = event.poly.id
-        OrangDomain.config.getStringList("Leave.$id").forEach {
-            event.player.execute(it)
-        }
-    }
+//    @SubscribeEvent
+//    fun e(event: PlayerJoinPolyEvent) {
+//        val id = event.poly.id
+//        OrangDomain.config.getStringList("Join.$id").forEach {
+//            event.player.execute(it)
+//        }
+//    }
+//
+//    @SubscribeEvent
+//    fun e(event: PlayerLeavePolyEvent) {
+//        val id = event.poly.id
+//        OrangDomain.config.getStringList("Leave.$id").forEach {
+//            event.player.execute(it)
+//        }
+//    }
 
     fun addPoint(
         player: Player,

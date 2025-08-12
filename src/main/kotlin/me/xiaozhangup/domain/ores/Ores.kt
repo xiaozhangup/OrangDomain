@@ -3,7 +3,10 @@ package me.xiaozhangup.domain.ores
 import me.justeli.coins.Coins
 import me.xiaozhangup.domain.OrangDomain.json
 import me.xiaozhangup.domain.OrangDomain.plugin
+import me.xiaozhangup.domain.ores.TimingArea.Companion.MAX_TIME
+import me.xiaozhangup.domain.ores.TimingArea.Companion.timingKey
 import me.xiaozhangup.domain.utils.customBlockData
+import me.xiaozhangup.domain.utils.fromLocation
 import me.xiaozhangup.slimecargo.utils.flexibleItem
 import me.xiaozhangup.whale.util.chat.Notify
 import me.xiaozhangup.whale.util.ext.recursiveFiles
@@ -15,6 +18,7 @@ import org.bukkit.block.BlockFace
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.inventory.meta.Damageable
 import org.bukkit.persistence.PersistentDataType
 import taboolib.common.LifeCycle
 import taboolib.common.io.newFile
@@ -42,6 +46,7 @@ object Ores {
     val oreKey by lazy { NamespacedKey(plugin, "ore") }
     val refreshingKey by lazy { NamespacedKey(plugin, "refreshing") }
     val refreshing: MutableMap<String, Refreshing> = mutableMapOf()
+    var timing: TimingArea? = null
     var textures: Map<String, String> = mapOf()
     val rotations = listOf(
         BlockFace.NORTH_EAST,
@@ -78,6 +83,10 @@ object Ores {
                         selected = selected.first to sender.getTargetBlockExact(8)?.location
                         notify.send(sender, "已选择第二个位置")
                     }
+                }
+
+                execute<Player> { sender, _, _ ->
+                    notify.send(sender, "<click:suggest_command:'${fromLocation(sender.location)}'>单击复制所在坐标</click>")
                 }
             }
 
@@ -190,6 +199,11 @@ object Ores {
             ref.loadSetting(ore.getConfigurationSection(ref.id))
             refreshing[ref.id] = ref
         }
+        timing?.unscheduleTask()
+        timing = ore.getConfigurationSection("timing")?.let {
+            TimingArea(it)
+        }
+        timing?.scheduleTask()
     }
 
     fun schedule() {
@@ -207,6 +221,7 @@ object Ores {
     @SubscribeEvent
     fun e(e: BlockBreakEvent) {
         val block = e.block
+        val player = e.player
         if (block.type != Material.PLAYER_HEAD) return
         val texture = block.customBlockData.get(oreKey, PersistentDataType.STRING) ?: return
         val ref = block.customBlockData.get(refreshingKey, PersistentDataType.STRING)?.let {
@@ -239,7 +254,20 @@ object Ores {
                     )
                 }
                 "command" -> {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), args[1].replacePlaceholder(e.player))
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), args[1].replacePlaceholder(player))
+                }
+                "hourglass" -> {
+                    val item = player.inventory.contents.firstOrNull { itemStack ->
+                        val r = itemStack?.persistentDataContainer?.get(timingKey, PersistentDataType.INTEGER) ?: 0
+                        r < MAX_TIME
+                    } ?: continue
+
+                    val meta = item.itemMeta as? Damageable ?: continue
+                    val time = meta.persistentDataContainer.get(timingKey, PersistentDataType.INTEGER) ?: 0
+                    val r = min(time + args[1].toInt(), MAX_TIME)
+                    meta.damage = ((MAX_TIME - r) * 100.0 / MAX_TIME).toInt()
+                    meta.persistentDataContainer.set(timingKey, PersistentDataType.INTEGER, r)
+                    item.itemMeta = meta
                 }
             }
         }

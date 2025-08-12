@@ -4,9 +4,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     `java-library`
     `maven-publish`
-    id("io.izzel.taboolib") version "2.0.18"
-    id("org.jetbrains.kotlin.jvm") version "1.9.25"
-    kotlin("plugin.serialization") version "1.9.25"
+    id("io.izzel.taboolib") version "2.0.23"
+    id("org.jetbrains.kotlin.jvm") version "2.1.21"
+    kotlin("plugin.serialization") version "2.1.21"
 }
 
 taboolib {
@@ -22,8 +22,8 @@ taboolib {
         )
 
         version {
-            taboolib = "6.2.3-20d868d"
-            coroutines = "1.8.1"
+            taboolib = "6.2.3-a372a91"
+            coroutines = "1.10.2"
             skipKotlin = true
             skipKotlinRelocate = true
         }
@@ -55,7 +55,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly("me.xiaozhangup.octopus:octopus-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("me.xiaozhangup.octopus:octopus-api:1.21.8-R0.1-SNAPSHOT")
     compileOnly("me.xiaozhangup:WhaleMechanism:1.0.1")
     compileOnly("me.xiaozhangup:SlimeCargoNext:1.0.1")
     compileOnly("net.momirealms:craft-engine-core:0.0.59")
@@ -64,8 +64,8 @@ dependencies {
 
     taboo("com.jeff-media:custom-block-data:2.2.5")
 
-    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.3")
-    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-core:1.9.0")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
 }

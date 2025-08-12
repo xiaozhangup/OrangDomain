@@ -130,7 +130,7 @@ object Portal {
             if (member.meta.getString("portal_enter", portal.id) != daily) {
                 member.meta.setString("portal_enter", portal.id, daily)
                 sign.getRecord(member).apply {
-                    addValue(value = 25)
+                    setValue(key = "portal", value = 25)
                 }.writeTo(member)
             }
         }
