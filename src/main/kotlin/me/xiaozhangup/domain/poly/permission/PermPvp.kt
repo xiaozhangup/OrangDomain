@@ -8,7 +8,6 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.event.player.PlayerRespawnEvent
 import org.bukkit.inventory.ItemFlag
@@ -74,7 +73,14 @@ object PermPvp : Permission, Listener {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     fun e(e: PlayerRespawnEvent) {
         if (e.isAnchorSpawn) return
-        // TODO 覆盖死亡位置
+        if (e.respawnReason != PlayerRespawnEvent.RespawnReason.DEATH) return
+        val player = e.player
+        player.location.getPoly()?.run {
+            if (hasPermission("pvp", player.name)) {
+                e.respawnLocation = this.door
+                return
+            }
+        }
     }
 
     private val bootableEntity = listOf(
