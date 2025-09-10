@@ -258,12 +258,15 @@ object Ores {
                 }
                 "hourglass" -> {
                     val item = player.inventory.contents.firstOrNull { itemStack ->
-                        val r = itemStack?.persistentDataContainer?.get(timingKey, PersistentDataType.INTEGER) ?: 0
-                        r < MAX_TIME
+                        if (
+                            itemStack == null ||
+                            !itemStack.persistentDataContainer.has(timingKey, PersistentDataType.INTEGER)
+                        ) return@firstOrNull false
+                        itemStack.persistentDataContainer.getOrDefault(timingKey, PersistentDataType.INTEGER, 0) < MAX_TIME
                     } ?: continue
 
                     val meta = item.itemMeta as? Damageable ?: continue
-                    val time = meta.persistentDataContainer.get(timingKey, PersistentDataType.INTEGER) ?: 0
+                    val time = meta.persistentDataContainer.get(timingKey, PersistentDataType.INTEGER) ?: continue
                     val r = min(time + args[1].toInt(), MAX_TIME)
                     meta.damage = ((MAX_TIME - r) * 100.0 / MAX_TIME).toInt()
                     meta.persistentDataContainer.set(timingKey, PersistentDataType.INTEGER, r)

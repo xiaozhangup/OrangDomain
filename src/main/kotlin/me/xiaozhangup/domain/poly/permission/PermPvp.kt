@@ -4,9 +4,13 @@ import me.xiaozhangup.domain.utils.display
 import me.xiaozhangup.domain.utils.getPoly
 import me.xiaozhangup.domain.utils.register
 import me.xiaozhangup.domain.utils.rootDamager
+import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.PlayerDeathEvent
+import org.bukkit.event.entity.ProjectileLaunchEvent
+import org.bukkit.event.player.PlayerRespawnEvent
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
@@ -67,16 +71,29 @@ object PermPvp : Permission, Listener {
         }
     }
 
-//    @SubscribeEvent(priority = EventPriority.LOWEST) // 丢出判断
-//    fun e(e: ProjectileLaunchEvent) {
-//        val shooter = e.entity.shooter
-//        if (shooter is Player && !bootableEntity.contains(e.entity.type)) {
-//            shooter.location.getPoly()?.run {
-//                if (!hasPermission("pvp", shooter.name)) {
-//                    e.isCancelled = true
-//                    //e.player.error("缺少权限 &f$id")
-//                }
-//            }
-//        }
-//    }
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    fun e(e: PlayerRespawnEvent) {
+        if (e.isAnchorSpawn) return
+        // TODO 覆盖死亡位置
+    }
+
+    private val bootableEntity = listOf(
+        EntityType.FISHING_BOBBER,
+        EntityType.ARROW,
+        EntityType.SPECTRAL_ARROW,
+        EntityType.TRIDENT
+    )
+
+    @SubscribeEvent(priority = EventPriority.LOWEST) // 丢出判断
+    fun e(e: ProjectileLaunchEvent) {
+        val shooter = e.entity.shooter
+        if (shooter is Player && !bootableEntity.contains(e.entity.type)) {
+            shooter.location.getPoly()?.run {
+                if (!hasPermission("pvp", shooter.name)) {
+                    e.isCancelled = true
+                    //e.player.error("缺少权限 &f$id")
+                }
+            }
+        }
+    }
 }

@@ -2,7 +2,6 @@ package me.xiaozhangup.domain.ores
 
 import me.xiaozhangup.domain.OrangDomain.plugin
 import me.xiaozhangup.domain.utils.toLocation
-import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
@@ -52,8 +51,11 @@ class TimingArea(
         task = submit(period = 20L) {
             for (player in world.players.filter { inArea(it.location) }) {
                 val item = player.inventory.contents.firstOrNull { itemStack ->
-                    val t = itemStack?.persistentDataContainer?.get(timingKey, PersistentDataType.INTEGER) ?: 0
-                    t > 0
+                    if (
+                        itemStack == null ||
+                        !itemStack.persistentDataContainer.has(timingKey, PersistentDataType.INTEGER)
+                    ) return@firstOrNull false
+                    itemStack.persistentDataContainer.getOrDefault(timingKey, PersistentDataType.INTEGER, 0) > 0
                 }
                 if (item == null || !item.hasItemMeta()) {
                     teleportToSpawn(player)
@@ -66,7 +68,7 @@ class TimingArea(
                     continue
                 }
 
-                val time = meta.persistentDataContainer.get(timingKey, PersistentDataType.INTEGER) ?: 0
+                val time = meta.persistentDataContainer.getOrDefault(timingKey, PersistentDataType.INTEGER, 0)
                 if (time <= 0) {
                     teleportToSpawn(player)
                     continue
