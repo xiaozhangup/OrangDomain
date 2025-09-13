@@ -70,16 +70,15 @@ object PermPvp : Permission, Listener {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     fun e(e: PlayerRespawnEvent) {
         if (e.isAnchorSpawn) return
         if (e.respawnReason != PlayerRespawnEvent.RespawnReason.DEATH) return
+
         val player = e.player
-        player.location.getPoly()?.run {
-            if (hasPermission("pvp", player.name)) {
-                e.respawnLocation = this.door
-                return
-            }
+        val poly = player.lastDeathLocation?.getPoly() ?: return
+        if (poly.hasPermission("pvp", player.name)) {
+            e.respawnLocation = poly.door
         }
     }
 
