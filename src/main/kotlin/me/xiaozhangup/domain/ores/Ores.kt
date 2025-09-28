@@ -8,6 +8,8 @@ import me.xiaozhangup.domain.ores.TimingArea.Companion.timingKey
 import me.xiaozhangup.domain.utils.customBlockData
 import me.xiaozhangup.domain.utils.fromLocation
 import me.xiaozhangup.slimecargo.utils.flexibleItem
+import me.xiaozhangup.whale.module.item.impl.CraftEngineItem
+import me.xiaozhangup.whale.service.item.ItemService
 import me.xiaozhangup.whale.util.chat.Notify
 import me.xiaozhangup.whale.util.ext.recursiveFiles
 import org.bukkit.Bukkit
@@ -18,6 +20,8 @@ import org.bukkit.block.BlockFace
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockDamageEvent
+import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.persistence.PersistentDataType
 import taboolib.common.LifeCycle
@@ -188,6 +192,8 @@ object Ores {
 
             createHelper()
         }
+
+        ItemService.registerItem(IronHammer()) // 道具
         schedule()
     }
 
@@ -272,6 +278,15 @@ object Ores {
                     meta.persistentDataContainer.set(timingKey, PersistentDataType.INTEGER, r)
                     item.itemMeta = meta
                 }
+            }
+        }
+    }
+
+    class IronHammer : CraftEngineItem("iron_hammer", "assiahland:iron_hammer") {
+
+        override fun onBlockDamage(event: BlockDamageEvent, player: Player, itemStack: ItemStack) {
+            if (event.block.customBlockData.has(oreKey)) {
+                event.instaBreak = true
             }
         }
     }
