@@ -46,7 +46,7 @@ object Ores {
     private var notify = Notify("矿石", "#54a4ff")
     private var selected: Pair<Location?, Location?> = null to null
     val data by lazy { newFile(getDataFolder(), "ore", folder = true, create = true) }
-    val coins by lazy { Bukkit.getPluginManager().getPlugin("Coins") as Coins }
+    val coins by lazy { CoinsInstance() }
     val oreKey by lazy { NamespacedKey(plugin, "ore") }
     val refreshingKey by lazy { NamespacedKey(plugin, "refreshing") }
     val refreshing: MutableMap<String, Refreshing> = mutableMapOf()
@@ -249,7 +249,7 @@ object Ores {
                     repeat(args[1].toIntOrNull() ?: 1) {
                         world.dropItemNaturally(
                             dropLoc,
-                            coins.createCoin.dropped()
+                            coins.coins.createCoin.dropped()
                         )
                     }
                 }
@@ -287,7 +287,12 @@ object Ores {
         override fun onBlockDamage(event: BlockDamageEvent, player: Player, itemStack: ItemStack) {
             if (event.block.customBlockData.has(oreKey)) {
                 event.instaBreak = true
+                itemStack.damage(1, player)
             }
         }
+    }
+
+    class CoinsInstance {
+        val coins by lazy { Bukkit.getPluginManager().getPlugin("Coins") as Coins }
     }
 }

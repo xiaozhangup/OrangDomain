@@ -58,8 +58,8 @@ dependencies {
     compileOnly("me.xiaozhangup.octopus:octopus-api:1.21.8-R0.1-SNAPSHOT")
     compileOnly("me.xiaozhangup:WhaleMechanism:1.0.1")
     compileOnly("me.xiaozhangup:SlimeCargoNext:1.0.1")
-    compileOnly("net.momirealms:craft-engine-core:0.0.59")
-    compileOnly("net.momirealms:craft-engine-bukkit:0.0.59")
+    compileOnly("net.momirealms:craft-engine-core:0.0.60")
+    compileOnly("net.momirealms:craft-engine-bukkit:0.0.60")
     compileOnly("me.clip:placeholderapi:2.11.1")
 
     taboo("com.jeff-media:custom-block-data:2.2.5")
