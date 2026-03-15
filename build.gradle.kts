@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     `java-library`
     `maven-publish`
-    id("io.izzel.taboolib") version "2.0.23"
+    id("io.izzel.taboolib") version "2.0.27"
     id("org.jetbrains.kotlin.jvm") version "2.1.21"
     kotlin("plugin.serialization") version "2.1.21"
 }
@@ -22,7 +22,7 @@ taboolib {
         )
 
         version {
-            taboolib = "6.2.3-test-17"
+            taboolib = "6.2.4-5902762"
             coroutines = "1.10.2"
             skipKotlin = true
             skipKotlinRelocate = true
@@ -55,12 +55,12 @@ repositories {
 }
 
 dependencies {
-    compileOnly("me.xiaozhangup.octopus:octopus-api:1.21.8-R0.1-SNAPSHOT")
+    compileOnly("me.xiaozhangup.octopus:octopus-api:1.21.11-R0.1-SNAPSHOT")
     compileOnly("me.xiaozhangup:WhaleMechanism:1.0.1")
-    compileOnly("me.xiaozhangup:SlimeCargoNext:1.0.1")
-    compileOnly("net.momirealms:craft-engine-core:0.0.60")
-    compileOnly("net.momirealms:craft-engine-bukkit:0.0.60")
-    compileOnly("me.clip:placeholderapi:2.11.1")
+    compileOnly("me.xiaozhangup:SlimeCargoNext:1.0.2")
+    compileOnly("net.momirealms:craft-engine-core:0.0.66")
+    compileOnly("net.momirealms:craft-engine-bukkit:0.0.66")
+    compileOnly("me.clip:placeholderapi:2.11.6")
 
     taboo("com.jeff-media:custom-block-data:2.2.5")
 
