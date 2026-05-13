@@ -4,7 +4,6 @@ import me.xiaozhangup.domain.OrangDomain
 import me.xiaozhangup.domain.poly.event.PlayerJoinPolyEvent
 import me.xiaozhangup.domain.poly.event.PlayerLeavePolyEvent
 import me.xiaozhangup.domain.utils.error
-import me.xiaozhangup.domain.utils.execute
 import me.xiaozhangup.domain.utils.getPoly
 import me.xiaozhangup.domain.utils.info
 import org.bukkit.Bukkit

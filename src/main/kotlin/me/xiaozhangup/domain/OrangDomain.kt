@@ -2,7 +2,7 @@ package me.xiaozhangup.domain
 
 import com.jeff_media.customblockdata.CustomBlockData
 import kotlinx.serialization.json.Json
-import me.xiaozhangup.domain.module.RealisticTime
+import me.xiaozhangup.domain.config.WorldSettings
 import me.xiaozhangup.domain.poly.Poly
 import me.xiaozhangup.domain.poly.permission.Permission
 import org.bukkit.Material
@@ -26,7 +26,6 @@ object OrangDomain : Plugin() {
 
     val polys = ArrayList<Poly>()
     val permissions = ArrayList<Permission>()
-    val worlds = ArrayList<String>()
     val plugin by lazy { BukkitPlugin.getInstance() }
     val json by lazy {
         Json {
@@ -36,17 +35,25 @@ object OrangDomain : Plugin() {
             ignoreUnknownKeys = true
         }
     }
+    lateinit var world: WorldSettings
 
     override fun onEnable() {
         CustomBlockData.registerListener(plugin)
+        loadWorldSettings()
     }
 
     override fun onActive() {
-        import()
+        initPolys()
     }
 
-    fun getTool(): Material {
-        return Material.valueOf(config.getString("ClaimTool", "APPLE")!!)
+    fun initPolys() {
+        regions.reload()
+        polys.clear()
+        newFile(getDataFolder(), "data", folder = true).listFiles()?.forEach { file ->
+            if (file.name.endsWith(".json")) {
+                polys.add(json.decodeFromString(Poly.serializer(), file.readText(StandardCharsets.UTF_8)))
+            }
+        }
     }
 
     fun deletePoly(id: Poly) {
@@ -64,18 +71,12 @@ object OrangDomain : Plugin() {
         ).writeText(json.encodeToString(poly), StandardCharsets.UTF_8)
     }
 
-    fun import() {
-        worlds.addAll(config.getStringList("ProtectWorlds"))
-        initPolys()
-        RealisticTime.loadWorlds()
+    fun getTool(): Material {
+        return Material.matchMaterial(config.getString("ClaimTool", "APPLE")!!) ?: Material.APPLE
     }
 
-    fun initPolys() {
-        polys.clear()
-        newFile(getDataFolder(), "data", folder = true).listFiles()?.map { file ->
-            if (file.name.endsWith(".json")) {
-                polys.add(json.decodeFromString(Poly.serializer(), file.readText(StandardCharsets.UTF_8)))
-            }
-        }
+    fun loadWorldSettings() {
+        config.reload()
+        world = WorldSettings(config.getConfigurationSection("worlds")!!)
     }
 }

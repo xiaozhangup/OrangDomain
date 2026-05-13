@@ -1,7 +1,14 @@
 TimeSyncWorlds: []
 Join: {}
 Leave: {}
-ProtectWorlds:
-  - NewLobby
-  - Floating
 ClaimTool: APPLE
+
+worlds:
+  spawn: "Floating"
+  location: "-0.6301870914628018,100.0,1.3740864057687412:-11.550023:-121.05009"
+  realistic_time: []
+  global_protect:
+    - NewLobby
+    - Floating
+  accessible:
+    - Floating

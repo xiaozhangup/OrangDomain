@@ -1,11 +1,10 @@
 package me.xiaozhangup.domain.poly.permission
 
-import me.xiaozhangup.domain.OrangDomain.worlds
+import me.xiaozhangup.domain.OrangDomain.world
 import me.xiaozhangup.domain.utils.display
 import me.xiaozhangup.domain.utils.getPoly
 import me.xiaozhangup.domain.utils.register
 import net.momirealms.craftengine.bukkit.api.event.CustomBlockBreakEvent
-import net.momirealms.craftengine.bukkit.api.event.CustomBlockPlaceEvent
 import net.momirealms.craftengine.bukkit.api.event.FurnitureBreakEvent
 import net.momirealms.craftengine.bukkit.api.event.FurniturePlaceEvent
 import org.bukkit.Material
@@ -79,7 +78,7 @@ object PermBuild : Permission, Listener {
                 //e.player.error("缺少权限 &f$id")
             }
         } ?: run {
-            if (worlds.contains(e.block.world.name) && !e.player.isOp) {
+            if (world.globalProtect.contains(e.block.world.name) && !e.player.isOp) {
                 e.isCancelled = true
             }
         }
@@ -94,7 +93,7 @@ object PermBuild : Permission, Listener {
                 //e.player.error("缺少权限 &f$id")
             }
         } ?: run {
-            if (worlds.contains(e.block.world.name) && !e.player.isOp) {
+            if (world.globalProtect.contains(e.block.world.name) && !e.player.isOp) {
                 e.isCancelled = true
             }
         }
@@ -110,7 +109,7 @@ object PermBuild : Permission, Listener {
                 //player.error("缺少权限 &f$id")
             }
         } ?: run {
-            if (worlds.contains(e.block.world.name) && !player.isOp) {
+            if (world.globalProtect.contains(e.block.world.name) && !player.isOp) {
                 e.isCancelled = true
             }
         }
@@ -127,7 +126,7 @@ object PermBuild : Permission, Listener {
                     //player.error("缺少权限 &f$id")
                 }
             } ?: run {
-                if (worlds.contains(e.entity.world.name) && !player.isOp) {
+                if (world.globalProtect.contains(e.entity.world.name) && !player.isOp) {
                     e.isCancelled = true
                 }
             }
@@ -145,7 +144,7 @@ object PermBuild : Permission, Listener {
                     //e.player.error("缺少权限 &f$id")
                 }
             } ?: run {
-                if (worlds.contains(clickedBlock.world.name) && !e.player.isOp) {
+                if (world.globalProtect.contains(clickedBlock.world.name) && !e.player.isOp) {
                     e.isCancelled = true
                 }
             }
@@ -163,7 +162,7 @@ object PermBuild : Permission, Listener {
                 //e.player.error("缺少权限 &f$id")
             }
         } ?: run {
-            if (worlds.contains(e.rightClicked.world.name) && !e.player.isOp) {
+            if (world.globalProtect.contains(e.rightClicked.world.name) && !e.player.isOp) {
                 e.isCancelled = true
             }
         }
@@ -180,7 +179,7 @@ object PermBuild : Permission, Listener {
                 //e.player.error("缺少权限 &f$id")
             }
         } ?: run {
-            if (worlds.contains(e.rightClicked.world.name) && !e.player.isOp) {
+            if (world.globalProtect.contains(e.rightClicked.world.name) && !e.player.isOp) {
                 e.isCancelled = true
             }
         }
@@ -195,7 +194,7 @@ object PermBuild : Permission, Listener {
                 //player.error("缺少权限 &f$id")
             }
         } ?: run {
-            if (worlds.contains(e.rightClicked.world.name) && !e.player.isOp) {
+            if (world.globalProtect.contains(e.rightClicked.world.name) && !e.player.isOp) {
                 e.isCancelled = true
             }
         }
@@ -211,7 +210,7 @@ object PermBuild : Permission, Listener {
                 //e.player.error("缺少权限 &f$id")
             }
         } ?: run {
-            if (worlds.contains(location.world.name) && !e.player.isOp) {
+            if (world.globalProtect.contains(location.world.name) && !e.player.isOp) {
                 e.isCancelled = true
             }
         }
@@ -227,7 +226,7 @@ object PermBuild : Permission, Listener {
                 //e.player.error("缺少权限 &f$id")
             }
         } ?: run {
-            if (worlds.contains(location.world.name) && !e.player.isOp) {
+            if (world.globalProtect.contains(location.world.name) && !e.player.isOp) {
                 e.isCancelled = true
             }
         }
@@ -243,7 +242,7 @@ object PermBuild : Permission, Listener {
                 //e.player.error("缺少权限 &f$id")
             }
         } ?: run {
-            if (worlds.contains(location.world.name) && !e.player.isOp) {
+            if (world.globalProtect.contains(location.world.name) && !e.player.isOp) {
                 e.isCancelled = true
             }
         }
@@ -258,7 +257,7 @@ object PermBuild : Permission, Listener {
                 //e.player.error("缺少权限 &f$id")
             }
         } ?: run {
-            if (worlds.contains(e.block.world.name) && !e.player.isOp) {
+            if (world.globalProtect.contains(e.block.world.name) && !e.player.isOp) {
                 e.isCancelled = true
             }
         }
@@ -273,7 +272,7 @@ object PermBuild : Permission, Listener {
                 //e.player.error("缺少权限 &f$id")
             }
         } ?: run {
-            if (worlds.contains(e.block.world.name) && !e.player.isOp) {
+            if (world.globalProtect.contains(e.block.world.name) && !e.player.isOp) {
                 e.isCancelled = true
             }
         }
@@ -290,7 +289,7 @@ object PermBuild : Permission, Listener {
                 //e.player.error("缺少权限 &f$id")
             }
         } ?: run {
-            if (worlds.contains(e.vehicle.world.name) && !player.isOp) {
+            if (world.globalProtect.contains(e.vehicle.world.name) && !player.isOp) {
                 e.isCancelled = true
             }
         }

@@ -1,7 +1,7 @@
 package me.xiaozhangup.domain.poly.extension
 
 import me.xiaozhangup.domain.OrangDomain.regions
-import me.xiaozhangup.domain.OrangDomain.worlds
+import me.xiaozhangup.domain.OrangDomain.world
 import me.xiaozhangup.domain.utils.getPoly
 import org.bukkit.entity.Animals
 import org.bukkit.entity.Monster
@@ -37,7 +37,7 @@ object PolySpawn {
             }
         }
 
-        if (worlds.contains(entity.world.name)) {
+        if (world.globalProtect.contains(entity.world.name)) {
             e.isCancelled = true
         }
     }

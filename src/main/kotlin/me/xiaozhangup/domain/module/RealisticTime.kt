@@ -1,8 +1,8 @@
 package me.xiaozhangup.domain.module
 
-import me.xiaozhangup.domain.OrangDomain.config
+import me.xiaozhangup.domain.OrangDomain
 import org.bukkit.Bukkit
-import org.bukkit.GameRule
+import org.bukkit.GameRules
 import org.bukkit.World
 import taboolib.common.platform.function.submit
 import taboolib.common.platform.service.PlatformExecutor
@@ -11,23 +11,18 @@ import java.time.format.DateTimeFormatter
 
 
 object RealisticTime {
-    private var worlds: List<String> = listOf()
     private val scheduledTask: PlatformExecutor.PlatformTask
 
     init {
         scheduledTask = submit(period = 20) {
-            worlds
+            OrangDomain.world.realisticTime
                 .mapNotNull { Bukkit.getWorld(it) }
                 .forEach { syncTime(it) }
         }
     }
 
-    fun loadWorlds() {
-        worlds = config.getStringList("TimeSyncWorlds")
-    }
-
     private fun syncTime(world: World) {
-        if (world.getGameRuleValue(GameRule.DO_DAYLIGHT_CYCLE) == true) return
+        if (world.getGameRuleValue(GameRules.ADVANCE_TIME) == true) return
         val formatHours = DateTimeFormatter.ofPattern("HH")
         val formatMinutes = DateTimeFormatter.ofPattern("mm")
 

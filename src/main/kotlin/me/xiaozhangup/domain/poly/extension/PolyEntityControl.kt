@@ -1,7 +1,7 @@
 package me.xiaozhangup.domain.poly.extension
 
-import me.xiaozhangup.domain.OrangDomain
 import me.xiaozhangup.domain.OrangDomain.regions
+import me.xiaozhangup.domain.OrangDomain.world
 import me.xiaozhangup.domain.poly.Poly
 import me.xiaozhangup.domain.utils.getPoly
 import me.xiaozhangup.domain.utils.rootDamager
@@ -43,7 +43,7 @@ object PolyEntityControl {
             }
         }
 
-        if (OrangDomain.worlds.contains(e.entity.world.name) && !player.isOp) {
+        if (world.globalProtect.contains(e.entity.world.name) && !player.isOp) {
             e.isCancelled = true
         }
     }

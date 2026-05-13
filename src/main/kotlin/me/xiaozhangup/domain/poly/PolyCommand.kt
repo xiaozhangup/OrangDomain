@@ -1,7 +1,6 @@
 package me.xiaozhangup.domain.poly
 
 import me.xiaozhangup.domain.OrangDomain
-import me.xiaozhangup.domain.module.RealisticTime
 import me.xiaozhangup.domain.poly.permission.Permission
 import me.xiaozhangup.domain.utils.error
 import me.xiaozhangup.domain.utils.getPoly
@@ -373,20 +372,25 @@ object PolyCommand {
     @CommandBody
     val reload = subCommand {
         execute<Player> { sender, _, _ ->
-            OrangDomain.regions.reload()
-            OrangDomain.config.reload()
+            var success = true
 
-            runCatching {
-                OrangDomain.worlds.clear()
-                OrangDomain.worlds.addAll(OrangDomain.config.getStringList("ProtectWorlds"))
+            try {
                 OrangDomain.initPolys()
-            }.exceptionOrNull()
+            } catch (e: Exception) {
+                sender.error("加载领地数据时遇到错误: ${e.message}")
+                e.printStackTrace()
+                success = false
+            }
 
-            runCatching {
-                RealisticTime.loadWorlds()
-            }.exceptionOrNull()
+            try {
+                OrangDomain.loadWorldSettings()
+            } catch (e: Exception) {
+                sender.error("加载世界设置时遇到错误: ${e.message}")
+                e.printStackTrace()
+                success = false
+            }
 
-            sender.info("已成功重载所有配置文件")
+            if (success) sender.info("已成功重载所有配置文件")
         }
     }
 

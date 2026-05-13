@@ -1,6 +1,6 @@
 package me.xiaozhangup.domain.poly.permission
 
-import me.xiaozhangup.domain.OrangDomain.worlds
+import me.xiaozhangup.domain.OrangDomain.world
 import me.xiaozhangup.domain.utils.display
 import me.xiaozhangup.domain.utils.getPoly
 import me.xiaozhangup.domain.utils.register
@@ -64,7 +64,7 @@ object PermInteract : Permission, Listener {
                     }
                 }
             } ?: run {
-                if (worlds.contains(e.player.world.name) && !e.player.isOp) {
+                if (world.globalProtect.contains(e.player.world.name) && !e.player.isOp) {
                     e.setUseInteractedBlock(Event.Result.DENY)
                 }
             }
