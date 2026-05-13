@@ -18,8 +18,9 @@ object WorldAccessLimit {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     fun e(e: PlayerTeleportEvent) {
-        val accessible = world.accessible
         val player = e.player
+        if (player.isOp) return
+        val accessible = world.accessible
         if (e.to.world.name in accessible) return
 
         e.isCancelled = true
@@ -28,8 +29,9 @@ object WorldAccessLimit {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     fun e(e: PlayerChangedWorldEvent) {
-        val accessible = world.accessible
         val player = e.player
+        if (player.isOp) return
+        val accessible = world.accessible
         if (player.world.name in accessible) return
 
         world.spawnLocation()?.let {
@@ -39,8 +41,9 @@ object WorldAccessLimit {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     fun e(e: PlayerJoinEvent) {
-        val accessible = world.accessible
         val player = e.player
+        if (player.isOp) return
+        val accessible = world.accessible
         if (player.world.name in accessible) return
 
         submit(delay = 1) {
@@ -52,6 +55,8 @@ object WorldAccessLimit {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     fun e(e: PlayerRespawnEvent) {
+        val player = e.player
+        if (player.isOp) return
         val accessible = world.accessible
         if (e.respawnLocation.world.name in accessible) return
 
