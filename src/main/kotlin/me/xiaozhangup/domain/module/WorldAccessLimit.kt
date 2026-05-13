@@ -23,8 +23,14 @@ object WorldAccessLimit {
         val accessible = world.accessible
         if (e.to.world.name in accessible) return
 
-        e.isCancelled = true
-        player.sendActionBar(component)
+        if (e.from.world.name !in accessible) {
+            world.spawnLocation()?.let {
+                e.to = it
+            }
+        } else {
+            e.isCancelled = true
+            player.sendActionBar(component)
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
