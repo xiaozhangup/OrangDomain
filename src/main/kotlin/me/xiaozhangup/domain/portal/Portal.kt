@@ -9,6 +9,7 @@ import me.xiaozhangup.whale.util.chat.Screen
 import me.xiaozhangup.whale.util.ext.daily
 import me.xiaozhangup.whale.util.ext.formattedDate
 import me.xiaozhangup.whale.util.ext.member
+import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerMoveEvent
@@ -118,6 +119,8 @@ object Portal {
     @SubscribeEvent
     fun e(e: PlayerMoveEvent) {
         val player = e.player
+        if (player.gameMode == GameMode.SPECTATOR) return
+
         val portal = portals.firstOrNull {
             it.inPortal(e.to) && !it.inPortal(e.from)
         } ?: return
