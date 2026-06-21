@@ -13,6 +13,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
+import org.bukkit.event.block.EntityBlockFormEvent
 import org.bukkit.event.hanging.HangingBreakByEntityEvent
 import org.bukkit.event.hanging.HangingPlaceEvent
 import org.bukkit.event.player.*
@@ -94,6 +95,22 @@ object PermBuild : Permission, Listener {
             }
         } ?: run {
             if (world.globalProtect.contains(e.block.world.name) && !e.player.isOp) {
+                e.isCancelled = true
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    fun e(e: EntityBlockFormEvent) {
+        val entity = e.entity as? Player ?: return
+        e.block.location.getPoly()?.run {
+            if (!hasPermission("build", entity.name)) {
+                e.isCancelled = true
+                return
+                //e.player.error("缺少权限 &f$id")
+            }
+        } ?: run {
+            if (world.globalProtect.contains(e.block.world.name) && !entity.isOp) {
                 e.isCancelled = true
             }
         }
