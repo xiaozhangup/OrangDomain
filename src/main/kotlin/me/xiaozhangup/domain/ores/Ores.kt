@@ -1,6 +1,5 @@
 package me.xiaozhangup.domain.ores
 
-import me.justeli.coins.Coins
 import me.xiaozhangup.domain.OrangDomain.json
 import me.xiaozhangup.domain.OrangDomain.plugin
 import me.xiaozhangup.domain.ores.TimingArea.Companion.MAX_TIME
@@ -8,6 +7,7 @@ import me.xiaozhangup.domain.ores.TimingArea.Companion.timingKey
 import me.xiaozhangup.domain.utils.customBlockData
 import me.xiaozhangup.domain.utils.fromLocation
 import me.xiaozhangup.slimecargo.utils.flexibleItem
+import me.xiaozhangup.whale.module.Coins
 import me.xiaozhangup.whale.module.item.impl.CraftEngineItem
 import me.xiaozhangup.whale.service.item.ItemService
 import me.xiaozhangup.whale.util.chat.Notify
@@ -46,7 +46,6 @@ object Ores {
     private var notify = Notify("矿石", "#54a4ff")
     private var selected: Pair<Location?, Location?> = null to null
     val data by lazy { newFile(getDataFolder(), "ore", folder = true, create = true) }
-    val coins by lazy { CoinsInstance() }
     val oreKey by lazy { NamespacedKey(plugin, "ore") }
     val refreshingKey by lazy { NamespacedKey(plugin, "refreshing") }
     val refreshing: MutableMap<String, Refreshing> = mutableMapOf()
@@ -249,7 +248,7 @@ object Ores {
                     repeat(args[1].toIntOrNull() ?: 1) {
                         world.dropItemNaturally(
                             dropLoc,
-                            coins.coins.createCoin.dropped()
+                            Coins.createDropped()
                         )
                     }
                 }
@@ -290,9 +289,5 @@ object Ores {
                 itemStack.damage(1, player)
             }
         }
-    }
-
-    class CoinsInstance {
-        val coins by lazy { Bukkit.getPluginManager().getPlugin("Coins") as Coins }
     }
 }

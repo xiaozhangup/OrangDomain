@@ -2,6 +2,8 @@ package me.xiaozhangup.domain.ores
 
 import me.xiaozhangup.domain.OrangDomain.plugin
 import me.xiaozhangup.domain.utils.toLocation
+import me.xiaozhangup.whale.WhaleVisitor
+import me.xiaozhangup.whale.module.ActionbarOverlay
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
@@ -11,6 +13,7 @@ import org.bukkit.persistence.PersistentDataType
 import taboolib.common.platform.function.submit
 import taboolib.common.platform.service.PlatformExecutor
 import taboolib.library.configuration.ConfigurationSection
+import kotlin.getValue
 import kotlin.math.max
 import kotlin.math.min
 
@@ -29,6 +32,7 @@ class TimingArea(
         )
     }
     private var task: PlatformExecutor.PlatformTask? = null
+    private val overlay by lazy { WhaleVisitor.getModule(ActionbarOverlay::class) }
 
     @Suppress("UNCHECKED_CAST")
     constructor(section: ConfigurationSection) : this(
@@ -78,9 +82,7 @@ class TimingArea(
                 meta.persistentDataContainer.set(timingKey, PersistentDataType.INTEGER, time - 1)
                 item.itemMeta = meta
 
-                player.sendActionBar(
-                    MiniMessage.miniMessage().deserialize("<color:#fff5d0>⏳ 沙漏剩余 ${formatSeconds(time)}")
-                )
+                overlay.setOverlay(player, tag, "<color:#fff5d0>⏳ 沙漏剩余 ${formatSeconds(time)}")
             }
         }
     }
@@ -91,13 +93,13 @@ class TimingArea(
 
     private fun teleportToSpawn(player: Player) {
         player.teleport(backPoint)
-        player.sendActionBar(TIME_RUNOUT)
+        overlay.setOverlay(player, tag, "<color:#fff5d0>⏳ 你没有更多时间了")
     }
 
     companion object {
-        val timingKey by lazy { NamespacedKey(plugin, "timing") }
-        val TIME_RUNOUT = MiniMessage.miniMessage().deserialize("<color:#fff5d0>⏳ 你没有更多时间了")
         const val MAX_TIME = 13 * 60
+        val timingKey by lazy { NamespacedKey(plugin, "timing") }
+        private val tag = ActionbarOverlay.OverlayTag("timing", 16, false)
 
         private fun formatSeconds(seconds: Int): String {
             val minutes = seconds / 60

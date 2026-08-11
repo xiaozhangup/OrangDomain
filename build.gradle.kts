@@ -6,6 +6,7 @@ plugins {
     `java-library`
     `maven-publish`
     id("io.izzel.taboolib") version "2.0.38"
+    id("me.xiaozhangup.sftp-uploader") version "0.1.0"
     id("org.jetbrains.kotlin.jvm") version "2.3.20"
     kotlin("plugin.serialization") version "2.3.20"
 }
@@ -34,7 +35,6 @@ taboolib {
             name("CarbKotlin")
             name("WhaleMechanism")
             name("SlimeCargoNext")
-            name("Coins")
         }
     }
 
@@ -56,7 +56,7 @@ repositories {
 
 dependencies {
     compileOnly("me.xiaozhangup.octopus:octopus-api:26.2-R0.1-SNAPSHOT")
-    compileOnly("me.xiaozhangup:WhaleMechanism:1.0.1")
+    compileOnly("me.xiaozhangup:WhaleMechanism:1.0.1:api")
     compileOnly("me.xiaozhangup:SlimeCargoNext:1.0.2:api")
     compileOnly("net.momirealms:craft-engine-core:26.6")
     compileOnly("net.momirealms:craft-engine-bukkit:26.6")
@@ -101,8 +101,19 @@ publishing {
         }
     }
 }
+
 configure<JavaPluginExtension> {
     toolchain.languageVersion.set(JavaLanguageVersion.of(25))
     sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
+}
+
+sftpUploader {
+    host.set("xiaozhangup@s1.dimc.cloud")
+    target.set("Minecraft")
+    jars.set(
+        listOf(
+            layout.buildDirectory.file("libs/OrangDomain-1.0.2.jar").get().asFile.absolutePath
+        )
+    )
 }
