@@ -1,82 +1,132 @@
 package me.xiaozhangup.domain
 
+
+import me.xiaozhangup.carbkotlin.lifecycle.Awake
+import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
+import me.xiaozhangup.carbkotlin.Crab
 import com.jeff_media.customblockdata.CustomBlockData
 import kotlinx.serialization.json.Json
 import me.xiaozhangup.domain.config.WorldSettings
 import me.xiaozhangup.domain.poly.Poly
 import me.xiaozhangup.domain.poly.permission.Permission
 import org.bukkit.Material
-import taboolib.common.io.newFile
-import taboolib.common.platform.Plugin
-import taboolib.common.platform.function.getDataFolder
-import taboolib.module.configuration.Config
-import taboolib.module.configuration.Configuration
-import taboolib.platform.BukkitPlugin
+import me.xiaozhangup.carbkotlin.common.io.newFile
+import org.bukkit.plugin.java.JavaPlugin
+import me.xiaozhangup.domain.utils.ext.getDataFolder
+import me.xiaozhangup.carbkotlin.configuration.Config
+import me.xiaozhangup.carbkotlin.configuration.Configuration
 import java.nio.charset.StandardCharsets
 
-object OrangDomain : Plugin() {
+class OrangDomain : JavaPlugin() {
+    internal val crab = Crab(this, dataFolder)
 
-    @Config(migrate = true, value = "settings.yml")
-    lateinit var config: Configuration
-        private set
+    init { instance = this }
 
-    @Config(value = "regions.yml")
-    lateinit var regions: Configuration
-        private set
-
-    val polys = ArrayList<Poly>()
-    val permissions = ArrayList<Permission>()
-    val plugin by lazy { BukkitPlugin.getInstance() }
-    val json by lazy {
-        Json {
-            coerceInputValues = true
-            allowStructuredMapKeys = true
-            prettyPrint = true
-            ignoreUnknownKeys = true
-        }
+    override fun onLoad() {
+        crab.lifecycle.run(LifeCycle.CONST)
+        crab.lifecycle.run(LifeCycle.INIT)
+        crab.lifecycle.run(LifeCycle.LOAD)
     }
-    lateinit var world: WorldSettings
 
     override fun onEnable() {
-        CustomBlockData.registerListener(plugin)
-        loadWorldSettings()
-    }
-
-    override fun onActive() {
-        initPolys()
-    }
-
-    fun initPolys() {
-        regions.reload()
-        polys.clear()
-        newFile(getDataFolder(), "data", folder = true).listFiles()?.forEach { file ->
-            if (file.name.endsWith(".json")) {
-                polys.add(json.decodeFromString(Poly.serializer(), file.readText(StandardCharsets.UTF_8)))
-            }
+        crab.lifecycle.run(LifeCycle.ENABLE)
+        crab.registerEvents()
+        crab.registerPlaceholders()
+        enablePlugin()
+        crab.start()
+        crab.submitTask(delay = 1) {
+            crab.lifecycle.run(LifeCycle.ACTIVE)
+            activePlugin()
         }
     }
 
-    fun deletePoly(id: Poly) {
-        newFile(
-            getDataFolder(),
-            "data/${id.id}.json"
-        ).delete()
+    override fun onDisable() {
+        try {
+            try { crab.lifecycle.run(LifeCycle.DISABLE) } finally {
+                disablePlugin()
+            }
+        } finally { crab.close() }
     }
 
-    fun savePoly(id: String) {
-        val poly = polys.firstOrNull { it.id == id } ?: return
-        newFile(
-            getDataFolder(),
-            "data/${id}.json"
-        ).writeText(json.encodeToString(poly), StandardCharsets.UTF_8)
-    }
+    companion object {
+        lateinit var instance: OrangDomain
+            private set
 
-    fun getTool(): Material {
-        return Material.matchMaterial(config.getString("ClaimTool", "APPLE")!!) ?: Material.APPLE
-    }
+        internal val crab get() = instance.crab
 
-    fun loadWorldSettings() {
-        config.reload()
-        world = WorldSettings(config.getConfigurationSection("worlds")!!)
+
+        @Awake(LifeCycle.INIT)
+        fun loadSharedConfigurations() {
+            crab.loadConfigurations()
+        }
+
+
+        @Config(migrate = true, value = "settings.yml")
+        lateinit var config: Configuration
+            private set
+
+        @Config(value = "regions.yml")
+        lateinit var regions: Configuration
+            private set
+
+        val polys = ArrayList<Poly>()
+        val permissions = ArrayList<Permission>()
+        val plugin get() = instance
+        val json by lazy {
+            Json {
+                coerceInputValues = true
+                allowStructuredMapKeys = true
+                prettyPrint = true
+                ignoreUnknownKeys = true
+            }
+        }
+        lateinit var world: WorldSettings
+
+        fun enablePlugin() {
+            crab.commands.registerAnnotated(crab.scanner)
+            CustomBlockData.registerListener(plugin)
+            loadWorldSettings()
+        }
+
+        fun activePlugin() {
+            initPolys()
+        }
+
+        fun initPolys() {
+            regions.reload()
+            polys.clear()
+            newFile(getDataFolder(), "data", folder = true).listFiles()?.forEach { file ->
+                if (file.name.endsWith(".json")) {
+                    polys.add(json.decodeFromString(Poly.serializer(), file.readText(StandardCharsets.UTF_8)))
+                }
+            }
+        }
+
+        fun deletePoly(id: Poly) {
+            newFile(
+                getDataFolder(),
+                "data/${id.id}.json"
+            ).delete()
+        }
+
+        fun savePoly(id: String) {
+            val poly = polys.firstOrNull { it.id == id } ?: return
+            newFile(
+                getDataFolder(),
+                "data/${id}.json"
+            ).writeText(json.encodeToString(poly), StandardCharsets.UTF_8)
+        }
+
+        fun getTool(): Material {
+            return Material.matchMaterial(config.getString("ClaimTool", "APPLE")!!) ?: Material.APPLE
+        }
+
+        fun loadWorldSettings() {
+            config.reload()
+            world = WorldSettings(config.getConfigurationSection("worlds")!!)
+        }
+        fun disablePlugin() {
+            crab.close()
+        }
     }
 }

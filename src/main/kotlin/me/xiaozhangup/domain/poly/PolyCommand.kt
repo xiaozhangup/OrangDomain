@@ -1,5 +1,11 @@
 package me.xiaozhangup.domain.poly
 
+
+
+import me.xiaozhangup.whale.service.menu.MenuPagedHolder
+import me.xiaozhangup.whale.util.ext.openMenu
+import me.xiaozhangup.whale.util.ext.openPagedMenu
+import net.kyori.adventure.text.Component
 import me.xiaozhangup.domain.OrangDomain
 import me.xiaozhangup.domain.poly.permission.Permission
 import me.xiaozhangup.domain.utils.error
@@ -11,19 +17,13 @@ import org.bukkit.Sound
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import taboolib.common.platform.command.CommandBody
-import taboolib.common.platform.command.CommandHeader
-import taboolib.common.platform.command.mainCommand
-import taboolib.common.platform.command.subCommand
-import taboolib.common.platform.function.submit
-import taboolib.expansion.createHelper
-import taboolib.library.xseries.XMaterial
-import taboolib.module.ui.ClickEvent
-import taboolib.module.ui.openMenu
-import taboolib.module.ui.type.Chest
-import taboolib.module.ui.type.PageableChest
-import taboolib.platform.util.Slots
-import taboolib.platform.util.buildItem
+import me.xiaozhangup.carbkotlin.command.CommandBody
+import me.xiaozhangup.carbkotlin.command.CommandHeader
+import me.xiaozhangup.carbkotlin.command.mainCommand
+import me.xiaozhangup.carbkotlin.command.subCommand
+import me.xiaozhangup.domain.utils.ext.submitTask
+import me.xiaozhangup.carbkotlin.command.createHelper
+import me.xiaozhangup.carbkotlin.util.itemStack
 
 @Suppress("unused")
 @CommandHeader(
@@ -415,279 +415,223 @@ object PolyCommand {
     fun Poly.openMenu(player: Player) {
         val data = this
         player.playSound(player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f)
-        player.openMenu<Chest>("管理页面") {
+        player.openMenu(Component.text("管理页面"), size = 3) {
             map(
                 "#########",
                 "#A#B#C#D#",
                 "#########"
             )
-            set('A', buildItem(XMaterial.ITEM_FRAME) {
-                name = "&f${data.name}"
-                lore.add("&7持有者:&f ${Bukkit.getOfflinePlayer(admin).name}")
-                lore.add("&7唯一编号:&f ${data.name}")
-                colored()
+            set('A', itemStack(Material.ITEM_FRAME) {
+                name("<white>${data.name}")
+                lore(
+                    "<gray>持有者:<white> ${Bukkit.getOfflinePlayer(admin).name}",
+                    "<gray>唯一编号:<white> ${data.name}",
+                )
+
             })
-            set('B', buildItem(XMaterial.COMMAND_BLOCK_MINECART) {
-                name = "&f全局权限管理"
-                colored()
-            })
-            onClick('B') {
-                openPermissionMenu(player)
+            set('B', itemStack(Material.COMMAND_BLOCK_MINECART) {
+                name("<white>全局权限管理")
+            }) { _, _ ->
+                submitTask(delay = 1) { openPermissionMenu(player) }
             }
-            set('C', buildItem(XMaterial.WRITABLE_BOOK) {
-                name = "&f私有权限管理"
-                colored()
-            })
-            onClick('C') {
-                openPermissionUserMenu(player)
+            set('C', itemStack(Material.WRITABLE_BOOK) {
+                name("<white>私有权限管理")
+            }) { _, _ ->
+                submitTask(delay = 1) { openPermissionUserMenu(player) }
             }
-            set('D', buildItem(XMaterial.OBSERVER) {
-                name = "&f领地设置"
-                colored()
-            })
-            onClick('D') {
-                openSettingMenu(player)
+            set('D', itemStack(Material.OBSERVER) {
+                name("<white>领地设置")
+            }) { _, _ ->
+                submitTask(delay = 1) { openSettingMenu(player) }
             }
 
-            onClick(lock = true)
+            lock(true)
+            move(false)
         }
     }
 
     fun Poly.openSettingMenu(player: Player) {
         val data = this
-        player.openMenu<Chest>("${data.name}设置") {
+        player.openMenu(Component.text("${data.name}设置"), size = 3) {
             player.playSound(player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f)
             map(
                 "#########",
                 "#ABCDEFG#",
                 "#<#######"
             )
-            set('A', buildItem(Material.ENDER_EYE) {
-                name = "&f设置传送点到当前位置"
-                colored()
-            }) {
+            set('A', itemStack(Material.ENDER_EYE) {
+                name("<white>设置传送点到当前位置")
+            }) { _, _ ->
                 data.door = player.location
                 OrangDomain.savePoly(data.id)
             }
 
-            onClick(lock = true)
+            lock(true)
+            move(false)
         }
     }
 
     fun Poly.openPermissionUserMenu(player: Player) {
         val data = this
         player.playSound(player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f)
-        player.openMenu<PageableChest<String>>("${data.name}私有权限管理") {
-            rows(6)
-            slots(Slots.CENTER)
-            elements {
-                users.keys.filter { it != player.name }.toList()
-            }
-            onGenerate { _, element, _, _ ->
-                if (hasPermission("admin", element)) {
-                    buildItem(XMaterial.PLAYER_HEAD) {
-                        name = "&c管理员 $element"
-                        lore.addAll(listOf(" &7- &fall", " "))
-                        lore.add("&7点击修改权限")
-                        skullOwner = element
-                        colored()
-                    }
-                } else {
-                    buildItem(XMaterial.PLAYER_HEAD) {
-                        name = "&c用户 $element"
-                        lore.addAll(users[element]!!.filter { it.value }.keys.map { " &7- &f${it}" })
-                        lore.add(" ")
-                        lore.add("&7点击修改权限")
-                        skullOwner = element
-                        colored()
+        player.openPagedMenu<String>(Component.text("${data.name}私有权限管理"), size = 6) {
+            domainPage {
+                elements(run {
+                    users.keys.filter { it != player.name }.toList()
+                })
+                elementGenerate { element ->
+                    if (hasPermission("admin", element)) {
+                        itemStack(Material.PLAYER_HEAD) {
+                            name("<red>管理员 $element")
+                            lore(" <gray>- <white>all", " ", "<gray>点击修改权限")
+                            meta { (this as org.bukkit.inventory.meta.SkullMeta).owner = element }
+                        }
+                    } else {
+                        itemStack(Material.PLAYER_HEAD) {
+                            name("<red>用户 $element")
+                            lore(*(users[element]!!.filter { it.value }.keys.map { " <gray>- <white>$it" }
+                                + listOf(" ", "<gray>点击修改权限")).toTypedArray())
+                            meta { (this as org.bukkit.inventory.meta.SkullMeta).owner = element }
+                        }
                     }
                 }
-            }
-            onClick { _, element ->
-                openPermissionUser(player, element)
-            }
-            set(49, buildItem(XMaterial.WRITABLE_BOOK) {
-                name = "&f添加用户"
-                lore.add("&7点击从列表里添加用户")
-                colored()
-            }) {
-                openAddUserMenu(player)
-            }
-            setNextPage(51) { _, hasNextPage ->
-                if (hasNextPage) {
-                    buildItem(XMaterial.SPECTRAL_ARROW) {
-                        name = "§f下一页"
-                    }
-                } else {
-                    buildItem(XMaterial.ARROW) {
-                        name = "§7下一页"
-                    }
-                }
-            }
-            setPreviousPage(47) { _, hasPreviousPage ->
-                if (hasPreviousPage) {
-                    buildItem(XMaterial.SPECTRAL_ARROW) {
-                        name = "§f上一页"
-                    }
-                } else {
-                    buildItem(XMaterial.ARROW) {
-                        name = "§7上一页"
-                    }
+                click { element, _, _ ->
+                    submitTask(delay = 1) { openPermissionUser(player, element) }
                 }
             }
 
-            onClick(lock = true)
+            set(49, itemStack(Material.WRITABLE_BOOK) {
+                name("<white>添加用户")
+                lore("<gray>点击从列表里添加用户")
+            }) { _, _ ->
+                submitTask(delay = 1) { openAddUserMenu(player) }
+            }
+
+            lock(true)
+            move(false)
         }
     }
 
     fun Poly.openAddUserMenu(player: Player) {
         val data = this
-        player.openMenu<PageableChest<Player>>("点击要添加的头像") {
-            rows(6)
-            slots(Slots.CENTER)
-            elements {
-                Bukkit.getOnlinePlayers().filter { it.name != player.name || !users.keys.contains(it.name) }.toList()
-            }
-            onGenerate { _, element, _, _ ->
-                buildItem(XMaterial.PLAYER_HEAD) {
-                    name = "&c用户 $${element.name}"
-                    lore.add("&7点击添加")
-                    skullOwner = element.name
-                    colored()
-                }
-            }
-            onClick { _: ClickEvent, element: Player ->
-                users[element.name] = HashMap()
-                OrangDomain.savePoly(data.id)
-                player.info("添加成功!")
-                player.closeInventory()
-                submit(delay = 1) {
-                    openPermissionUserMenu(player)
-                }
-            }
-            setNextPage(51) { _, hasNextPage ->
-                if (hasNextPage) {
-                    buildItem(XMaterial.SPECTRAL_ARROW) {
-                        name = "§f下一页"
-                    }
-                } else {
-                    buildItem(XMaterial.ARROW) {
-                        name = "§7下一页"
+        player.openPagedMenu<Player>(Component.text("点击要添加的头像"), size = 6) {
+            domainPage {
+                elements(run {
+                    Bukkit.getOnlinePlayers().filter { it.name != player.name || !users.keys.contains(it.name) }.toList()
+                })
+                elementGenerate { element ->
+                    itemStack(Material.PLAYER_HEAD) {
+                        name("<red>用户 $${element.name}")
+                        lore("<gray>点击添加")
+                        meta { (this as org.bukkit.inventory.meta.SkullMeta).owner = element.name }
                     }
                 }
-            }
-            setPreviousPage(47) { _, hasPreviousPage ->
-                if (hasPreviousPage) {
-                    buildItem(XMaterial.SPECTRAL_ARROW) {
-                        name = "§f上一页"
-                    }
-                } else {
-                    buildItem(XMaterial.ARROW) {
-                        name = "§7上一页"
+                click { element, _, _ ->
+                    users[element.name] = HashMap()
+                    OrangDomain.savePoly(data.id)
+                    player.info("添加成功!")
+                    submitTask(delay = 1) {
+                        openPermissionUserMenu(player)
                     }
                 }
             }
 
-            onClick(lock = true)
+            lock(true)
+            move(false)
         }
     }
 
     fun Poly.openPermissionUser(player: Player, user: String) {
         val data = this
         player.playSound(player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f)
-        player.openMenu<PageableChest<Permission>>("$user 的权限设置") {
-            rows(6)
-            slots(Slots.CENTER)
-            elements {
-                val list = OrangDomain.permissions.filter { it.worldSide }.sortedBy { it.priority }.toMutableList()
-                list.toList().forEach {
-                    if (it.adminSide && !player.isOp) {
-                        list.remove(it)
+        player.openPagedMenu<Permission>(Component.text("$user 的权限设置"), size = 6) {
+            domainPage {
+                elements(run {
+                    val list = OrangDomain.permissions.filter { it.worldSide }.sortedBy { it.priority }.toMutableList()
+                    list.toList().forEach {
+                        if (it.adminSide && !player.isOp) {
+                            list.remove(it)
+                        }
                     }
+                    list
+                })
+                elementGenerate { element ->
+                    element.generateMenuItem(hasPermission(element.id, player = user, def = element.default))
                 }
-                list
-            }
-            onGenerate { _, element, _, _ ->
-                element.generateMenuItem(hasPermission(element.id, player = user, def = element.default))
-            }
-            set(49, buildItem(XMaterial.LAVA_BUCKET) {
-                name = "&4删除用户"
-                lore.add("&c将该用户从当前领地中移除")
-                colored()
-            }) {
-                player.info("已删除 &f${user} 的所有权限!")
-                users.remove(user)
-                OrangDomain.savePoly(data.id)
-                submit(delay = 1) {
-                    openPermissionUserMenu(player)
-                }
-            }
-            onClick { _, element ->
-                users[user]!![element.id] = !hasPermission(element.id, player = user, def = element.default)
-                player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 2f)
-                OrangDomain.savePoly(data.id)
-                player.info("已修改 &f${user} &7的 &f${element.id} &7权限!")
-                submit(delay = 1) {
-                    openPermissionUser(player, user)
+                click { element, _, _ ->
+                    users[user]!![element.id] = !hasPermission(element.id, player = user, def = element.default)
+                    player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 2f)
+                    OrangDomain.savePoly(data.id)
+                    player.info("已修改 &f${user} &7的 &f${element.id} &7权限!")
+                    submitTask(delay = 1) {
+                        openPermissionUser(player, user)
+                    }
                 }
             }
 
-            onClick(lock = true)
+            set(49, itemStack(Material.LAVA_BUCKET) {
+                name("<dark_red>删除用户")
+                lore("<red>将该用户从当前领地中移除")
+            }) { _, _ ->
+                player.info("已删除 &f${user} 的所有权限!")
+                users.remove(user)
+                OrangDomain.savePoly(data.id)
+                submitTask(delay = 1) {
+                    openPermissionUserMenu(player)
+                }
+            }
+
+            lock(true)
+            move(false)
         }
     }
 
     fun Poly.openPermissionMenu(player: Player) {
         val data = this
         player.playSound(player.location, Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f)
-        player.openMenu<PageableChest<Permission>>("${name}全局权限管理") {
-            rows(6)
-            slots(Slots.CENTER)
-            elements {
-                val list = OrangDomain.permissions.filter { it.worldSide }.sortedBy { it.priority }.toMutableList()
-                if (!player.isOp) {
-                    list.removeAll(list.filter { it.adminSide == player.isOp })
-                }
-                list
-            }
-            onGenerate { _, element, _, _ ->
-                if (element.adminSide && !player.isOp) {
-                    ItemStack(Material.BARRIER)
-                }
-                element.generateMenuItem(hasPermission(element.id, def = element.default))
-            }
-            onClick { event, element ->
-                if (element.adminSide && !player.isOp) {
-                    event.clicker.error("该选项无效!")
-                }
-                permissions[element.id] = !hasPermission(element.id, def = element.default)
-                player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 2f)
-                OrangDomain.savePoly(data.id)
-                openPermissionMenu(player)
-            }
-            setNextPage(51) { _, hasNextPage ->
-                if (hasNextPage) {
-                    buildItem(XMaterial.SPECTRAL_ARROW) {
-                        name = "§f下一页"
+        player.openPagedMenu<Permission>(Component.text("${name}全局权限管理"), size = 6) {
+            domainPage {
+                elements(run {
+                    val list = OrangDomain.permissions.filter { it.worldSide }.sortedBy { it.priority }.toMutableList()
+                    if (!player.isOp) {
+                        list.removeAll(list.filter { it.adminSide == player.isOp })
                     }
-                } else {
-                    buildItem(XMaterial.ARROW) {
-                        name = "§7下一页"
+                    list
+                })
+                elementGenerate { element ->
+                    if (element.adminSide && !player.isOp) {
+                        ItemStack(Material.BARRIER)
                     }
+                    element.generateMenuItem(hasPermission(element.id, def = element.default))
                 }
-            }
-            setPreviousPage(47) { _, hasPreviousPage ->
-                if (hasPreviousPage) {
-                    buildItem(XMaterial.SPECTRAL_ARROW) {
-                        name = "§f上一页"
+                click { element, _, _ ->
+                    if (element.adminSide && !player.isOp) {
+                        player.error("该选项无效!")
                     }
-                } else {
-                    buildItem(XMaterial.ARROW) {
-                        name = "§7上一页"
-                    }
+                    permissions[element.id] = !hasPermission(element.id, def = element.default)
+                    player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 2f)
+                    OrangDomain.savePoly(data.id)
+                    submitTask(delay = 1) { openPermissionMenu(player) }
                 }
             }
 
-            onClick(lock = true)
+            lock(true)
+            move(false)
         }
     }
+
+    private fun <T> MenuPagedHolder<T>.domainPage(builder: MenuPagedHolder.PageableBuilder<T>.() -> Unit) {
+        map("#########", "#EEEEEEE#", "#EEEEEEE#", "#EEEEEEE#", "#EEEEEEE#", "##<###>##")
+        pageable {
+            elementSlot('E')
+            previousButton('<', pageArrow("上一页", true), pageArrow("上一页", false))
+            nextButton('>', pageArrow("下一页", true), pageArrow("下一页", false))
+            builder()
+        }
+    }
+
+    private fun pageArrow(label: String, enabled: Boolean): ItemStack =
+        itemStack(if (enabled) Material.SPECTRAL_ARROW else Material.ARROW) {
+            name((if (enabled) "<white>" else "<gray>") + label)
+        }
 }

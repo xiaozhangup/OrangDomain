@@ -1,7 +1,6 @@
 package me.xiaozhangup.domain.poly.permission
 
-import me.xiaozhangup.domain.OrangDomain.world
-import me.xiaozhangup.domain.utils.display
+import me.xiaozhangup.domain.OrangDomain.Companion.world
 import me.xiaozhangup.domain.utils.getPoly
 import me.xiaozhangup.domain.utils.register
 import net.momirealms.craftengine.bukkit.api.event.CustomBlockBreakEvent
@@ -18,14 +17,12 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent
 import org.bukkit.event.hanging.HangingPlaceEvent
 import org.bukkit.event.player.*
 import org.bukkit.event.vehicle.VehicleDestroyEvent
-import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-import taboolib.common.LifeCycle
-import taboolib.common.platform.Awake
-import taboolib.common.platform.event.EventPriority
-import taboolib.common.platform.event.SubscribeEvent
-import taboolib.library.xseries.XMaterial
-import taboolib.platform.util.buildItem
+import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
+import me.xiaozhangup.carbkotlin.lifecycle.Awake
+import org.bukkit.event.EventPriority
+import me.xiaozhangup.carbkotlin.event.SubscribeEvent
+import me.xiaozhangup.carbkotlin.util.itemStack
 
 
 object PermBuild : Permission, Listener {
@@ -51,21 +48,18 @@ object PermBuild : Permission, Listener {
     )
 
     override fun generateMenuItem(value: Boolean): ItemStack {
-        return buildItem(XMaterial.BRICKS) {
-            name = "&f建筑 ${value.display} &7($id)"
-            lore.addAll(
-                listOf(
-                    "",
-                    "&7允许行为:",
-                    "&8放置方块, 破坏方块, 放置挂饰, 破坏挂饰",
-                    "&8放置盔甲架, 破坏盔甲架, 装满桶, 倒空桶"
-                )
+        return itemStack(Material.BRICKS) {
+            name("<white>建筑 ${if (value) "<green>允许" else "<red>阻止"} <gray>($id)")
+            lore(
+                "",
+                "<gray>允许行为:",
+                "<dark_gray>放置方块, 破坏方块, 放置挂饰, 破坏挂饰",
+                "<dark_gray>放置盔甲架, 破坏盔甲架, 装满桶, 倒空桶"
             )
-            flags.addAll(ItemFlag.values())
+            hideAll()
             if (value) {
                 shiny()
             }
-            colored()
         }
     }
 
@@ -76,7 +70,7 @@ object PermBuild : Permission, Listener {
             if (!hasPermission("build", e.player.name) && !isDestructible(e.block.type)) {
                 e.isCancelled = true
                 return
-                //e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 <white>$id")
             }
         } ?: run {
             if (world.globalProtect.contains(e.block.world.name) && !e.player.isOp) {
@@ -91,7 +85,7 @@ object PermBuild : Permission, Listener {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
                 return
-                //e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 <white>$id")
             }
         } ?: run {
             if (world.globalProtect.contains(e.block.world.name) && !e.player.isOp) {
@@ -107,7 +101,7 @@ object PermBuild : Permission, Listener {
             if (!hasPermission("build", entity.name)) {
                 e.isCancelled = true
                 return
-                //e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 <white>$id")
             }
         } ?: run {
             if (world.globalProtect.contains(e.block.world.name) && !entity.isOp) {
@@ -123,7 +117,7 @@ object PermBuild : Permission, Listener {
             if (!hasPermission("build", player.name)) {
                 e.isCancelled = true
                 return
-                //player.error("缺少权限 &f$id")
+                //player.error("缺少权限 <white>$id")
             }
         } ?: run {
             if (world.globalProtect.contains(e.block.world.name) && !player.isOp) {
@@ -140,7 +134,7 @@ object PermBuild : Permission, Listener {
                 if (!hasPermission("build", player.name)) {
                     e.isCancelled = true
                     return
-                    //player.error("缺少权限 &f$id")
+                    //player.error("缺少权限 <white>$id")
                 }
             } ?: run {
                 if (world.globalProtect.contains(e.entity.world.name) && !player.isOp) {
@@ -158,7 +152,7 @@ object PermBuild : Permission, Listener {
                 if (!hasPermission("build", e.player.name)) {
                     e.isCancelled = true
                     return
-                    //e.player.error("缺少权限 &f$id")
+                    //e.player.error("缺少权限 <white>$id")
                 }
             } ?: run {
                 if (world.globalProtect.contains(clickedBlock.world.name) && !e.player.isOp) {
@@ -176,7 +170,7 @@ object PermBuild : Permission, Listener {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
                 return
-                //e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 <white>$id")
             }
         } ?: run {
             if (world.globalProtect.contains(e.rightClicked.world.name) && !e.player.isOp) {
@@ -193,7 +187,7 @@ object PermBuild : Permission, Listener {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
                 return
-                //e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 <white>$id")
             }
         } ?: run {
             if (world.globalProtect.contains(e.rightClicked.world.name) && !e.player.isOp) {
@@ -208,7 +202,7 @@ object PermBuild : Permission, Listener {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
                 return
-                //player.error("缺少权限 &f$id")
+                //player.error("缺少权限 <white>$id")
             }
         } ?: run {
             if (world.globalProtect.contains(e.rightClicked.world.name) && !e.player.isOp) {
@@ -224,7 +218,7 @@ object PermBuild : Permission, Listener {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
                 return
-                //e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 <white>$id")
             }
         } ?: run {
             if (world.globalProtect.contains(location.world.name) && !e.player.isOp) {
@@ -240,7 +234,7 @@ object PermBuild : Permission, Listener {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
                 return
-                //e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 <white>$id")
             }
         } ?: run {
             if (world.globalProtect.contains(location.world.name) && !e.player.isOp) {
@@ -256,7 +250,7 @@ object PermBuild : Permission, Listener {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
                 return
-                //e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 <white>$id")
             }
         } ?: run {
             if (world.globalProtect.contains(location.world.name) && !e.player.isOp) {
@@ -271,7 +265,7 @@ object PermBuild : Permission, Listener {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
                 return
-                //e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 <white>$id")
             }
         } ?: run {
             if (world.globalProtect.contains(e.block.world.name) && !e.player.isOp) {
@@ -286,7 +280,7 @@ object PermBuild : Permission, Listener {
             if (!hasPermission("build", e.player.name)) {
                 e.isCancelled = true
                 return
-                //e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 <white>$id")
             }
         } ?: run {
             if (world.globalProtect.contains(e.block.world.name) && !e.player.isOp) {
@@ -303,7 +297,7 @@ object PermBuild : Permission, Listener {
             if (!hasPermission("build", player.name)) {
                 e.isCancelled = true
                 return
-                //e.player.error("缺少权限 &f$id")
+                //e.player.error("缺少权限 <white>$id")
             }
         } ?: run {
             if (world.globalProtect.contains(e.vehicle.world.name) && !player.isOp) {

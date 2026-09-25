@@ -1,7 +1,8 @@
 package me.xiaozhangup.domain.poly.permission
 
-import me.xiaozhangup.domain.OrangDomain.world
-import me.xiaozhangup.domain.utils.display
+import org.bukkit.Material
+
+import me.xiaozhangup.domain.OrangDomain.Companion.world
 import me.xiaozhangup.domain.utils.getPoly
 import me.xiaozhangup.domain.utils.register
 import org.bukkit.block.data.type.Bed
@@ -9,12 +10,10 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-import taboolib.common.LifeCycle
-import taboolib.common.platform.Awake
-import taboolib.library.xseries.XMaterial
-import taboolib.platform.util.buildItem
+import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
+import me.xiaozhangup.carbkotlin.lifecycle.Awake
+import me.xiaozhangup.carbkotlin.util.itemStack
 
 
 object PermBed : Permission, Listener {
@@ -34,20 +33,17 @@ object PermBed : Permission, Listener {
         get() = true
 
     override fun generateMenuItem(value: Boolean): ItemStack {
-        return buildItem(XMaterial.BLUE_BED) {
-            name = "&f睡觉(设置重生点) ${value.display} &7($id)"
-            lore.addAll(
-                listOf(
-                    "",
-                    "&7允许行为:",
-                    "&8使用床"
-                )
+        return itemStack(Material.BLUE_BED) {
+            name("<white>睡觉(设置重生点) ${if (value) "<green>允许" else "<red>阻止"} <gray>($id)")
+            lore(
+                "",
+                "<gray>允许行为:",
+                "<dark_gray>使用床"
             )
-            flags.addAll(ItemFlag.values())
+            hideAll()
             if (value) {
                 shiny()
             }
-            colored()
         }
     }
 
@@ -57,7 +53,7 @@ object PermBed : Permission, Listener {
             e.clickedBlock?.location?.getPoly()?.run {
                 if (!hasPermission("bed", e.player.name)) {
                     e.isCancelled = true
-                    //e.player.error("缺少权限 &f$id")
+                    //e.player.error("缺少权限 <white>$id")
                 }
             } ?: run {
                 if (world.globalProtect.contains(e.player.world.name) && !e.player.isOp) {

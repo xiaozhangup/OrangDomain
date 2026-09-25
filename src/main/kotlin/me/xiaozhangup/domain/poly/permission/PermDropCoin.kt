@@ -1,13 +1,12 @@
 package me.xiaozhangup.domain.poly.permission
 
-import me.xiaozhangup.domain.utils.display
+import org.bukkit.Material
+
 import me.xiaozhangup.domain.utils.register
-import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-import taboolib.common.LifeCycle
-import taboolib.common.platform.Awake
-import taboolib.library.xseries.XMaterial
-import taboolib.platform.util.buildItem
+import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
+import me.xiaozhangup.carbkotlin.lifecycle.Awake
+import me.xiaozhangup.carbkotlin.util.itemStack
 
 object PermDropCoin : Permission {
 
@@ -29,20 +28,17 @@ object PermDropCoin : Permission {
         get() = true
 
     override fun generateMenuItem(value: Boolean): ItemStack {
-        return buildItem(XMaterial.GOLD_INGOT) {
-            name = "&f死亡掉落金币 ${value.display} &7($id)"
-            lore.addAll(
-                listOf(
-                    "",
-                    "&7允许行为:",
-                    "&8死亡时掉落金币"
-                )
+        return itemStack(Material.GOLD_INGOT) {
+            name("<white>死亡掉落金币 ${if (value) "<green>允许" else "<red>阻止"} <gray>($id)")
+            lore(
+                "",
+                "<gray>允许行为:",
+                "<dark_gray>死亡时掉落金币"
             )
-            flags.addAll(ItemFlag.values())
+            hideAll()
             if (value) {
                 shiny()
             }
-            colored()
         }
     }
 }

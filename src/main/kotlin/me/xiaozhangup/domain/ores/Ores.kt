@@ -1,12 +1,12 @@
 package me.xiaozhangup.domain.ores
 
-import me.xiaozhangup.domain.OrangDomain.json
-import me.xiaozhangup.domain.OrangDomain.plugin
+import me.xiaozhangup.domain.OrangDomain.Companion.json
+import me.xiaozhangup.domain.OrangDomain.Companion.plugin
 import me.xiaozhangup.domain.ores.TimingArea.Companion.MAX_TIME
 import me.xiaozhangup.domain.ores.TimingArea.Companion.timingKey
 import me.xiaozhangup.domain.utils.customBlockData
 import me.xiaozhangup.domain.utils.fromLocation
-import me.xiaozhangup.slimecargo.utils.flexibleItem
+import me.xiaozhangup.carbkotlin.flexible.flexibleItem
 import me.xiaozhangup.whale.module.Coins
 import me.xiaozhangup.whale.module.item.impl.CraftEngineItem
 import me.xiaozhangup.whale.service.item.ItemService
@@ -24,19 +24,19 @@ import org.bukkit.event.block.BlockDamageEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.persistence.PersistentDataType
-import taboolib.common.LifeCycle
-import taboolib.common.io.newFile
-import taboolib.common.platform.Awake
-import taboolib.common.platform.command.PermissionDefault
-import taboolib.common.platform.command.command
-import taboolib.common.platform.event.SubscribeEvent
-import taboolib.common.platform.function.getDataFolder
-import taboolib.common.platform.function.submit
-import taboolib.expansion.createHelper
-import taboolib.module.configuration.Config
-import taboolib.module.configuration.Configuration
-import taboolib.module.configuration.util.getMap
-import taboolib.platform.compat.replacePlaceholder
+import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
+import me.xiaozhangup.carbkotlin.common.io.newFile
+import me.xiaozhangup.carbkotlin.lifecycle.Awake
+import me.xiaozhangup.carbkotlin.command.PermissionDefault
+import me.xiaozhangup.domain.utils.ext.command
+import me.xiaozhangup.carbkotlin.event.SubscribeEvent
+import me.xiaozhangup.domain.utils.ext.getDataFolder
+import me.xiaozhangup.domain.utils.ext.submitTask
+import me.xiaozhangup.carbkotlin.command.createHelper
+import me.xiaozhangup.carbkotlin.configuration.Config
+import me.xiaozhangup.carbkotlin.configuration.Configuration
+import me.xiaozhangup.carbkotlin.configuration.util.getMap
+import me.xiaozhangup.carbkotlin.compat.replacePlaceholder
 import java.io.File
 import kotlin.math.max
 import kotlin.math.min
@@ -212,7 +212,7 @@ object Ores {
     }
 
     fun schedule() {
-        submit(period = 1) {
+        submitTask(period = 1) {
             for (it in refreshing.values) {
                 if (it.setting == null) continue
                 val i = it.interval ?: continue

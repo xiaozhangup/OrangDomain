@@ -1,10 +1,10 @@
 package me.xiaozhangup.domain.ores
 
 import org.bukkit.Material
-import taboolib.common5.RandomList
-import taboolib.library.configuration.ConfigurationSection
-import taboolib.module.configuration.Configuration
-import taboolib.module.configuration.util.getMap
+import me.xiaozhangup.carbkotlin.common.util.RandomList
+import me.xiaozhangup.carbkotlin.configuration.ConfigurationSection
+import me.xiaozhangup.carbkotlin.configuration.Configuration
+import me.xiaozhangup.carbkotlin.configuration.util.getMap
 
 class RefreshSetting(
     val interval: Int, // 间隔

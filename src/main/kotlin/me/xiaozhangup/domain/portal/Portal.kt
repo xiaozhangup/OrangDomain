@@ -13,15 +13,15 @@ import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerMoveEvent
-import taboolib.common.LifeCycle
-import taboolib.common.platform.Awake
-import taboolib.common.platform.command.PermissionDefault
-import taboolib.common.platform.command.command
-import taboolib.common.platform.event.SubscribeEvent
-import taboolib.common.platform.function.submit
-import taboolib.expansion.createHelper
-import taboolib.module.configuration.Config
-import taboolib.module.configuration.Configuration
+import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
+import me.xiaozhangup.carbkotlin.lifecycle.Awake
+import me.xiaozhangup.carbkotlin.command.PermissionDefault
+import me.xiaozhangup.domain.utils.ext.command
+import me.xiaozhangup.carbkotlin.event.SubscribeEvent
+import me.xiaozhangup.domain.utils.ext.submitTask
+import me.xiaozhangup.carbkotlin.command.createHelper
+import me.xiaozhangup.carbkotlin.configuration.Config
+import me.xiaozhangup.carbkotlin.configuration.Configuration
 import java.util.concurrent.TimeUnit
 
 object Portal {
@@ -126,7 +126,7 @@ object Portal {
         } ?: return
         if (baffle.hasNext(player)) {
             Screen.sendScreen(player, fadeIn = 5, stay = 15, fadeOut = 10)
-            submit(delay = 6) { player.teleport(portal.target) }
+            submitTask(delay = 6) { player.teleport(portal.target) }
 
             val member = member(player) ?: return // 计分兼容
             if (member.meta.getString("portal_enter", portal.id) != daily) {

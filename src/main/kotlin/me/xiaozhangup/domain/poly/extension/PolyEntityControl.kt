@@ -1,15 +1,15 @@
 package me.xiaozhangup.domain.poly.extension
 
-import me.xiaozhangup.domain.OrangDomain.regions
-import me.xiaozhangup.domain.OrangDomain.world
+import me.xiaozhangup.domain.OrangDomain.Companion.regions
+import me.xiaozhangup.domain.OrangDomain.Companion.world
 import me.xiaozhangup.domain.poly.Poly
 import me.xiaozhangup.domain.utils.getPoly
 import me.xiaozhangup.domain.utils.rootDamager
 import org.bukkit.entity.*
 import org.bukkit.event.entity.EntityChangeBlockEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import taboolib.common.platform.event.EventPriority
-import taboolib.common.platform.event.SubscribeEvent
+import org.bukkit.event.EventPriority
+import me.xiaozhangup.carbkotlin.event.SubscribeEvent
 
 object PolyEntityControl {
     @SubscribeEvent

@@ -1,6 +1,6 @@
 package me.xiaozhangup.domain.module
 
-import me.xiaozhangup.domain.OrangDomain.world
+import me.xiaozhangup.domain.OrangDomain.Companion.world
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockExplodeEvent
 import org.bukkit.event.block.LeavesDecayEvent
@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent
 import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.event.entity.EntityInteractEvent
 import org.bukkit.event.player.PlayerInteractEvent
-import taboolib.common.platform.event.SubscribeEvent
+import me.xiaozhangup.carbkotlin.event.SubscribeEvent
 
 object GlobalProtect {
     @SubscribeEvent

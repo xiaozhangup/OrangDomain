@@ -4,8 +4,8 @@ import me.xiaozhangup.whale.util.ext.asLocation
 import me.xiaozhangup.whale.util.ext.asString
 import me.xiaozhangup.whale.util.ext.asStringWithoutYawPitch
 import org.bukkit.Location
-import taboolib.library.configuration.ConfigurationSection
-import taboolib.module.configuration.Configuration
+import me.xiaozhangup.carbkotlin.configuration.ConfigurationSection
+import me.xiaozhangup.carbkotlin.configuration.Configuration
 import kotlin.math.max
 import kotlin.math.min
 

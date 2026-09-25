@@ -1,45 +1,15 @@
-import io.izzel.taboolib.gradle.*
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `java-library`
     `maven-publish`
-    id("io.izzel.taboolib") version "2.0.38"
+    id("com.gradleup.shadow") version "9.4.3"
     id("me.xiaozhangup.sftp-uploader") version "0.1.0"
     id("org.jetbrains.kotlin.jvm") version "2.3.20"
     kotlin("plugin.serialization") version "2.3.20"
 }
-taboolib {
-    env {
-        install(
-            Basic,
-            Bukkit,
-            BukkitHook,
-            BukkitUtil,
-            BukkitUI,
-            MinecraftChat,
-            CommandHelper
-        )
 
-        version {
-            taboolib = "6.3.0-test-6-23-1"
-            coroutines = "1.11.0"
-            skipKotlin = true
-            skipKotlinRelocate = true
-        }
-    }
-
-    description {
-        dependencies {
-            name("CarbKotlin")
-            name("WhaleMechanism")
-            name("SlimeCargoNext")
-        }
-    }
-
-    relocate("com.jeff_media.customblockdata", "me.xiaozhangup.ceramic.lib.customblockdata")
-}
 
 repositories {
     mavenLocal()
@@ -55,14 +25,15 @@ repositories {
 }
 
 dependencies {
+    compileOnly("me.xiaozhangup.crab:CarbKotlin:2.3.20:paper") { isTransitive = false }
     compileOnly("me.xiaozhangup.octopus:octopus-api:26.2-R0.1-SNAPSHOT")
     compileOnly("me.xiaozhangup:WhaleMechanism:1.0.1:api")
-    compileOnly("me.xiaozhangup:SlimeCargoNext:1.0.2:api")
+    compileOnly("me.xiaozhangup:SlimeCargoNext:1.0.3:api")
     compileOnly("net.momirealms:craft-engine-core:26.6")
     compileOnly("net.momirealms:craft-engine-bukkit:26.6")
     compileOnly("me.clip:placeholderapi:2.11.6")
 
-    taboo("com.jeff-media:custom-block-data:2.2.5")
+    implementation("com.jeff-media:custom-block-data:2.2.5")
 
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-core:1.11.0")
     compileOnly("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
@@ -86,6 +57,11 @@ tasks.register<Jar>("sourceJar") {
     archiveClassifier.set("sources")
 }
 
+val apiJar = tasks.register<Jar>("apiJar") {
+    archiveClassifier.set("api")
+    from(sourceSets.main.get().output) { exclude("plugin.yml") }
+}
+
 publishing {
     repositories {
         mavenLocal()
@@ -97,7 +73,8 @@ publishing {
             groupId = "me.xiaozhangup"
             version = rootProject.version.toString()
 
-            from(components["kotlin"])
+            artifact(tasks.shadowJar)
+            artifact(tasks.named("apiJar"))
         }
     }
 }
@@ -116,4 +93,25 @@ sftpUploader {
             layout.buildDirectory.file("libs/OrangDomain-1.0.2.jar").get().asFile.absolutePath
         )
     )
+}
+
+// Native runtime and thin compile-time API.
+tasks.jar { archiveClassifier.set("plain") }
+tasks.shadowJar {
+    archiveClassifier.set("")
+    filesMatching("META-INF/services/**") { duplicatesStrategy = DuplicatesStrategy.INCLUDE }
+    mergeServiceFiles()
+    exclude("META-INF/*.SF", "META-INF/*.RSA", "META-INF/*.DSA")
+    dependencies {
+        exclude(dependency("org.jetbrains.kotlin:.*:.*"))
+        exclude(dependency("org.jetbrains.kotlinx:.*:.*"))
+    }
+
+    relocate("com.jeff_media.customblockdata", "me.xiaozhangup.ceramic.lib.customblockdata")
+}
+
+tasks.assemble { dependsOn(tasks.shadowJar, apiJar) }
+tasks.processResources {
+    inputs.property("version", project.version)
+    filesMatching("plugin.yml") { expand("version" to project.version) }
 }

@@ -1,10 +1,10 @@
 package me.xiaozhangup.domain.poly.extension
 
-import me.xiaozhangup.domain.OrangDomain.regions
+import me.xiaozhangup.domain.OrangDomain.Companion.regions
 import me.xiaozhangup.domain.utils.getPoly
 import org.bukkit.entity.EntityType
 import org.bukkit.event.entity.EntityTeleportEvent
-import taboolib.common.platform.event.SubscribeEvent
+import me.xiaozhangup.carbkotlin.event.SubscribeEvent
 
 object PolyTeleport {
     private val typed = listOf(

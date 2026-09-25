@@ -2,7 +2,7 @@ package me.xiaozhangup.domain.ores
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import me.xiaozhangup.domain.OrangDomain.json
+import me.xiaozhangup.domain.OrangDomain.Companion.json
 import me.xiaozhangup.domain.ores.Ores.data
 import me.xiaozhangup.domain.ores.Ores.oreKey
 import me.xiaozhangup.domain.ores.Ores.refreshingKey
@@ -11,7 +11,7 @@ import me.xiaozhangup.domain.ores.Ores.textures
 import me.xiaozhangup.domain.utils.IntervalTrigger
 import me.xiaozhangup.domain.utils.customBlockData
 import me.xiaozhangup.domain.utils.serializable.LocationSerializer
-import me.xiaozhangup.whale.util.ext.ItemStackBuilder.Companion.getTextureURL
+import me.xiaozhangup.carbkotlin.util.ItemStackBuilder.Companion.getTextureURL
 import me.xiaozhangup.whale.util.ext.asLocation
 import me.xiaozhangup.whale.util.ext.asStringWithoutYawPitch
 import org.bukkit.Bukkit
@@ -21,9 +21,9 @@ import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
 import org.bukkit.block.data.type.Skull
 import org.bukkit.persistence.PersistentDataType
-import taboolib.common.function.throttle
-import taboolib.common.io.newFile
-import taboolib.library.configuration.ConfigurationSection
+import me.xiaozhangup.carbkotlin.common.function.throttle
+import me.xiaozhangup.carbkotlin.common.io.newFile
+import me.xiaozhangup.carbkotlin.configuration.ConfigurationSection
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min

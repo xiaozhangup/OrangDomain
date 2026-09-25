@@ -1,14 +1,13 @@
 package me.xiaozhangup.domain.poly.permission
 
+import org.bukkit.Material
+
 import kotlinx.serialization.ExperimentalSerializationApi
-import me.xiaozhangup.domain.utils.display
 import me.xiaozhangup.domain.utils.register
-import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-import taboolib.common.LifeCycle
-import taboolib.common.platform.Awake
-import taboolib.library.xseries.XMaterial
-import taboolib.platform.util.buildItem
+import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
+import me.xiaozhangup.carbkotlin.lifecycle.Awake
+import me.xiaozhangup.carbkotlin.util.itemStack
 
 @ExperimentalSerializationApi
 object PermAdmin : Permission {
@@ -31,23 +30,20 @@ object PermAdmin : Permission {
         get() = true
 
     override fun generateMenuItem(value: Boolean): ItemStack {
-        return buildItem(XMaterial.COMMAND_BLOCK) {
-            name = "&f最高权力 ${value.display} &7($id)"
-            lore.addAll(
-                listOf(
-                    "",
-                    "&7允许行为:",
-                    "&8破坏领域, 扩展领域, 管理领域",
-                    "",
-                    "&4注意!",
-                    "&c对方将获得你的所有权力"
-                )
+        return itemStack(Material.COMMAND_BLOCK) {
+            name("<white>最高权力 ${if (value) "<green>允许" else "<red>阻止"} <gray>($id)")
+            lore(
+                "",
+                "<gray>允许行为:",
+                "<dark_gray>破坏领域, 扩展领域, 管理领域",
+                "",
+                "<dark_red>注意!",
+                "<red>对方将获得你的所有权力"
             )
-            flags.addAll(ItemFlag.values())
+            hideAll()
             if (value) {
                 shiny()
             }
-            colored()
         }
     }
 }

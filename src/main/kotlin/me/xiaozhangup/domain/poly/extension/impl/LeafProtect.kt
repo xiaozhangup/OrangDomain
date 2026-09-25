@@ -1,6 +1,6 @@
 package me.xiaozhangup.domain.poly.extension.impl
 
-import me.xiaozhangup.domain.OrangDomain.world
+import me.xiaozhangup.domain.OrangDomain.Companion.world
 import org.bukkit.event.EventHandler
 import org.bukkit.event.block.LeavesDecayEvent
 

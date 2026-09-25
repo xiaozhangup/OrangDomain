@@ -1,15 +1,15 @@
 package me.xiaozhangup.domain.utils
 
 import com.jeff_media.customblockdata.CustomBlockData
-import me.xiaozhangup.domain.OrangDomain.plugin
+import me.xiaozhangup.domain.OrangDomain.Companion.plugin
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.block.Block
 import org.bukkit.inventory.ItemStack
-import taboolib.platform.util.deserializeToItemStack
-import taboolib.platform.util.serializeToByteArray
+import me.xiaozhangup.carbkotlin.util.deserializeToItemStack
+import me.xiaozhangup.carbkotlin.util.serializeToByteArray
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min

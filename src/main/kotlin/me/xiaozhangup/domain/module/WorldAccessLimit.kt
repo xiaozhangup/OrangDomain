@@ -1,15 +1,15 @@
 package me.xiaozhangup.domain.module
 
-import me.xiaozhangup.domain.OrangDomain.world
+import me.xiaozhangup.domain.OrangDomain.Companion.world
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.event.player.PlayerChangedWorldEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerRespawnEvent
 import org.bukkit.event.player.PlayerTeleportEvent
-import taboolib.common.platform.event.EventPriority
-import taboolib.common.platform.event.SubscribeEvent
-import taboolib.common.platform.function.submit
+import org.bukkit.event.EventPriority
+import me.xiaozhangup.carbkotlin.event.SubscribeEvent
+import me.xiaozhangup.domain.utils.ext.submitTask
 
 object WorldAccessLimit {
 
@@ -52,7 +52,7 @@ object WorldAccessLimit {
         val accessible = world.accessible
         if (player.world.name in accessible) return
 
-        submit(delay = 1) {
+        submitTask(delay = 1) {
             world.spawnLocation()?.let {
                 player.teleport(it)
             }

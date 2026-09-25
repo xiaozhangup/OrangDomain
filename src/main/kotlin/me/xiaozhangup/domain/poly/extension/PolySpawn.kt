@@ -1,13 +1,13 @@
 package me.xiaozhangup.domain.poly.extension
 
-import me.xiaozhangup.domain.OrangDomain.regions
-import me.xiaozhangup.domain.OrangDomain.world
+import me.xiaozhangup.domain.OrangDomain.Companion.regions
+import me.xiaozhangup.domain.OrangDomain.Companion.world
 import me.xiaozhangup.domain.utils.getPoly
 import org.bukkit.entity.Animals
 import org.bukkit.entity.Monster
 import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.event.entity.EntitySpawnEvent
-import taboolib.common.platform.event.SubscribeEvent
+import me.xiaozhangup.carbkotlin.event.SubscribeEvent
 
 object PolySpawn {
     @SubscribeEvent

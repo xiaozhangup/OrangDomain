@@ -2,7 +2,7 @@ package me.xiaozhangup.domain.poly.placeholder
 
 import me.xiaozhangup.domain.utils.getPoly
 import org.bukkit.entity.Player
-import taboolib.platform.compat.PlaceholderExpansion
+import me.xiaozhangup.carbkotlin.compat.PlaceholderExpansion
 
 object PolyPlaceholder : PlaceholderExpansion {
     override val identifier: String

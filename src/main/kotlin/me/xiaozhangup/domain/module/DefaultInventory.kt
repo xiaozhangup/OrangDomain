@@ -5,17 +5,17 @@ import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
-import taboolib.common.LifeCycle
-import taboolib.common.platform.Awake
-import taboolib.common.platform.command.PermissionDefault
-import taboolib.common.platform.command.command
-import taboolib.common.platform.event.EventPriority
-import taboolib.common.platform.event.SubscribeEvent
-import taboolib.expansion.createHelper
-import taboolib.module.configuration.Config
-import taboolib.module.configuration.Configuration
-import taboolib.platform.util.deserializeToInventory
-import taboolib.platform.util.serializeToByteArray
+import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
+import me.xiaozhangup.carbkotlin.lifecycle.Awake
+import me.xiaozhangup.carbkotlin.command.PermissionDefault
+import me.xiaozhangup.domain.utils.ext.command
+import org.bukkit.event.EventPriority
+import me.xiaozhangup.carbkotlin.event.SubscribeEvent
+import me.xiaozhangup.carbkotlin.command.createHelper
+import me.xiaozhangup.carbkotlin.configuration.Config
+import me.xiaozhangup.carbkotlin.configuration.Configuration
+import me.xiaozhangup.carbkotlin.util.deserializeToInventory
+import me.xiaozhangup.carbkotlin.util.serializeToByteArray
 import java.util.*
 
 

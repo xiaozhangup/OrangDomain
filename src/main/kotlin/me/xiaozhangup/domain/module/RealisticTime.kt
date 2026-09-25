@@ -4,17 +4,17 @@ import me.xiaozhangup.domain.OrangDomain
 import org.bukkit.Bukkit
 import org.bukkit.GameRules
 import org.bukkit.World
-import taboolib.common.platform.function.submit
-import taboolib.common.platform.service.PlatformExecutor
+import me.xiaozhangup.domain.utils.ext.submitTask
+import me.xiaozhangup.carbkotlin.task.Task
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 
 object RealisticTime {
-    private val scheduledTask: PlatformExecutor.PlatformTask
+    private val scheduledTask: Task
 
     init {
-        scheduledTask = submit(period = 20) {
+        scheduledTask = submitTask(period = 20) {
             OrangDomain.world.realisticTime
                 .mapNotNull { Bukkit.getWorld(it) }
                 .forEach { syncTime(it) }

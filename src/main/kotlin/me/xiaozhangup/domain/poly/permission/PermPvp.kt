@@ -1,6 +1,7 @@
 package me.xiaozhangup.domain.poly.permission
 
-import me.xiaozhangup.domain.utils.display
+import org.bukkit.Material
+
 import me.xiaozhangup.domain.utils.getPoly
 import me.xiaozhangup.domain.utils.register
 import me.xiaozhangup.domain.utils.rootDamager
@@ -10,14 +11,12 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.event.player.PlayerRespawnEvent
-import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-import taboolib.common.LifeCycle
-import taboolib.common.platform.Awake
-import taboolib.common.platform.event.EventPriority
-import taboolib.common.platform.event.SubscribeEvent
-import taboolib.library.xseries.XMaterial
-import taboolib.platform.util.buildItem
+import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
+import me.xiaozhangup.carbkotlin.lifecycle.Awake
+import org.bukkit.event.EventPriority
+import me.xiaozhangup.carbkotlin.event.SubscribeEvent
+import me.xiaozhangup.carbkotlin.util.itemStack
 
 
 object PermPvp : Permission, Listener {
@@ -37,20 +36,17 @@ object PermPvp : Permission, Listener {
         get() = true
 
     override fun generateMenuItem(value: Boolean): ItemStack {
-        return buildItem(XMaterial.DIAMOND_SWORD) {
-            name = "&fPVP ${value.display} &7($id)"
-            lore.addAll(
-                listOf(
-                    "",
-                    "&7允许行为:",
-                    "&8PVP"
-                )
+        return itemStack(Material.DIAMOND_SWORD) {
+            name("<white>PVP ${if (value) "<green>允许" else "<red>阻止"} <gray>($id)")
+            lore(
+                "",
+                "<gray>允许行为:",
+                "<dark_gray>PVP"
             )
-            flags.addAll(ItemFlag.values())
+            hideAll()
             if (value) {
                 shiny()
             }
-            colored()
         }
     }
 
@@ -64,7 +60,7 @@ object PermPvp : Permission, Listener {
                 if (!hasPermission("pvp", damager.name)) {
                     e.isCancelled = true
                     return
-                    //e.player.error("缺少权限 &f$id")
+                    //e.player.error("缺少权限 <white>$id")
                 }
             }
         }
@@ -96,7 +92,7 @@ object PermPvp : Permission, Listener {
             shooter.location.getPoly()?.run {
                 if (!hasPermission("pvp", shooter.name)) {
                     e.isCancelled = true
-                    //e.player.error("缺少权限 &f$id")
+                    //e.player.error("缺少权限 <white>$id")
                 }
             }
         }

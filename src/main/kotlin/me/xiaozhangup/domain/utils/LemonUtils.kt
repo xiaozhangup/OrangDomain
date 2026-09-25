@@ -8,15 +8,11 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import org.bukkit.util.NumberConversions
-import taboolib.common.platform.function.console
-import taboolib.common.platform.function.submit
-import taboolib.module.chat.colored
-import taboolib.module.ui.ClickEvent
-import taboolib.module.ui.type.Chest
-import taboolib.platform.compat.replacePlaceholder
-import taboolib.platform.util.buildItem
+import me.xiaozhangup.domain.utils.ext.executeConsole
+import me.xiaozhangup.domain.utils.ext.submitTask
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
+import me.xiaozhangup.carbkotlin.compat.replacePlaceholder
 import java.util.*
 
 
@@ -36,13 +32,13 @@ val tpMap = HashMap<UUID, Location>()
 fun Player.tpDelay(mint: Int, locationTo: Location) {
     tpMap[this.uniqueId] = this.location
     this.info("${mint}s 后开始传送 请勿移动!")
-    submit(delay = mint.toLong() * 20) {
+    submitTask(delay = mint.toLong() * 20) {
         val a = this@tpDelay.location
-        val b = tpMap[this@tpDelay.uniqueId] ?: return@submit
+        val b = tpMap[this@tpDelay.uniqueId] ?: return@submitTask
         if (a.x != b.x || a.y != b.y || a.z != b.z) {
             this@tpDelay.error("由于您的移动已取消传送!")
             tpMap.remove(this@tpDelay.uniqueId)
-            return@submit
+            return@submitTask
         }
         this@tpDelay.teleport(locationTo)
         tpMap.remove(this@tpDelay.uniqueId)
@@ -102,13 +98,6 @@ fun Player.error(vararg block: String) {
     }
 }
 
-operator fun Chest.set(c: Char, buildItem: ItemStack, function: (event: ClickEvent) -> Unit) {
-    set(c, buildItem(buildItem) {
-        colored()
-    })
-    onClick(c, function)
-}
-
 fun CommandSender.error(vararg block: String) {
     block.forEach {
         toError(this, it)
@@ -129,7 +118,7 @@ fun CommandSender.info(vararg block: String) {
  * @since 1.0
  */
 fun toInfo(sender: CommandSender, message: String) {
-    sender.sendMessage("&8[&a区域&8] &7${message}".colored())
+    sender.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize("&8[&a区域&8] &7${message}".replace('§', '&')))
 }
 
 /**
@@ -148,7 +137,7 @@ fun toError(sender: CommandSender, message: String) {
  */
 fun Player.execute(command: String) {
     if (command.startsWith("console:")) {
-        console().performCommand(
+        executeConsole(
             command.substringAfter("console:").replacePlaceholder(this)
         )
     } else {

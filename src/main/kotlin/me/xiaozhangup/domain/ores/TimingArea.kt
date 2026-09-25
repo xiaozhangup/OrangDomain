@@ -1,6 +1,6 @@
 package me.xiaozhangup.domain.ores
 
-import me.xiaozhangup.domain.OrangDomain.plugin
+import me.xiaozhangup.domain.OrangDomain.Companion.plugin
 import me.xiaozhangup.domain.utils.toLocation
 import me.xiaozhangup.whale.WhaleVisitor
 import me.xiaozhangup.whale.module.ActionbarOverlay
@@ -10,9 +10,9 @@ import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.persistence.PersistentDataType
-import taboolib.common.platform.function.submit
-import taboolib.common.platform.service.PlatformExecutor
-import taboolib.library.configuration.ConfigurationSection
+import me.xiaozhangup.domain.utils.ext.submitTask
+import me.xiaozhangup.carbkotlin.task.Task
+import me.xiaozhangup.carbkotlin.configuration.ConfigurationSection
 import kotlin.getValue
 import kotlin.math.max
 import kotlin.math.min
@@ -31,7 +31,7 @@ class TimingArea(
             min(pos1.blockZ, pos2.blockZ)..max(pos1.blockZ, pos2.blockZ)
         )
     }
-    private var task: PlatformExecutor.PlatformTask? = null
+    private var task: Task? = null
     private val overlay by lazy { WhaleVisitor.getModule(ActionbarOverlay::class) }
 
     @Suppress("UNCHECKED_CAST")
@@ -52,7 +52,7 @@ class TimingArea(
     }
 
     fun scheduleTask() {
-        task = submit(period = 20L) {
+        task = submitTask(period = 20L) {
             for (player in world.players.filter { inArea(it.location) }) {
                 val item = player.inventory.contents.firstOrNull { itemStack ->
                     if (

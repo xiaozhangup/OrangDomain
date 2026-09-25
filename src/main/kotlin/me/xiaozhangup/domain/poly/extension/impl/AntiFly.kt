@@ -1,6 +1,6 @@
 package me.xiaozhangup.domain.poly.extension.impl
 
-import me.xiaozhangup.domain.OrangDomain.world
+import me.xiaozhangup.domain.OrangDomain.Companion.world
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.GameMode
@@ -10,7 +10,7 @@ import org.bukkit.event.entity.EntityToggleGlideEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.event.player.PlayerToggleFlightEvent
-import taboolib.common.platform.event.SubscribeEvent
+import me.xiaozhangup.carbkotlin.event.SubscribeEvent
 
 object AntiFly {
     private val component = Component.text("× 飞行或折跃被阻止")
