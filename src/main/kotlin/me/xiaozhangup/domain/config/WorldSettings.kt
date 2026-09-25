@@ -3,7 +3,7 @@ package me.xiaozhangup.domain.config
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
-import me.xiaozhangup.carbkotlin.configuration.ConfigurationSection
+import me.xiaozhangup.crab.configuration.ConfigurationSection
 
 data class WorldSettings(
     val spawn: String,

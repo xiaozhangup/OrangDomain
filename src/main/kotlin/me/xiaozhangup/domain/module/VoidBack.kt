@@ -4,7 +4,7 @@ import me.xiaozhangup.whale.command.minecraft.MinecraftSpawn
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.EntityDamageEvent
-import me.xiaozhangup.carbkotlin.event.SubscribeEvent
+import me.xiaozhangup.crab.event.SubscribeEvent
 
 object VoidBack {
 

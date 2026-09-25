@@ -2,12 +2,12 @@ package me.xiaozhangup.domain.utils.ext
 
 import me.xiaozhangup.domain.OrangDomain
 
-import me.xiaozhangup.carbkotlin.command.Notify
-import me.xiaozhangup.carbkotlin.command.PermissionDefault
-import me.xiaozhangup.carbkotlin.command.component.CommandBase
-import me.xiaozhangup.carbkotlin.chain.Chain
-import me.xiaozhangup.carbkotlin.chain.DispatcherType
-import me.xiaozhangup.carbkotlin.task.Task
+import me.xiaozhangup.crab.command.Notify
+import me.xiaozhangup.crab.command.PermissionDefault
+import me.xiaozhangup.crab.command.component.CommandBase
+import me.xiaozhangup.crab.chain.Chain
+import me.xiaozhangup.crab.chain.DispatcherType
+import me.xiaozhangup.crab.task.Task
 
 // Kotlin module-local facade: other plugins use their own Crab instance.
 internal fun command(

@@ -2,7 +2,7 @@ package me.xiaozhangup.domain.poly.event
 
 import me.xiaozhangup.domain.poly.Poly
 import org.bukkit.entity.Player
-import me.xiaozhangup.carbkotlin.event.CrabEvent
+import me.xiaozhangup.crab.event.CrabEvent
 
 class PlayerJoinPolyEvent(
     val player: Player,

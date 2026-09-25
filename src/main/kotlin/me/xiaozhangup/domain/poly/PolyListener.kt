@@ -15,9 +15,9 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.inventory.EquipmentSlot
-import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
-import me.xiaozhangup.carbkotlin.lifecycle.Awake
-import me.xiaozhangup.carbkotlin.event.SubscribeEvent
+import me.xiaozhangup.crab.lifecycle.LifeCycle
+import me.xiaozhangup.crab.lifecycle.Awake
+import me.xiaozhangup.crab.event.SubscribeEvent
 import me.xiaozhangup.domain.utils.ext.submitTask
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap

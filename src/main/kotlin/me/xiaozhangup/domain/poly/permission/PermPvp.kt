@@ -12,11 +12,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.event.player.PlayerRespawnEvent
 import org.bukkit.inventory.ItemStack
-import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
-import me.xiaozhangup.carbkotlin.lifecycle.Awake
+import me.xiaozhangup.crab.lifecycle.LifeCycle
+import me.xiaozhangup.crab.lifecycle.Awake
 import org.bukkit.event.EventPriority
-import me.xiaozhangup.carbkotlin.event.SubscribeEvent
-import me.xiaozhangup.carbkotlin.util.itemStack
+import me.xiaozhangup.crab.event.SubscribeEvent
+import me.xiaozhangup.crab.util.itemStack
 
 
 object PermPvp : Permission, Listener {

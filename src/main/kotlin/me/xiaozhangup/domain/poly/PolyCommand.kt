@@ -17,13 +17,13 @@ import org.bukkit.Sound
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import me.xiaozhangup.carbkotlin.command.CommandBody
-import me.xiaozhangup.carbkotlin.command.CommandHeader
-import me.xiaozhangup.carbkotlin.command.mainCommand
-import me.xiaozhangup.carbkotlin.command.subCommand
+import me.xiaozhangup.crab.command.CommandBody
+import me.xiaozhangup.crab.command.CommandHeader
+import me.xiaozhangup.crab.command.mainCommand
+import me.xiaozhangup.crab.command.subCommand
 import me.xiaozhangup.domain.utils.ext.submitTask
-import me.xiaozhangup.carbkotlin.command.createHelper
-import me.xiaozhangup.carbkotlin.util.itemStack
+import me.xiaozhangup.crab.command.createHelper
+import me.xiaozhangup.crab.util.itemStack
 
 @Suppress("unused")
 @CommandHeader(

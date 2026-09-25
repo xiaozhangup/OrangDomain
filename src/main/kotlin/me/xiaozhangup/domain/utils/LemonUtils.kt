@@ -12,7 +12,7 @@ import org.bukkit.util.NumberConversions
 import me.xiaozhangup.domain.utils.ext.executeConsole
 import me.xiaozhangup.domain.utils.ext.submitTask
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
-import me.xiaozhangup.carbkotlin.compat.replacePlaceholder
+import me.xiaozhangup.crab.compat.replacePlaceholder
 import java.util.*
 
 

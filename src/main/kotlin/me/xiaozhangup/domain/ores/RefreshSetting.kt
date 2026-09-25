@@ -1,10 +1,10 @@
 package me.xiaozhangup.domain.ores
 
 import org.bukkit.Material
-import me.xiaozhangup.carbkotlin.common.util.RandomList
-import me.xiaozhangup.carbkotlin.configuration.ConfigurationSection
-import me.xiaozhangup.carbkotlin.configuration.Configuration
-import me.xiaozhangup.carbkotlin.configuration.util.getMap
+import me.xiaozhangup.crab.common.util.RandomList
+import me.xiaozhangup.crab.configuration.ConfigurationSection
+import me.xiaozhangup.crab.configuration.Configuration
+import me.xiaozhangup.crab.configuration.util.getMap
 
 class RefreshSetting(
     val interval: Int, // 间隔

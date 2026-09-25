@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent
 import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.event.entity.EntityInteractEvent
 import org.bukkit.event.player.PlayerInteractEvent
-import me.xiaozhangup.carbkotlin.event.SubscribeEvent
+import me.xiaozhangup.crab.event.SubscribeEvent
 
 object GlobalProtect {
     @SubscribeEvent

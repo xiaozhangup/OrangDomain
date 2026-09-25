@@ -13,15 +13,15 @@ import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerMoveEvent
-import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
-import me.xiaozhangup.carbkotlin.lifecycle.Awake
-import me.xiaozhangup.carbkotlin.command.PermissionDefault
+import me.xiaozhangup.crab.lifecycle.LifeCycle
+import me.xiaozhangup.crab.lifecycle.Awake
+import me.xiaozhangup.crab.command.PermissionDefault
 import me.xiaozhangup.domain.utils.ext.command
-import me.xiaozhangup.carbkotlin.event.SubscribeEvent
+import me.xiaozhangup.crab.event.SubscribeEvent
 import me.xiaozhangup.domain.utils.ext.submitTask
-import me.xiaozhangup.carbkotlin.command.createHelper
-import me.xiaozhangup.carbkotlin.configuration.Config
-import me.xiaozhangup.carbkotlin.configuration.Configuration
+import me.xiaozhangup.crab.command.createHelper
+import me.xiaozhangup.crab.configuration.Config
+import me.xiaozhangup.crab.configuration.Configuration
 import java.util.concurrent.TimeUnit
 
 object Portal {

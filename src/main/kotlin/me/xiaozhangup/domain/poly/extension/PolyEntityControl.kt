@@ -9,7 +9,7 @@ import org.bukkit.entity.*
 import org.bukkit.event.entity.EntityChangeBlockEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.EventPriority
-import me.xiaozhangup.carbkotlin.event.SubscribeEvent
+import me.xiaozhangup.crab.event.SubscribeEvent
 
 object PolyEntityControl {
     @SubscribeEvent

@@ -11,8 +11,8 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.persistence.PersistentDataType
 import me.xiaozhangup.domain.utils.ext.submitTask
-import me.xiaozhangup.carbkotlin.task.Task
-import me.xiaozhangup.carbkotlin.configuration.ConfigurationSection
+import me.xiaozhangup.crab.task.Task
+import me.xiaozhangup.crab.configuration.ConfigurationSection
 import kotlin.getValue
 import kotlin.math.max
 import kotlin.math.min

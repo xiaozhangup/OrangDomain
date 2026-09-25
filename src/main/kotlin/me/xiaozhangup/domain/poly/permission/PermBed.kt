@@ -11,9 +11,9 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
-import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
-import me.xiaozhangup.carbkotlin.lifecycle.Awake
-import me.xiaozhangup.carbkotlin.util.itemStack
+import me.xiaozhangup.crab.lifecycle.LifeCycle
+import me.xiaozhangup.crab.lifecycle.Awake
+import me.xiaozhangup.crab.util.itemStack
 
 
 object PermBed : Permission, Listener {

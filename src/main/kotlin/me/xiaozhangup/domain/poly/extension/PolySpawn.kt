@@ -7,7 +7,7 @@ import org.bukkit.entity.Animals
 import org.bukkit.entity.Monster
 import org.bukkit.event.entity.CreatureSpawnEvent
 import org.bukkit.event.entity.EntitySpawnEvent
-import me.xiaozhangup.carbkotlin.event.SubscribeEvent
+import me.xiaozhangup.crab.event.SubscribeEvent
 
 object PolySpawn {
     @SubscribeEvent

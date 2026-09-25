@@ -4,9 +4,9 @@ import org.bukkit.Material
 
 import me.xiaozhangup.domain.utils.register
 import org.bukkit.inventory.ItemStack
-import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
-import me.xiaozhangup.carbkotlin.lifecycle.Awake
-import me.xiaozhangup.carbkotlin.util.itemStack
+import me.xiaozhangup.crab.lifecycle.LifeCycle
+import me.xiaozhangup.crab.lifecycle.Awake
+import me.xiaozhangup.crab.util.itemStack
 
 object PermDropCoin : Permission {
 

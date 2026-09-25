@@ -1,20 +1,20 @@
 package me.xiaozhangup.domain
 
 
-import me.xiaozhangup.carbkotlin.lifecycle.Awake
-import me.xiaozhangup.carbkotlin.lifecycle.LifeCycle
-import me.xiaozhangup.carbkotlin.Crab
+import me.xiaozhangup.crab.lifecycle.Awake
+import me.xiaozhangup.crab.lifecycle.LifeCycle
+import me.xiaozhangup.crab.Crab
 import com.jeff_media.customblockdata.CustomBlockData
 import kotlinx.serialization.json.Json
 import me.xiaozhangup.domain.config.WorldSettings
 import me.xiaozhangup.domain.poly.Poly
 import me.xiaozhangup.domain.poly.permission.Permission
 import org.bukkit.Material
-import me.xiaozhangup.carbkotlin.common.io.newFile
+import me.xiaozhangup.crab.common.io.newFile
 import org.bukkit.plugin.java.JavaPlugin
 import me.xiaozhangup.domain.utils.ext.getDataFolder
-import me.xiaozhangup.carbkotlin.configuration.Config
-import me.xiaozhangup.carbkotlin.configuration.Configuration
+import me.xiaozhangup.crab.configuration.Config
+import me.xiaozhangup.crab.configuration.Configuration
 import java.nio.charset.StandardCharsets
 
 class OrangDomain : JavaPlugin() {

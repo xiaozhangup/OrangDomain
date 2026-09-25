@@ -11,7 +11,7 @@ import me.xiaozhangup.domain.ores.Ores.textures
 import me.xiaozhangup.domain.utils.IntervalTrigger
 import me.xiaozhangup.domain.utils.customBlockData
 import me.xiaozhangup.domain.utils.serializable.LocationSerializer
-import me.xiaozhangup.carbkotlin.util.ItemStackBuilder.Companion.getTextureURL
+import me.xiaozhangup.crab.util.ItemStackBuilder.Companion.getTextureURL
 import me.xiaozhangup.whale.util.ext.asLocation
 import me.xiaozhangup.whale.util.ext.asStringWithoutYawPitch
 import org.bukkit.Bukkit
@@ -21,9 +21,9 @@ import org.bukkit.block.Block
 import org.bukkit.block.BlockFace
 import org.bukkit.block.data.type.Skull
 import org.bukkit.persistence.PersistentDataType
-import me.xiaozhangup.carbkotlin.common.function.throttle
-import me.xiaozhangup.carbkotlin.common.io.newFile
-import me.xiaozhangup.carbkotlin.configuration.ConfigurationSection
+import me.xiaozhangup.crab.common.function.throttle
+import me.xiaozhangup.crab.common.io.newFile
+import me.xiaozhangup.crab.configuration.ConfigurationSection
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min

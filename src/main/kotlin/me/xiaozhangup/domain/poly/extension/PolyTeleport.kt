@@ -4,7 +4,7 @@ import me.xiaozhangup.domain.OrangDomain.Companion.regions
 import me.xiaozhangup.domain.utils.getPoly
 import org.bukkit.entity.EntityType
 import org.bukkit.event.entity.EntityTeleportEvent
-import me.xiaozhangup.carbkotlin.event.SubscribeEvent
+import me.xiaozhangup.crab.event.SubscribeEvent
 
 object PolyTeleport {
     private val typed = listOf(

@@ -4,8 +4,8 @@ import me.xiaozhangup.whale.util.ext.asLocation
 import me.xiaozhangup.whale.util.ext.asString
 import me.xiaozhangup.whale.util.ext.asStringWithoutYawPitch
 import org.bukkit.Location
-import me.xiaozhangup.carbkotlin.configuration.ConfigurationSection
-import me.xiaozhangup.carbkotlin.configuration.Configuration
+import me.xiaozhangup.crab.configuration.ConfigurationSection
+import me.xiaozhangup.crab.configuration.Configuration
 import kotlin.math.max
 import kotlin.math.min
 

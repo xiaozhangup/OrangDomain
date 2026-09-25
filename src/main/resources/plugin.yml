@@ -2,7 +2,7 @@ name: OrangDomain
 main: me.xiaozhangup.domain.OrangDomain
 version: ${version}
 depend:
-  - 'CarbKotlin'
+  - 'CrabKotlin'
   - 'WhaleMechanism'
   - 'SlimeCargoNext'
 api-version: 1.21.4
