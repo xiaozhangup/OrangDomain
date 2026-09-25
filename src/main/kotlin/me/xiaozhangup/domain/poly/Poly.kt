@@ -3,7 +3,7 @@ package me.xiaozhangup.domain.poly
 import kotlinx.serialization.Serializable
 import me.xiaozhangup.domain.OrangDomain
 import me.xiaozhangup.domain.utils.serializable.LocationSerializer
-import me.xiaozhangup.domain.utils.serializable.UUIDSerializable
+import me.xiaozhangup.crab.serialization.UUIDSerializable
 import me.xiaozhangup.domain.utils.tpDelay
 import org.bukkit.Bukkit
 import org.bukkit.Location
