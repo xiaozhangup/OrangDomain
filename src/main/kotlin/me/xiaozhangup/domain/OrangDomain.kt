@@ -1,9 +1,6 @@
 package me.xiaozhangup.domain
 
-
-import me.xiaozhangup.crab.lifecycle.Awake
-import me.xiaozhangup.crab.lifecycle.LifeCycle
-import me.xiaozhangup.crab.Crab
+import me.xiaozhangup.crab.CrabPlugin
 import com.jeff_media.customblockdata.CustomBlockData
 import kotlinx.serialization.json.Json
 import me.xiaozhangup.domain.config.WorldSettings
@@ -11,41 +8,22 @@ import me.xiaozhangup.domain.poly.Poly
 import me.xiaozhangup.domain.poly.permission.Permission
 import org.bukkit.Material
 import me.xiaozhangup.crab.common.io.newFile
-import org.bukkit.plugin.java.JavaPlugin
 import me.xiaozhangup.domain.utils.ext.getDataFolder
 import me.xiaozhangup.crab.configuration.Config
 import me.xiaozhangup.crab.configuration.Configuration
 import java.nio.charset.StandardCharsets
 
-class OrangDomain : JavaPlugin() {
-    internal val crab = Crab(this, dataFolder)
+class OrangDomain : CrabPlugin() {
 
     init { instance = this }
 
-    override fun onLoad() {
-        crab.lifecycle.run(LifeCycle.CONST)
-        crab.lifecycle.run(LifeCycle.INIT)
-        crab.lifecycle.run(LifeCycle.LOAD)
+    override fun enable() {
+        CustomBlockData.registerListener(plugin)
+        loadWorldSettings()
     }
 
-    override fun onEnable() {
-        crab.lifecycle.run(LifeCycle.ENABLE)
-        crab.registerEvents()
-        crab.registerPlaceholders()
-        enablePlugin()
-        crab.start()
-        crab.submitTask(delay = 1) {
-            crab.lifecycle.run(LifeCycle.ACTIVE)
-            activePlugin()
-        }
-    }
-
-    override fun onDisable() {
-        try {
-            try { crab.lifecycle.run(LifeCycle.DISABLE) } finally {
-                disablePlugin()
-            }
-        } finally { crab.close() }
+    override fun active() {
+        initPolys()
     }
 
     companion object {
@@ -53,13 +31,6 @@ class OrangDomain : JavaPlugin() {
             private set
 
         internal val crab get() = instance.crab
-
-
-        @Awake(LifeCycle.INIT)
-        fun loadSharedConfigurations() {
-            crab.loadConfigurations()
-        }
-
 
         @Config(migrate = true, value = "settings.yml")
         lateinit var config: Configuration
@@ -81,16 +52,6 @@ class OrangDomain : JavaPlugin() {
             }
         }
         lateinit var world: WorldSettings
-
-        fun enablePlugin() {
-            crab.commands.registerAnnotated(crab.scanner)
-            CustomBlockData.registerListener(plugin)
-            loadWorldSettings()
-        }
-
-        fun activePlugin() {
-            initPolys()
-        }
 
         fun initPolys() {
             regions.reload()
@@ -124,9 +85,6 @@ class OrangDomain : JavaPlugin() {
         fun loadWorldSettings() {
             config.reload()
             world = WorldSettings(config.getConfigurationSection("worlds")!!)
-        }
-        fun disablePlugin() {
-            crab.close()
         }
     }
 }
